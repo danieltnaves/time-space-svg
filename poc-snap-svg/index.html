@@ -8,21 +8,21 @@
   <body>
       <script type="text/javascript">
         var paper = Snap(1000, 1000);
-        var p_line1 = paper.paper.line(0,0, 8,8).attr({stroke: '#00ADEF'});
-        var p_line2 = paper.paper.line(8,0, 0,8).attr({stroke: '#00ADEF'});
-        var p_rect = paper.paper.rect(0,0, 8,8).attr({fill: '#3A54A4', opacity: 0.9});
+        //var p_line1 = paper.paper.line(0,0, 8,8).attr({stroke: '#00ADEF'});
+        //var p_line2 = paper.paper.line(8,0, 0,8).attr({stroke: '#00ADEF'});
+        //var p_rect = paper.paper.rect(0,0, 8,8).attr({fill: '#3A54A4', opacity: 0.9});
 
-        var pattern = paper.paper.g(p_line1, p_line2, p_rect).pattern(0,0, 8,8);
+        //var pattern = paper.paper.g(p_line1, p_line2, p_rect).pattern(0,0, 8,8);
 
-        var background = paper.paper.rect(0,0, 912,912).attr({fill: pattern});
+        //var background = paper.paper.rect(0,0, 912,912).attr({fill: pattern});
 
 
 
-        var lane1 = paper.line(10,10,900,10).attr({strokeWidth:2,stroke:"white",strokeLinecap:"round"});
-        var lane2 = paper.line(10,110,900,110).attr({strokeWidth:2,stroke:"white",strokeLinecap:"round"});
-        var lane3 = paper.line(10,210,900,210).attr({strokeWidth:2,stroke:"white",strokeLinecap:"round"});
-        var line1 = paper.line(10,10,90,110).attr({strokeWidth:2,stroke:"white",strokeLinecap:"round"});
-        var line2 = paper.line(90,110,200,10).attr({strokeWidth:2,stroke:"white",strokeLinecap:"round"});
+        var lane1 = paper.line(10,10,900,10).attr({strokeWidth:2,stroke:"black",strokeLinecap:"round"});
+        var lane2 = paper.line(10,110,900,110).attr({strokeWidth:2,stroke:"black",strokeLinecap:"round"});
+        var lane3 = paper.line(10,210,900,210).attr({strokeWidth:2,stroke:"black",strokeLinecap:"round"});
+        var line1 = paper.line(10,10,90,110).attr({strokeWidth:2,stroke:"black",strokeLinecap:"round"});
+        var line2 = paper.line(90,110,200,10).attr({strokeWidth:2,stroke:"black",strokeLinecap:"round"});
         var dot = paper.circle(11,10,4);
 
         //var lane3 = paper.line(0,200,900,0).attr({strokeWidth:5,stroke:"black",strokeLinecap:"round"});
