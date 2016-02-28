@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>POC RAPHAEL</title>
+    <script src="raphael.js" charset="utf-8"></script>
+    <script type="text/javascript">
+    window.onload = function() {
+        var paper = new Raphael(document.getElementById('canvas'), 1000, 1000);
+        /*for(var i = 0; i < 5; i+=1) {
+          var multiplier = i*5;
+          paper.circle(250 + (2*multiplier), 100 + multiplier, 50 - multiplier);
+        }*/
+        var line = paper.path("M 250 250 l 1000 0");
+        var line2 = paper.path("M 250 350 l 1000 0");
+        var line2 = paper.path("M 250 450 l 1000 0");
+        var line2 = paper.path("M 250 550 l 1000 0");
+
+        line.attr({fill: '#9cf', stroke: '#ddd', 'stroke-width': 5, 'stroke-height': 5});
+
+        line.attr(
+            {
+                stroke: 'none',
+                fill: 'blue'
+            }
+        );
+
+        line.animate({
+          path: "M 250 250 l 1000 0"
+        }, 5000, 'elastic');
+
+    }
+    </script>
+  </head>
+  <body>
+    <div id="canvas">
+
+    </div>
+  </body>
+</html>
