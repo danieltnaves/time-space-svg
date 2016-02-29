@@ -25,10 +25,21 @@
 
         //Horizontal lanes
         // line(x1,y1,x2,y2) x1 -> x start, y1 -> y start, x2 -> x end, y2 -> y end
-        var lane1 = paper.line(10,10,900,10).attr({strokeWidth:2,stroke:"white",strokeLinecap:"round"});
+        var arrow = paper.polygon([0,10, 4,10, 2,0, 0,10]).attr({fill: '#FFF'}).transform('r90');
+        var marker = arrow.marker(0,0, 20,20, 0,5);
 
-        var lane2 = paper.line(10,110,900,110).attr({strokeWidth:2,stroke:"white",strokeLinecap:"round"});
-        var lane3 = paper.line(10,210,900,210).attr({strokeWidth:2,stroke:"white",strokeLinecap:"round"});
+        var lane1 = paper.line(10,10,900,10).attr({strokeWidth:2,stroke:"white",strokeLinecap:"round", markerEnd: marker});
+        var a = paper.text(920,15,"A").attr({fill: "white", fontFamily: "Arial"});
+
+        var lane2 = paper.line(10,110,900,110).attr({strokeWidth:2,stroke:"white",strokeLinecap:"round", markerEnd: marker});
+        var b = paper.text(920,115,"B").attr({fill: "white", fontFamily: "Arial"});
+
+        var lane3 = paper.line(10,210,900,210).attr({strokeWidth:2,stroke:"white",strokeLinecap:"round", markerEnd: marker});
+        var c = paper.text(920,215,"C").attr({fill: "white", fontFamily: "Arial"});
+
+
+
+
 
         //Parallel lines
         var line1 = paper.line(10,10,90,110).attr({strokeWidth:2,stroke:"white",strokeLinecap:"round"});
