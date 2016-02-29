@@ -11,19 +11,28 @@
         //var p_line1 = paper.paper.line(0,0, 8,8).attr({stroke: '#00ADEF'});
         //var p_line2 = paper.paper.line(8,0, 0,8).attr({stroke: '#00ADEF'});
         //var p_rect = paper.paper.rect(0,0, 8,8).attr({fill: '#3A54A4', opacity: 0.9});
-
         //var pattern = paper.paper.g(p_line1, p_line2, p_rect).pattern(0,0, 8,8);
-
         //var background = paper.paper.rect(0,0, 912,912).attr({fill: pattern});
 
-
-
+        //Horizontal lanes
+        // line(x1,y1,x2,y2) x1 -> x start, y1 -> y start, x2 -> x end, y2 -> y end
         var lane1 = paper.line(10,10,900,10).attr({strokeWidth:2,stroke:"black",strokeLinecap:"round"});
         var lane2 = paper.line(10,110,900,110).attr({strokeWidth:2,stroke:"black",strokeLinecap:"round"});
         var lane3 = paper.line(10,210,900,210).attr({strokeWidth:2,stroke:"black",strokeLinecap:"round"});
+
+        //Parallel lines
         var line1 = paper.line(10,10,90,110).attr({strokeWidth:2,stroke:"black",strokeLinecap:"round"});
         var line2 = paper.line(90,110,200,10).attr({strokeWidth:2,stroke:"black",strokeLinecap:"round"});
-        var dot = paper.circle(11,10,4);
+        var line3 = paper.line(200,10,500,210).attr({strokeWidth:2,stroke:"black",strokeLinecap:"round"});
+        var line4 = paper.line(500,210,700,10).attr({strokeWidth:2,stroke:"black",strokeLinecap:"round"});
+
+        //Dots
+        //circle(x,y,r), x -> x position, y -> y position, r -> radius
+        var dot  = paper.circle(11,10,4);
+        var dot2 = paper.circle(90,110,4);
+        var dot3 = paper.circle(200,10,4);
+        var dot4 = paper.circle(500,210,4);
+        var dot5 = paper.circle(700,10,4);
 
         //var lane3 = paper.line(0,200,900,0).attr({strokeWidth:5,stroke:"black",strokeLinecap:"round"});
         //var lane4 = paper.line(0,300,900,0).attr({strokeWidth:5,stroke:"black",strokeLinecap:"round"});
