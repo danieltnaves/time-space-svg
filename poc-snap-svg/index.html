@@ -4,9 +4,18 @@
     <meta charset="utf-8">
     <title>POC SNAP SVG</title>
     <script src="Snap.svg-0.4.1/dist/snap.svg.js" charset="utf-8"></script>
+    <style media="screen">
+      body {
+        background: #0e9dcf;
+      }
+    </style>
   </head>
   <body>
       <script type="text/javascript">
+
+
+
+
         var paper = Snap(1000, 1000);
         //var p_line1 = paper.paper.line(0,0, 8,8).attr({stroke: '#00ADEF'});
         //var p_line2 = paper.paper.line(8,0, 0,8).attr({stroke: '#00ADEF'});
@@ -16,27 +25,28 @@
 
         //Horizontal lanes
         // line(x1,y1,x2,y2) x1 -> x start, y1 -> y start, x2 -> x end, y2 -> y end
-        var lane1 = paper.line(10,10,900,10).attr({strokeWidth:2,stroke:"black",strokeLinecap:"round"});
-        var lane2 = paper.line(10,110,900,110).attr({strokeWidth:2,stroke:"black",strokeLinecap:"round"});
-        var lane3 = paper.line(10,210,900,210).attr({strokeWidth:2,stroke:"black",strokeLinecap:"round"});
+        var lane1 = paper.line(10,10,900,10).attr({strokeWidth:2,stroke:"white",strokeLinecap:"round"});
+
+        var lane2 = paper.line(10,110,900,110).attr({strokeWidth:2,stroke:"white",strokeLinecap:"round"});
+        var lane3 = paper.line(10,210,900,210).attr({strokeWidth:2,stroke:"white",strokeLinecap:"round"});
 
         //Parallel lines
-        var line1 = paper.line(10,10,90,110).attr({strokeWidth:2,stroke:"black",strokeLinecap:"round"});
-        var line2 = paper.line(90,110,200,10).attr({strokeWidth:2,stroke:"black",strokeLinecap:"round"});
-        var line3 = paper.line(200,10,500,210).attr({strokeWidth:2,stroke:"black",strokeLinecap:"round"});
-        var line4 = paper.line(500,210,700,10).attr({strokeWidth:2,stroke:"black",strokeLinecap:"round"});
+        var line1 = paper.line(10,10,90,110).attr({strokeWidth:2,stroke:"white",strokeLinecap:"round"});
+        var line2 = paper.line(90,110,200,10).attr({strokeWidth:2,stroke:"white",strokeLinecap:"round"});
+        var line3 = paper.line(200,10,500,210).attr({strokeWidth:2,stroke:"white",strokeLinecap:"round"});
+        var line4 = paper.line(500,210,700,10).attr({strokeWidth:2,stroke:"white",strokeLinecap:"round"});
 
         //Dots
         //circle(x,y,r), x -> x position, y -> y position, r -> radius
-        var dot  = paper.circle(11,10,4);
-        var dot2 = paper.circle(90,110,4);
-        var dot3 = paper.circle(200,10,4);
-        var dot4 = paper.circle(500,210,4);
-        var dot5 = paper.circle(700,10,4);
+        var dot  = paper.circle(11,10,4).attr({strokeWidth:2,stroke:"white",strokeLinecap:"round", fill: "#ff8863"});
+        var dot2 = paper.circle(90,110,4).attr({strokeWidth:2,stroke:"white",strokeLinecap:"round", fill: "#ff8863"});
+        var dot3 = paper.circle(200,10,4).attr({strokeWidth:2,stroke:"white",strokeLinecap:"round", fill: "#ff8863"});
+        var dot4 = paper.circle(500,210,4).attr({strokeWidth:2,stroke:"white",strokeLinecap:"round", fill: "#ff8863"});
+        var dot5 = paper.circle(700,10,4).attr({strokeWidth:2,stroke:"white",strokeLinecap:"round", fill: "#ff8863"});
 
-        //var lane3 = paper.line(0,200,900,0).attr({strokeWidth:5,stroke:"black",strokeLinecap:"round"});
-        //var lane4 = paper.line(0,300,900,0).attr({strokeWidth:5,stroke:"black",strokeLinecap:"round"});
-        //var lane5 = paper.line(0,400,900,0).attr({strokeWidth:5,stroke:"black",strokeLinecap:"round"});
+        //var lane3 = paper.line(0,200,900,0).attr({strokeWidth:5,stroke:"white",strokeLinecap:"round"});
+        //var lane4 = paper.line(0,300,900,0).attr({strokeWidth:5,stroke:"white",strokeLinecap:"round"});
+        //var lane5 = paper.line(0,400,900,0).attr({strokeWidth:5,stroke:"white",strokeLinecap:"round"});
       </script>
   </body>
 </html>
