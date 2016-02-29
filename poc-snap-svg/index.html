@@ -28,24 +28,34 @@
         var arrow = paper.polygon([0,10, 4,10, 2,0, 0,10]).attr({fill: '#FFF'}).transform('r90');
         var marker = arrow.marker(0,0, 20,20, 0,5);
 
-        var lane1 = paper.line(10,10,900,10).attr({strokeWidth:2,stroke:"white",strokeLinecap:"round", markerEnd: marker});
+        var lane1 = paper.line(0,10,0,10).attr({strokeWidth:2,stroke:"white",strokeLinecap:"round", markerEnd: marker});
         var a = paper.text(920,15,"A").attr({fill: "white", fontFamily: "Arial"});
+        lane1.animate({ x1: 10, x2:900}, 1000, mina.easein);
 
-        var lane2 = paper.line(10,110,900,110).attr({strokeWidth:2,stroke:"white",strokeLinecap:"round", markerEnd: marker});
+        var lane2 = paper.line(0,110,0,110).attr({strokeWidth:2,stroke:"white",strokeLinecap:"round", markerEnd: marker});
         var b = paper.text(920,115,"B").attr({fill: "white", fontFamily: "Arial"});
+        lane2.animate({ x1: 10, x2:900}, 1000, mina.easein);
 
-        var lane3 = paper.line(10,210,900,210).attr({strokeWidth:2,stroke:"white",strokeLinecap:"round", markerEnd: marker});
+        var lane3 = paper.line(0,210,0,210).attr({strokeWidth:2,stroke:"white",strokeLinecap:"round", markerEnd: marker});
         var c = paper.text(920,215,"C").attr({fill: "white", fontFamily: "Arial"});
+        lane3.animate({ x1: 10, x2:900}, 1000, mina.easein);
 
 
 
 
 
         //Parallel lines
-        var line1 = paper.line(10,10,90,110).attr({strokeWidth:2,stroke:"white",strokeLinecap:"round"});
+        var line1 = paper.line(10,10,0,0).attr({strokeWidth:2,stroke:"white",strokeLinecap:"round"});
+        line1.animate({x2: 90, y2: 110}, 2000, mina.easein);
+
         var line2 = paper.line(90,110,200,10).attr({strokeWidth:2,stroke:"white",strokeLinecap:"round"});
+        //line2.animate({x1: 90, y1: 110}, 2000, mina.easein);
+
         var line3 = paper.line(200,10,500,210).attr({strokeWidth:2,stroke:"white",strokeLinecap:"round"});
+        //line3.animate({x2: 500, y2: 210}, 2000, mina.easein);
+
         var line4 = paper.line(500,210,700,10).attr({strokeWidth:2,stroke:"white",strokeLinecap:"round"});
+        //line4.animate({x2: 700, y2: 10}, 2000, mina.easein);
 
         //Dots
         //circle(x,y,r), x -> x position, y -> y position, r -> radius
