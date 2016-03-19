@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>TESTE</title>
+    <script src="bower_components/jquery/dist/jquery.min.js" charset="utf-8"></script>
+    <script type="text/javascript">
+
+      /*
+      $.each(values, function(k) {
+        alert(values[k]);
+      });
+      */
+
+      /**
+       * Represents an element in space time diagram. An element has information about sender, receiver, messageType (SUCCESS or ERROR) and message.
+       * @constructor
+       * @param {string} sender - Message sender.
+       * @param {string} receiver - Message receiver.
+       * @param {string} messageType - Indicates if message failed or not.
+       * @param {string} message - Message content.
+       */
+      function SpaceTimeElement(sender, receiver, messageType, message) {
+        this.sender      = sender;
+        this.receiver    = receiver;
+        this.messageType = messageType;
+        this.message     = message;
+        this.sayHello  = function() {
+          //console.log('say hello');
+        }
+      }
+      var x = new SpaceTimeElement('A', 'B', 'ERROR', 'fail message');
+      x.sayHello();
+
+      function returnLinesAsArray(text) {
+        var values = text.split('\n');
+        return values;
+      }
+
+      function itentifyNodeElement(text) {
+        //identify messageType (-> = SUCCESS or x = ERROR)
+        var messageType = text.match("\\[(.*?)\\]");
+        messageType = messageType[1];
+        if (messageType == '->') {
+          messageType = 'SUCCESS';
+        } else {
+          messageType = 'ERROR';
+        }
+        //identify sender and receiver
+        var keyPair  = text.split('[');
+        var sender   = keyPair[0].match("\\((.*?)\\)")[1];
+        var receiver = keyPair[1].match("\\((.*?)\\)")[1];
+        //identify message
+        var message = $.trim(text.split(':')[1]);
+        return new SpaceTimeElement(sender, receiver, messageType, message);
+      }
+
+      var obj = itentifyNodeElement('(B 10) [->] (C 20) : request');
+      console.log(obj);
+
+      $(document).ready(function(){
+          var texto = $('#entrada').val();
+          returnLinesAsArray(texto);
+      });
+    </script>
+  </head>
+  <body>
+    <textarea name="name" id="entrada" rows="8" cols="40">
+      B 10 -> C 20 : request
+      C 25 -> B 30 : response
+    </textarea>
+  </body>
+</html>
