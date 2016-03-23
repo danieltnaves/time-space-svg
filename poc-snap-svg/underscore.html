@@ -21,20 +21,52 @@
        * @param {string} message - Message content.
        */
       function SpaceTimeElement(sender, receiver, messageType, message) {
+
         this.sender      = sender;
         this.receiver    = receiver;
         this.messageType = messageType;
         this.message     = message;
-        this.sayHello  = function() {
-          //console.log('say hello');
+
+        this.getSenderName = function() {
+          var senderName = this.sender.split(' ');
+          return senderName[0];
         }
+
+        this.getSenderTime = function() {
+          var senderTime = this.sender.split(' ');
+          return senderTime[1];
+        }
+
+        this.getReceiverName = function() {
+          var receiverName = this.receiver.split(' ');
+          return receiverName[0];
+        }
+
+        this.getReceiverTime = function() {
+          var receiverTime = this.receiver.split(' ');
+          return receiverTime[1];
+        }
+
       }
-      var x = new SpaceTimeElement('A', 'B', 'ERROR', 'fail message');
-      x.sayHello();
+      var x = new SpaceTimeElement('A 20', 'B 30', 'ERROR', 'fail message');
+      console.log(x.getReceiverName());
+      console.log(x.getReceiverTime());
+      console.log(x.getSenderName());
+      console.log(x.getSenderTime());
 
       function returnLinesAsArray(text) {
         var values = text.split('\n');
+        //remove last element (empty)
+        values.splice(-1,1);
         return values;
+      }
+
+      function iterateArrayLines(lines) {
+        var spaceTimeElementLines = new Array();
+        for (var i = 0; i < lines.length; i++) {
+          spaceTimeElementLines[i] = itentifyNodeElement(lines[i]);
+        }  
+        return spaceTimeElementLines;
       }
 
       function itentifyNodeElement(text) {
@@ -55,19 +87,23 @@
         return new SpaceTimeElement(sender, receiver, messageType, message);
       }
 
-      var obj = itentifyNodeElement('(B 10) [->] (C 20) : request');
-      console.log(obj);
+      //var obj = itentifyNodeElement('(B 10) [->] (C 20) : request');
+      //console.log(obj);
 
       $(document).ready(function(){
           var texto = $('#entrada').val();
-          returnLinesAsArray(texto);
+          var lines = returnLinesAsArray(texto);
+          var spaceTimeLines = iterateArrayLines(lines);
+          console.log(spaceTimeLines);
       });
     </script>
   </head>
   <body>
     <textarea name="name" id="entrada" rows="8" cols="40">
-      B 10 -> C 20 : request
-      C 25 -> B 30 : response
+      (B 10) [->] (C 20) : request
+      (C 25) [->] (B 30) : response
+      (C 25) [->] (B 30) : response
+      (C 25) [->] (B 30) : response
     </textarea>
   </body>
 </html>
