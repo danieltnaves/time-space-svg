@@ -1,3 +1,8 @@
+  var $ = require('jquery');
+  var SpaceTimeElement = require('./space-time-element');
+
+  module.exports = SpaceTimeRaw;
+
   /**
   * Represents an element in space time diagram with string input.
   * @constructor
@@ -53,6 +58,5 @@
       var message = $.trim(text.split(':')[1]);
       return new SpaceTimeElement(sender, receiver, messageType, message);
     }
-
 
   }

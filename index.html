@@ -2,19 +2,25 @@
 <head>
 	<title>Time Space Diagrams</title>
 	<link href='https://fonts.googleapis.com/css?family=Ubuntu+Condensed' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" type="text/css" href="../assets/style.css">
-	<script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
-	<script type="text/javascript" src="../assets/js/require.js"></script>
-	<script type="text/javascript" src="../../models/SpaceTimeRaw.js"></script>
-	<script type="text/javascript" src="../../models/SpaceTimeElement.js"></script>
-	<script type="text/javascript" src="../../controllers/IndexController.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+	<script type="text/javascript" src="time-space-lib/dist/space-time-1.0.0-min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('#draw').click(function(){
+				var lib = new SpaceTime($('#input-data').val());
+				lib.parseInput();	
+				return false;	
+			});
+		});
+	</script>
 </head>
 <body>
 	<div class="header">
 		<div class="inner">
 			<h1>Time Space Diagrams</h1>
 			<p>Enter with data and click in "Draw!" button to draw time space diagram.</p>
-			<form action="#">
+			<form action="">
 				<textarea id="input-data">
 (B 10) [->] (C 20) : request
 (C 25) [->] (B 30) : response
