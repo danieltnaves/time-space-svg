@@ -4,10 +4,10 @@
   "description": "A library to draw space time diagrams using SVG and JS.",
   "main": "space-time.js",
   "scripts": {
-    "build-debug": "browserify space-time-element.js space-time-raw.js space-time.js -d --s SpaceTime > dist/space-time-1.0.0.js",
-    "build-min":   "browserify space-time-element.js space-time-raw.js space-time.js --s SpaceTime | uglifyjs -c > dist/space-time-1.0.0-min.js",
-    "watch":       "watchify space-time.js space-time-element.js space-time-raw.js -d --s SpaceTime -o dist/space-time-1.0.0.js -v",
-    "build":       "npm run build-debug && npm run build-min"
+    "build-debug": "browserify space-time-draw.js space-time-element.js space-time-raw.js space-time.js -d --s SpaceTime > dist/space-time-1.0.0.js",
+    "build-min": "browserify space-time-draw.js space-time-element.js space-time-raw.js space-time.js --s SpaceTime | uglifyjs -c > dist/space-time-1.0.0-min.js",
+    "watch": "watchify space-time-draw.js space-time.js space-time-element.js space-time-raw.js -d --s SpaceTime -o dist/space-time-1.0.0.js -v",
+    "build": "npm run build-debug && npm run build-min"
   },
   "keywords": [
     "space",
@@ -24,6 +24,7 @@
     "watchify": "^3.7.0"
   },
   "dependencies": {
-    "jquery": "^2.2.2"
+    "jquery": "^2.2.2",
+    "snapsvg": "sethvincent/Snap.svg#a34b8af69b"
   }
 }

@@ -4,14 +4,21 @@
 	<link href='https://fonts.googleapis.com/css?family=Ubuntu+Condensed' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
-	<script type="text/javascript" src="time-space-lib/dist/space-time-1.0.0-min.js"></script>
+	<script type="text/javascript" src="time-space-lib/dist/space-time-1.0.0.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
-			$('#draw').click(function(){
+			/*$('#draw').click(function(){
+				$('.header').slideUp();
 				var lib = new SpaceTime($('#input-data').val());
 				lib.parseInput();	
+				lib.drawInput('#paper');
 				return false;	
-			});
+			});*/
+			$('.header').slideUp();
+			var lib = new SpaceTime($('#input-data').val());
+			lib.parseInput();	
+			lib.drawInput('#paper');
+			return false;
 		});
 	</script>
 </head>
@@ -26,6 +33,7 @@
 (C 25) [->] (B 30) : response
 (C 25) [->] (B 30) : response
 (C 25) [->] (B 30) : response
+(C 40) [->] (D 30) : response
 				</textarea>
 				<br />
 				<input type="submit" class="submit" value="Draw!" id="draw" />
@@ -33,7 +41,9 @@
 		</div>
 	</div>
 	<div class="content">
-		<div class="inner"></div>
+		<div class="inner">
+			<svg id="paper" width="100%" height="100%"></svg>
+		</div>
 	</div>
 	<div class="footer">
 		<div class="inner">
