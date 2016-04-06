@@ -14,13 +14,14 @@ function SpaceTime(text) {
 	  var spaceTimeRaw    = new SpaceTimeRaw(this.text);
 	  var linesAsArray    = spaceTimeRaw.returnLinesAsArray();
 	  this.parsedElements = spaceTimeRaw.returnRawInputAsArray(linesAsArray);
-	  //console.log(this.parsedElements);
 	}
 
 	this.drawInput = function(elementId)  {
+	  this.parseInput();
 	  var spaceTimeDraw = new SpaceTimeDraw(elementId, 2, 'black', this.parsedElements);
 	  spaceTimeDraw.drawHorizontalLines(3);
 	  spaceTimeDraw.identifyLineNames();
+	  spaceTimeDraw.drawPoints();
 	  //console.log(spaceTimeDraw);
 	}
 
