@@ -12,6 +12,7 @@
     this.actors         = new Array();
     this.lanes          = new Array();
     var paper           = Snap(this.elementId);
+    this.animationsPaths = new Array();
 
     this.identifyLineNames = function() {
       for (var i = 0; i < parsedElements.length; i++) {
@@ -45,6 +46,7 @@
     }
     
     this.drawPoints = function() {
+      var animationsPaths = new Array();
       for (var i = 0; i < parsedElements.length; i++) {
         var senderVerticalPosition     = ((this.actors.indexOf(parsedElements[i].getSenderName())) * 100) + 10;
         var receiverVerticalPosition   = ((this.actors.indexOf(parsedElements[i].getReceiverName())) * 100) + 10;
@@ -56,7 +58,31 @@
         paper.text(senderHorizontalPosition - 7,senderVerticalPosition + 20,parsedElements[i].getSenderTime()).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
         var receiverDot = paper.circle(receiverHorizontalPosition, receiverVerticalPosition, 4).attr({strokeWidth:2,stroke:this.strokeColor,strokeLinecap:"round", fill: this.strokeColor});
         paper.text(receiverHorizontalPosition - 7,receiverVerticalPosition + 20,parsedElements[i].getReceiverTime()).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
-      }  
+        
+        //M x y -> represents start point
+        //L x y -> represents "Line to"
+        this.animationsPaths.push('M ' + senderHorizontalPosition + ' ' + senderVerticalPosition + ' ' + 'L ' + receiverHorizontalPosition + ' ' + receiverVerticalPosition);
+      }
+      this.animatePaths();
     }
+    
+     this.animatePaths = function() {
+        if (this.animationsPaths.length == 0) return;
+        var line2 = paper.path(this.animationsPaths[0]);
+        var lengthLine2 = line2.getTotalLength();
+        console.log(this.animationsPaths);
+        this.animationsPaths.shift();
+        // SVG LINE 2 - Animate Path
+        line2.attr({
+            stroke: '#000',
+            strokeWidth: 2,
+            fill: 'none',
+            // Draw Path
+            "stroke-dasharray": lengthLine2 + " " + lengthLine2,
+            "stroke-dashoffset": lengthLine2
+        }).animate({"stroke-dashoffset": 0}, 2500, mina.easeinout, this.animatePaths.bind( this ));
+      }
+      
 
   }
+  
