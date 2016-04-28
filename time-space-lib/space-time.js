@@ -31,8 +31,8 @@ function SpaceTime(text) {
 	this.drawInput = function(elementId)  {
 	  this.parseInput();
 	  var spaceTimeDraw = new SpaceTimeDraw(elementId, 2, 'black', this.parsedElements);
-	  spaceTimeDraw.drawHorizontalLines();
 	  spaceTimeDraw.identifyLineNames();
+	  spaceTimeDraw.drawHorizontalLines();
 	  spaceTimeDraw.drawPoints();
 	}
 

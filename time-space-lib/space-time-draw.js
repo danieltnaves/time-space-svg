@@ -13,14 +13,15 @@
   */
   function SpaceTimeDraw(elementId, strokeWidth, strokeColor, parsedElements) {
 
-    this.elementId      = elementId;
-    this.strokeWidth    = strokeWidth;
-    this.strokeColor    = strokeColor;
-    this.parsedElements = parsedElements;
-    this.actors         = new Array();
-    this.lanes          = new Array();
-    var paper           = Snap(this.elementId);
-    this.animationsPaths = new Array();
+    this.elementId         = elementId;
+    this.strokeWidth       = strokeWidth;
+    this.strokeColor       = strokeColor;
+    this.parsedElements    = parsedElements;
+    this.actors            = new Array();
+    this.lanes             = new Array();
+    var  paper             = Snap(this.elementId); 
+    this.animationsPaths   = new Array();
+    this.interactionStatus = new Array();
 
     /**
     * Returns a list of actors to draw horizontal lines.
@@ -40,9 +41,14 @@
 
     /**
     * Draws horizontal lines based on number of actors assigned 'this.actors' variable. 
-    */
+    */ 
     this.drawHorizontalLines = function() { 
-      console.log(this.actors.length);
+      //line size based in last element
+      var lineSize = (this.parsedElements[this.parsedElements.length - 1].getReceiverTime() * 10) + 20;
+      //clear paper from previous submission
+      paper.clear();
+      //add svg paper max width
+      paper.attr({width: lineSize + 30});
       //creates right arrow
       var arrow         = paper.polygon([0,10, 4,10, 2,0, 0,10]).attr({fill: this.strokeColor}).transform('r90');
       var marker        = arrow.marker(0,0, 20,20, 0,5);
@@ -56,7 +62,7 @@
         var marginBottom = 10 + marginCounter;
         this.lanes[i] = paper.line(0, marginBottom, 0, marginBottom).attr({strokeWidth:this.strokeWidth, stroke:this.strokeColor, strokeLinecap:"round", markerEnd: marker});
         elementNames[i] = paper.text(5,marginCounter + 15,this.actors[i]).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontWeight: "bold"});
-        this.lanes[i].animate({ x1: 20, x2:900}, 1000, mina.easein); 
+        this.lanes[i].animate({ x1: 20, x2:lineSize}, 1000, mina.easein); 
         marginCounter += 100;  
       }
     }
@@ -81,6 +87,7 @@
         //M x y -> represents start point
         //L x y -> represents "Line to"
         this.animationsPaths.push('M ' + senderHorizontalPosition + ' ' + senderVerticalPosition + ' ' + 'L ' + receiverHorizontalPosition + ' ' + receiverVerticalPosition);
+        this.interactionStatus.push(parsedElements[i].getMessageType());
       }
       this.animatePaths();
     }
@@ -93,8 +100,10 @@
         if (this.animationsPaths.length == 0) return;
         var line2 = paper.path(this.animationsPaths[0]);
         var lengthLine2 = line2.getTotalLength() - 8;
-        console.log(this.animationsPaths);
+        var status = this.interactionStatus[0];
+
         this.animationsPaths.shift();
+        this.interactionStatus.shift();
 
         var Triangle = paper.polyline("-4.5,5.5 0.5,-4.5 5.5,5.5");
         Triangle.attr({
@@ -108,12 +117,16 @@
            triangleGroup.transform('t' + parseInt(movePoint.x) + ',' + parseInt(movePoint.y) + 'r' + (movePoint.alpha - 90));
         }, 500, mina.easeinout);
 
+        if (status == 'ERROR') {
+          lengthLine2 = '3,3';
+        }
+
         line2.attr({
             stroke: '#000',
             strokeWidth: 2,
             fill: 'none',
             // Draw Path
-            "stroke-dasharray": lengthLine2 + " " + lengthLine2,
+            "stroke-dasharray": lengthLine2,
             "stroke-dashoffset": lengthLine2
         }).animate({"stroke-dashoffset": 0}, 500, mina.easeinout, this.animatePaths.bind( this ));
       }

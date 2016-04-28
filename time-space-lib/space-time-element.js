@@ -51,4 +51,13 @@
       return receiverTime[1];
     }
 
+    /**
+    * Returns message type (SUCCESS ou ERROR).
+    * @return {string} Message type.
+    */
+    this.getMessageType = function() {
+      return this.messageType;
+    }
+
+
   }

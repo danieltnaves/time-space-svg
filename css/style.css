@@ -2,7 +2,7 @@
 * { border:0; margin:0; padding:0; vertical-align:baseline; text-decoration: none; background-repeat: no-repeat; list-style-type: none; outline: none; }
 
 /*DEFAULT*/
-body { font-family: 'Ubuntu Condensed', sans-serif; }
+body { font-family: 'Ubuntu Condensed', sans-serif;  }
 
 /*HEADER*/
 .header { text-align: center; height: 286px;  }
@@ -15,7 +15,8 @@ body { font-family: 'Ubuntu Condensed', sans-serif; }
 
 /*CONTENT*/
 .content {}
-.content .inner {}
+.content .inner { text-align: center; overflow: scroll;}
+.content .inner #paper { display: inline-block; }
 
 /*FOOTER*/
 .footer {  }
