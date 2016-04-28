@@ -42,6 +42,7 @@
     * Draws horizontal lines based on number of actors assigned 'this.actors' variable. 
     */
     this.drawHorizontalLines = function() { 
+      console.log(this.actors.length);
       //creates right arrow
       var arrow         = paper.polygon([0,10, 4,10, 2,0, 0,10]).attr({fill: this.strokeColor}).transform('r90');
       var marker        = arrow.marker(0,0, 20,20, 0,5);
@@ -54,8 +55,8 @@
       for (var i = 0; i < this.actors.length; i++) {
         var marginBottom = 10 + marginCounter;
         this.lanes[i] = paper.line(0, marginBottom, 0, marginBottom).attr({strokeWidth:this.strokeWidth, stroke:this.strokeColor, strokeLinecap:"round", markerEnd: marker});
-        elementNames[i] = paper.text(920,marginCounter + 15,this.actors[i]).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontWeight: "bold"});
-        this.lanes[i].animate({ x1: 10, x2:900}, 1000, mina.easein); 
+        elementNames[i] = paper.text(5,marginCounter + 15,this.actors[i]).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontWeight: "bold"});
+        this.lanes[i].animate({ x1: 20, x2:900}, 1000, mina.easein); 
         marginCounter += 100;  
       }
     }
