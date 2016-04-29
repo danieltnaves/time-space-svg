@@ -42,21 +42,16 @@
     * @return {SpaceTimeElement} SpaceTimeElement.
     */
     this.itentifyNodeElement = function(text) {
-      //identify messageType (-> = SUCCESS or x = ERROR)
-      var messageType = text.match("\\[(.*?)\\]");
-      messageType = messageType[1];
-      if (messageType == '->') {
+      //identify messageType (> = SUCCESS or x = ERROR)
+      var message = $.trim(text);
+      message = message.split(':');
+      messageType = message[3];
+      if (messageType == '>') {
         messageType = 'SUCCESS';
       } else {
         messageType = 'ERROR';
       }
-      //identify sender and receiver
-      var keyPair  = text.split('[');
-      var sender   = keyPair[0].match("\\((.*?)\\)")[1];
-      var receiver = keyPair[1].match("\\((.*?)\\)")[1];
-      //identify message
-      var message = $.trim(text.split(':')[1]);
-      return new SpaceTimeElement(sender, receiver, messageType, message);
+      return new SpaceTimeElement(message[0], message[1], message[2], messageType, message[4], message[5], message[6], message[7]);
     }
 
   }

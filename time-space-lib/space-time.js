@@ -27,13 +27,14 @@ function SpaceTime(text) {
 	/**
     * Sets space time diagram atributes and draws space time diagram based on user input.
     * @param {string} elementId - SVG element ID defined in svg tag.
+    * @param {string} label - Parameter to turn on/off labels.
     */
-	this.drawInput = function(elementId)  {
+	this.drawInput = function(elementId, labels)  {
 	  this.parseInput();
-	  var spaceTimeDraw = new SpaceTimeDraw(elementId, 2, 'black', this.parsedElements);
+	  var spaceTimeDraw = new SpaceTimeDraw(elementId, 2, 'black', this.parsedElements, labels);
 	  spaceTimeDraw.identifyLineNames();
 	  spaceTimeDraw.drawHorizontalLines();
-	  spaceTimeDraw.drawPoints();
+	  spaceTimeDraw.drawPoints(labels);
 	}
 
 }

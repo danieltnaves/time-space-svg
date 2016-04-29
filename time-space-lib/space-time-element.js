@@ -4,33 +4,49 @@
   * Represents an element in space time diagram. An element has information about sender, receiver, messageType (SUCCESS or ERROR) and message.
   * @constructor
   * @param {string} sender - Message sender.
+  * @param {string} senderLabel - Message sender label.
+  * @param {string} senderTime - Message sender time.
   * @param {string} receiver - Message receiver.
+  * @param {string} receiverLabel - Message receiver label.
+  * @param {string} receiverTime - Message receiver time.
   * @param {string} messageType - Indicates if message failed or not.
   * @param {string} message - Message content.
   */
-  function SpaceTimeElement(sender, receiver, messageType, message) {
+  function SpaceTimeElement(sender, senderTime, senderLabel, messageType, receiver, receiverTime, receiverLabel, message) {
 
-    this.sender      = sender;
-    this.receiver    = receiver;
-    this.messageType = messageType;
-    this.message     = message;
+    this.sender         = sender;
+    this.senderLabel    = senderLabel;
+    this.senderTime     = senderTime;
+
+    this.receiver       = receiver;
+    this.receiverLabel  = receiverLabel;
+    this.receiverTime   = receiverTime;
+
+    this.messageType    = messageType;
+    this.message        = message;
 
     /**
     * Returns the element name that sends a request.
     * @return {string} Sender name.
     */
     this.getSenderName = function() {
-      var senderName = this.sender.split(' ');
-      return senderName[0];
+      return this.sender;
     }
 
     /**
-    * Returns the moment that sender makes a request.
+    * Returns the element label that sends a request.
+    * @return {string} Sender label.
+    */
+    this.getSenderLabel = function() {
+      return this.senderLabel;
+    }
+
+    /**
+    * Returns the element sender time.
     * @return {string} Sender time.
     */
     this.getSenderTime = function() {
-      var senderTime = this.sender.split(' ');
-      return senderTime[1];
+      return this.senderTime;
     }
 
     /**
@@ -38,17 +54,23 @@
     * @return {string} Receiver name.
     */
     this.getReceiverName = function() {
-      var receiverName = this.receiver.split(' ');
-      return receiverName[0];
+      return this.receiver;
     }
 
     /**
-    * Returns the moment that receiver receives a response.
-    * @return {string} Sender time.
+    * Returns the element label that receives a response.
+    * @return {string} Receiver label.
+    */
+    this.getReceiverLabel = function() {
+      return this.receiverLabel;
+    }
+
+    /**
+    * Returns the element receiver time.
+    * @return {string} Receiver time.
     */
     this.getReceiverTime = function() {
-      var receiverTime = this.receiver.split(' ');
-      return receiverTime[1];
+      return this.receiverTime;
     }
 
     /**
@@ -57,6 +79,14 @@
     */
     this.getMessageType = function() {
       return this.messageType;
+    }
+
+    /**
+    * Returns message.
+    * @return {string} Message.
+    */
+    this.getMessage = function() {
+      return this.message;
     }
 
 

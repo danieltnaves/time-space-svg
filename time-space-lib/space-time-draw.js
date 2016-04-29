@@ -11,7 +11,7 @@
   * @param {string} strokeColor - Sets colors for all elements.
   * @param {string} parsedElements - List of elements to be drawed.
   */
-  function SpaceTimeDraw(elementId, strokeWidth, strokeColor, parsedElements) {
+  function SpaceTimeDraw(elementId, strokeWidth, strokeColor, parsedElements, labelStatus) {
 
     this.elementId         = elementId;
     this.strokeWidth       = strokeWidth;
@@ -22,6 +22,7 @@
     var  paper             = Snap(this.elementId); 
     this.animationsPaths   = new Array();
     this.interactionStatus = new Array();
+    this.labelStatus       = labelStatus;
 
     /**
     * Returns a list of actors to draw horizontal lines.
@@ -80,10 +81,19 @@
         
         //circle(x,y,r), x -> x position, y -> y position, r -> radius
         var senderDot = paper.circle(senderHorizontalPosition, senderVerticalPosition, 4).attr({strokeWidth:2,stroke:this.strokeColor,strokeLinecap:"round", fill: this.strokeColor});
-        paper.text(senderHorizontalPosition - 7,senderVerticalPosition + 20,parsedElements[i].getSenderTime()).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
+        if (this.labelStatus == 'labels-on') {
+          paper.text(senderHorizontalPosition - 7,senderVerticalPosition + 20,parsedElements[i].getSenderLabel()).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
+        }
+        if (this.labelStatus == 'times-on') {
+          paper.text(senderHorizontalPosition - 7,senderVerticalPosition + 20,parsedElements[i].getSenderTime()).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
+        }
         var receiverDot = paper.circle(receiverHorizontalPosition, receiverVerticalPosition, 4).attr({strokeWidth:2,stroke:this.strokeColor,strokeLinecap:"round", fill: this.strokeColor});
-        paper.text(receiverHorizontalPosition - 7,receiverVerticalPosition + 20,parsedElements[i].getReceiverTime()).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
-        
+        if (this.labelStatus == 'labels-on') {
+          paper.text(receiverHorizontalPosition - 7,receiverVerticalPosition + 20,parsedElements[i].getReceiverLabel()).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
+        }
+        if (this.labelStatus == 'times-on') {
+          paper.text(receiverHorizontalPosition - 7,receiverVerticalPosition + 20,parsedElements[i].getReceiverTime()).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
+        }
         //M x y -> represents start point
         //L x y -> represents "Line to"
         this.animationsPaths.push('M ' + senderHorizontalPosition + ' ' + senderVerticalPosition + ' ' + 'L ' + receiverHorizontalPosition + ' ' + receiverVerticalPosition);
