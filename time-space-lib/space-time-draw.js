@@ -27,9 +27,6 @@
     this.labelStatus       = labelStatus;
     this.timeStatus        = timeStatus;
 
-    console.log(this.labelStatus);
-    console.log(this.timeStatus);
-
     /**
     * Returns a list of actors to draw horizontal lines.
     * @return {Array} Array of actors names.

@@ -8,11 +8,11 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$('#draw').click(function(){
-				//$('.header').slideUp();
 				var lib = new SpaceTime($('#input-data').val());
 				lib.drawInput('#paper', $('input[name=labels]:checked', '#input-form').val(), $('input[name=times]:checked', '#input-form').val());
 				return false;	
 			});
+
 		});
 	</script>
 </head>
@@ -47,7 +47,7 @@ D:85:p13:x:C:95:p14:lost request
 	</div>
 	<div class="content">
 		<div class="inner">
-			<svg id="paper" width="100%" height="100%"></svg>
+			<svg id="paper" width="100%" height="100%"></svg> 
 		</div>
 	</div>
 	<div class="footer">

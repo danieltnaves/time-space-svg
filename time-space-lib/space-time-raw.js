@@ -17,9 +17,13 @@
     * @return {Array} Array with lines splited by '\n'.
     */
     this.returnLinesAsArray = function()  {
-      var values = text.split('\n');
-      //remove last element (empty)
-      values.splice(-1,1);
+      var values = $.trim(text);
+      values = text.split('\n');
+      //clean empty values
+      for (var i = 0; i < values.length; i++) {
+        values[i] = $.trim(values[i]);
+      }
+      values = values.filter(function(n){ return n }); 
       return values;
     }
 
