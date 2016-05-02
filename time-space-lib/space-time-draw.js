@@ -10,8 +10,10 @@
   * @param {string} strokeWidth - Sets width for all lines.
   * @param {string} strokeColor - Sets colors for all elements.
   * @param {string} parsedElements - List of elements to be drawed.
+  * @param {string} labelStatus - Turn on/off labels.
+  * @param {string} timeStatus - Turn on/off times.
   */
-  function SpaceTimeDraw(elementId, strokeWidth, strokeColor, parsedElements, labelStatus) {
+  function SpaceTimeDraw(elementId, strokeWidth, strokeColor, parsedElements, labelStatus, timeStatus) {
 
     this.elementId         = elementId;
     this.strokeWidth       = strokeWidth;
@@ -23,6 +25,10 @@
     this.animationsPaths   = new Array();
     this.interactionStatus = new Array();
     this.labelStatus       = labelStatus;
+    this.timeStatus        = timeStatus;
+
+    console.log(this.labelStatus);
+    console.log(this.timeStatus);
 
     /**
     * Returns a list of actors to draw horizontal lines.
@@ -81,22 +87,24 @@
         
         //circle(x,y,r), x -> x position, y -> y position, r -> radius
         var senderDot = paper.circle(senderHorizontalPosition, senderVerticalPosition, 4).attr({strokeWidth:2,stroke:this.strokeColor,strokeLinecap:"round", fill: this.strokeColor});
-        if (this.labelStatus == 'labels-on') {
+        if (this.timeStatus == 'names-on' && this.labelStatus == 'labels-on') {
           paper.text(senderHorizontalPosition - 7,senderVerticalPosition + 20,parsedElements[i].getSenderLabel()).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
         }
-        if (this.labelStatus == 'times-on') {
+        if (this.timeStatus == 'times-on' && this.labelStatus == 'labels-on') {
           paper.text(senderHorizontalPosition - 7,senderVerticalPosition + 20,parsedElements[i].getSenderTime()).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
         }
         var receiverDot = paper.circle(receiverHorizontalPosition, receiverVerticalPosition, 4).attr({strokeWidth:2,stroke:this.strokeColor,strokeLinecap:"round", fill: this.strokeColor});
-        if (this.labelStatus == 'labels-on') {
+        if (this.timeStatus == 'names-on' && this.labelStatus == 'labels-on') {
           paper.text(receiverHorizontalPosition - 7,receiverVerticalPosition + 20,parsedElements[i].getReceiverLabel()).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
         }
-        if (this.labelStatus == 'times-on') {
+        if (this.timeStatus == 'times-on' && this.labelStatus == 'labels-on') {
           paper.text(receiverHorizontalPosition - 7,receiverVerticalPosition + 20,parsedElements[i].getReceiverTime()).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
         }
+
+        var pathCords = 'M ' + senderHorizontalPosition + ' ' + senderVerticalPosition + ' ' + 'L ' + receiverHorizontalPosition + ' ' + receiverVerticalPosition;
         //M x y -> represents start point
         //L x y -> represents "Line to"
-        this.animationsPaths.push('M ' + senderHorizontalPosition + ' ' + senderVerticalPosition + ' ' + 'L ' + receiverHorizontalPosition + ' ' + receiverVerticalPosition);
+        this.animationsPaths.push(pathCords);
         this.interactionStatus.push(parsedElements[i].getMessageType());
       }
       this.animatePaths();
@@ -111,9 +119,25 @@
         var line2 = paper.path(this.animationsPaths[0]);
         var lengthLine2 = line2.getTotalLength() - 8;
         var status = this.interactionStatus[0];
+        
+         if (this.labelStatus == 'labels-on') {
+            var label = paper
+            .text(0, 0, parsedElements[0].getMessage())
+            .attr({
+                'text-anchor' : 'middle',
+                'textpath' : this.animationsPaths[0],
+                'dy': -5,
+                fill: this.strokeColor, 
+                fontFamily: "Arial", 
+                fontStyle: "italic", 
+                fontSize: "11px"
+            });
+            label.textPath.attr({ startOffset: '50%' });
+          }
 
         this.animationsPaths.shift();
         this.interactionStatus.shift();
+        this.parsedElements.shift();
 
         var Triangle = paper.polyline("-4.5,5.5 0.5,-4.5 5.5,5.5");
         Triangle.attr({
@@ -130,6 +154,8 @@
         if (status == 'ERROR') {
           lengthLine2 = '3,3';
         }
+
+
 
         line2.attr({
             stroke: '#000',

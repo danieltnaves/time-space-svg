@@ -12,9 +12,11 @@ body { font-family: 'Ubuntu Condensed', sans-serif;  }
 .header .inner textarea { resize: none; padding: 10px; border: 3px solid #000; width: 400px; height: 150px; margin: 20px 0 0 0; text-align: left; }
 .header .inner .submit { padding: 10px; margin-top: 10px; cursor: pointer; background: grey; color: #fff; font-family: 'Ubuntu Condensed', sans-serif; font-size: 16px; }
 .header .inner .submit:hover { background-color: #000; -webkit-transition: background-color 1000ms linear; -moz-transition: background-color 1000ms linear; -o-transition: background-color 1000ms linear; -ms-transition: background-color 1000ms linear; transition: background-color 1000ms linear;}
-.header .inner .options { padding: 20px; }
+.header .inner .options { padding: 20px;  }
 .header .inner .options span { margin-left: 10px; }
 .header .inner .options input { cursor: pointer; margin-right: 5px; margin-top: 2px; }
+.header .inner .options .labels { margin-left: 15px; }
+
 
 /*CONTENT*/
 .content {}
