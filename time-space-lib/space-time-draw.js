@@ -10,22 +10,21 @@
   * @param {string} strokeWidth - Sets width for all lines.
   * @param {string} strokeColor - Sets colors for all elements.
   * @param {string} parsedElements - List of elements to be drawed.
-  * @param {string} labelStatus - Turn on/off labels.
-  * @param {string} timeStatus - Turn on/off times.
+  * @param {string} options - Extra options to show diagram separated by ','.
   */
-  function SpaceTimeDraw(elementId, strokeWidth, strokeColor, parsedElements, labelStatus, timeStatus) {
+  function SpaceTimeDraw(elementId, strokeWidth, strokeColor, parsedElements, options) {
 
-    this.elementId         = elementId;
-    this.strokeWidth       = strokeWidth;
-    this.strokeColor       = strokeColor;
-    this.parsedElements    = parsedElements;
-    this.actors            = new Array();
-    this.lanes             = new Array();
-    var  paper             = Snap(this.elementId); 
-    this.animationsPaths   = new Array();
-    this.interactionStatus = new Array();
-    this.labelStatus       = labelStatus;
-    this.timeStatus        = timeStatus;
+    this.elementId          = elementId;
+    this.strokeWidth        = strokeWidth;
+    this.strokeColor        = strokeColor;
+    this.parsedElements     = parsedElements;
+    this.actors             = new Array();
+    this.lanes              = new Array();
+    var  paper              = Snap(this.elementId); 
+    this.animationsPaths    = new Array();
+    this.interactionStatus  = new Array();
+    this.options            = options.split(',');
+    this.verticalDrawSkew   = 20;
 
     /**
     * Returns a list of actors to draw horizontal lines.
@@ -48,11 +47,11 @@
     */ 
     this.drawHorizontalLines = function() { 
       //line size based in last element
-      var lineSize = (this.parsedElements[this.parsedElements.length - 1].getReceiverTime() * 10) + 20;
+      var lineSize = (this.parsedElements[this.parsedElements.length - 1].getReceiverTime() * 10) + 40;
       //clear paper from previous submission
       paper.clear();
       //add svg paper max width
-      paper.attr({width: lineSize + 30});
+      paper.attr({width: lineSize + 20});
       //creates right arrow
       var arrow         = paper.polygon([0,10, 4,10, 2,0, 0,10]).attr({fill: this.strokeColor}).transform('r90');
       var marker        = arrow.marker(0,0, 20,20, 0,5);
@@ -63,9 +62,9 @@
       this.identifyLineNames();
 
       for (var i = 0; i < this.actors.length; i++) {
-        var marginBottom = 10 + marginCounter;
+        var marginBottom = 10 + marginCounter + this.verticalDrawSkew;
         this.lanes[i] = paper.line(0, marginBottom, 0, marginBottom).attr({strokeWidth:this.strokeWidth, stroke:this.strokeColor, strokeLinecap:"round", markerEnd: marker});
-        elementNames[i] = paper.text(5,marginCounter + 15,this.actors[i]).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontWeight: "bold"});
+        elementNames[i] = paper.text(5,marginCounter + 15 + this.verticalDrawSkew,this.actors[i]).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontWeight: "bold"});
         this.lanes[i].animate({ x1: 20, x2:lineSize}, 1000, mina.easein); 
         marginCounter += 100;  
       }
@@ -79,26 +78,26 @@
       for (var i = 0; i < parsedElements.length; i++) {
         var senderVerticalPosition     = ((this.actors.indexOf(parsedElements[i].getSenderName())) * 100) + 10;
         var receiverVerticalPosition   = ((this.actors.indexOf(parsedElements[i].getReceiverName())) * 100) + 10;
-        var senderHorizontalPosition   = (parsedElements[i].getSenderTime()) * 10;
-        var receiverHorizontalPosition = (parsedElements[i].getReceiverTime()) * 10; 
+        var senderHorizontalPosition   = (parsedElements[i].getSenderTime()) * 10 + this.verticalDrawSkew;
+        var receiverHorizontalPosition = (parsedElements[i].getReceiverTime()) * 10 + this.verticalDrawSkew; 
         
         //circle(x,y,r), x -> x position, y -> y position, r -> radius
-        var senderDot = paper.circle(senderHorizontalPosition, senderVerticalPosition, 4).attr({strokeWidth:2,stroke:this.strokeColor,strokeLinecap:"round", fill: this.strokeColor});
-        if (this.timeStatus == 'names-on' && this.labelStatus == 'labels-on') {
-          paper.text(senderHorizontalPosition - 7,senderVerticalPosition + 20,parsedElements[i].getSenderLabel()).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
+        var senderDot = paper.circle(senderHorizontalPosition, senderVerticalPosition + this.verticalDrawSkew, 4).attr({strokeWidth:2,stroke:this.strokeColor,strokeLinecap:"round", fill: this.strokeColor});
+        if ($.inArray('label', this.options) > -1) {
+          paper.text(senderHorizontalPosition - 7,senderVerticalPosition - 10 + this.verticalDrawSkew,parsedElements[i].getSenderLabel()).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
         }
-        if (this.timeStatus == 'times-on' && this.labelStatus == 'labels-on') {
-          paper.text(senderHorizontalPosition - 7,senderVerticalPosition + 20,parsedElements[i].getSenderTime()).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
+        if ($.inArray('time', this.options) > -1) {
+          paper.text(senderHorizontalPosition - 7,senderVerticalPosition + 20 + this.verticalDrawSkew,parsedElements[i].getSenderTime()).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
         }
-        var receiverDot = paper.circle(receiverHorizontalPosition, receiverVerticalPosition, 4).attr({strokeWidth:2,stroke:this.strokeColor,strokeLinecap:"round", fill: this.strokeColor});
-        if (this.timeStatus == 'names-on' && this.labelStatus == 'labels-on') {
-          paper.text(receiverHorizontalPosition - 7,receiverVerticalPosition + 20,parsedElements[i].getReceiverLabel()).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
+        var receiverDot = paper.circle(receiverHorizontalPosition, receiverVerticalPosition + this.verticalDrawSkew, 4).attr({strokeWidth:2,stroke:this.strokeColor,strokeLinecap:"round", fill: this.strokeColor});
+        if ($.inArray('label', this.options) > -1) {
+          paper.text(receiverHorizontalPosition - 7,receiverVerticalPosition - 10 + this.verticalDrawSkew,parsedElements[i].getReceiverLabel()).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
         }
-        if (this.timeStatus == 'times-on' && this.labelStatus == 'labels-on') {
-          paper.text(receiverHorizontalPosition - 7,receiverVerticalPosition + 20,parsedElements[i].getReceiverTime()).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
+        if ($.inArray('time', this.options) > -1) {
+          paper.text(receiverHorizontalPosition - 7,receiverVerticalPosition + 20 + this.verticalDrawSkew,parsedElements[i].getReceiverTime()).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
         }
 
-        var pathCords = 'M ' + senderHorizontalPosition + ' ' + senderVerticalPosition + ' ' + 'L ' + receiverHorizontalPosition + ' ' + receiverVerticalPosition;
+        var pathCords = 'M ' + senderHorizontalPosition + ' ' + (senderVerticalPosition + this.verticalDrawSkew) + ' ' + 'L ' + receiverHorizontalPosition + ' ' + (receiverVerticalPosition + this.verticalDrawSkew);
         //M x y -> represents start point
         //L x y -> represents "Line to"
         this.animationsPaths.push(pathCords);
@@ -117,14 +116,14 @@
         var lengthLine2 = line2.getTotalLength() - 8;
         var status = this.interactionStatus[0];
         
-         if (this.labelStatus == 'labels-on') {
+         if ($.inArray('contents', this.options) > -1) {
             var label = paper
             .text(0, 0, parsedElements[0].getMessage())
             .attr({
                 'text-anchor' : 'middle',
                 'textpath' : this.animationsPaths[0],
                 'dy': -5,
-                fill: this.strokeColor, 
+                fill: this.strokeColor,  
                 fontFamily: "Arial", 
                 fontStyle: "italic", 
                 fontSize: "11px"
