@@ -14,7 +14,8 @@
 
 		function drawElements() {
 			var lib = new SpaceTime($('#input-data').val());
-			lib.drawInput('#paper', getOptionsSelectedValues());
+			var status = lib.drawInput('#paper', getOptionsSelectedValues());
+			console.log(status);
 		}
 
 		$(document).ready(function(){

@@ -19,9 +19,9 @@ function SpaceTime(text) {
     * Parses raw input and create array of space time objects.
     */
 	this.parseInput = function()  {
-	  var spaceTimeRaw    = new SpaceTimeRaw(this.text);
-	  var linesAsArray    = spaceTimeRaw.returnLinesAsArray();
-	  this.parsedElements = spaceTimeRaw.returnRawInputAsArray(linesAsArray);
+		var spaceTimeRaw    = new SpaceTimeRaw(this.text);
+		var linesAsArray    = spaceTimeRaw.returnLinesAsArray();
+		this.parsedElements = spaceTimeRaw.returnRawInputAsArray(linesAsArray);
 	}
 
 	/**
@@ -30,11 +30,15 @@ function SpaceTime(text) {
     * @param {string} options - Extra options to show diagram separated by ','.
     */
 	this.drawInput = function(elementId, options)  {
-	  this.parseInput();
-	  var spaceTimeDraw = new SpaceTimeDraw(elementId, 2, 'black', this.parsedElements, options);
-	  spaceTimeDraw.identifyLineNames();
-	  spaceTimeDraw.drawHorizontalLines();
-	  spaceTimeDraw.drawPoints();
+		this.parseInput();
+		var spaceTimeDraw = new SpaceTimeDraw(elementId, 2, 'black', this.parsedElements, options);	 
+		if (spaceTimeDraw.validateElements()) {
+			spaceTimeDraw.identifyLineNames();
+			spaceTimeDraw.drawHorizontalLines();
+			spaceTimeDraw.drawPoints();
+		} else {
+			alert(spaceTimeDraw.getErrorMessages());
+		}
 	}
 
 }

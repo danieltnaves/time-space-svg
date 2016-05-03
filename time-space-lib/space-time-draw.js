@@ -25,6 +25,33 @@
     this.interactionStatus  = new Array();
     this.options            = options.split(',');
     this.verticalDrawSkew   = 20;
+    this.errorMessages      = '';
+
+    /**
+    * Return parse error messages.
+    * @return {boolean} True if all fields was filled and false otherwise.
+    */
+    this.getErrorMessages = function() {
+      return this.errorMessages;
+    }
+
+    /**
+    * Verify if all required fields was filled.
+    * @return {boolean} True if all fields was filled and false otherwise.
+    */
+    this.validateElements = function() {
+      for (var i = 0; i < parsedElements.length; i++) {
+        if (parsedElements[i].getSenderName() == '' || parsedElements[i].getReceiverName() == '') {
+          this.errorMessages += '\n' + 'Sender and receiver names are required.'
+          return false;
+        }
+        if (parsedElements[i].getSenderTime() == '' || parsedElements[i].getReceiverTime() == '') {
+          this.errorMessages += '\n' + 'Sender time and receiver time names are required.'
+          return false;
+        }
+      }
+      return true;
+    }
 
     /**
     * Returns a list of actors to draw horizontal lines.
