@@ -14,19 +14,20 @@
   */
   function SpaceTimeDraw(elementId, strokeWidth, strokeColor, parsedElements, options) {
 
-    this.elementId          = elementId;
-    this.strokeWidth        = strokeWidth;
-    this.strokeColor        = strokeColor;
-    this.parsedElements     = parsedElements;
-    this.actors             = new Array();
-    this.lanes              = new Array();
-    var  paper              = Snap(this.elementId); 
-    this.animationsPaths    = new Array();
-    this.interactionStatus  = new Array();
-    this.options            = options.split(',');
-    this.verticalDrawSkew   = 20;
-    this.errorMessages      = '';
-    this.lineNumbers        = 1;
+    this.elementId           = elementId;
+    this.strokeWidth         = strokeWidth;
+    this.strokeColor         = strokeColor;
+    this.parsedElements      = parsedElements;
+    this.actors              = new Array();
+    this.lanes               = new Array();
+    var  paper               = Snap(this.elementId); 
+    this.animationsPaths     = new Array();
+    this.interactionStatus   = new Array();
+    this.options             = options.split(',');
+    this.verticalDrawSkew    = 20;
+    this.errorMessages       = '';
+    this.lineNumbers         = 1;
+    this.transparencyActors  = new Array();
 
     /**
     * Return parse error messages.
@@ -60,12 +61,26 @@
     */
     this.identifyLineNames = function() {
       for (var i = 0; i < parsedElements.length; i++) {
-        if ($.inArray(parsedElements[i].getSenderName(), this.actors) == -1) {
-          this.actors.push(parsedElements[i].getSenderName());
+        if (parsedElements[i].getSenderName().indexOf('*') > -1) {
+          var senderName = parsedElements[i].getSenderName().replace('*', '');
+          this.transparencyActors.push(senderName);
+        } else {
+          var senderName = parsedElements[i].getSenderName();
         }
-        if ($.inArray(parsedElements[i].getReceiverName(), this.actors) == -1) {
-          this.actors.push(parsedElements[i].getReceiverName());
-        } 
+        if ($.inArray(senderName, this.actors) == -1) {
+          this.actors.push(senderName);
+        }
+
+        if (parsedElements[i].getReceiverName().indexOf('*') > -1) {
+          var receiverName = parsedElements[i].getReceiverName().replace('*', '');
+          this.transparencyActors.push(receiverName);
+        } else {
+          var receiverName = parsedElements[i].getReceiverName();
+        }
+        if ($.inArray(receiverName, this.actors) == -1) {
+          this.actors.push(receiverName);
+        }
+ 
       }
       return this.actors;
     }
@@ -88,12 +103,13 @@
 
       //indentify names for each actors and assign values to 'actors' variable
       this.identifyLineNames();
-
       for (var i = 0; i < this.actors.length; i++) {
         var marginBottom = 10 + marginCounter + this.verticalDrawSkew;
-        this.lanes[i] = paper.line(0, marginBottom, 0, marginBottom).attr({strokeWidth:this.strokeWidth, stroke:this.strokeColor, strokeLinecap:"round", markerEnd: marker});
+        if ($.inArray(this.actors[i], this.transparencyActors) == -1) {
+          this.lanes[i] = paper.line(0, marginBottom, 0, marginBottom).attr({strokeWidth:this.strokeWidth, stroke:this.strokeColor, strokeLinecap:"round", markerEnd: marker});
+          this.lanes[i].animate({ x1: 20, x2:lineSize}, 1000, mina.easein); 
+        }
         elementNames[i] = paper.text(5,marginCounter + 15 + this.verticalDrawSkew,this.actors[i]).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontWeight: "bold"});
-        this.lanes[i].animate({ x1: 20, x2:lineSize}, 1000, mina.easein); 
         marginCounter += 100;  
       }
     }
@@ -104,8 +120,8 @@
     this.drawPoints = function() {
       var animationsPaths = new Array();
       for (var i = 0; i < parsedElements.length; i++) {
-        var senderVerticalPosition     = ((this.actors.indexOf(parsedElements[i].getSenderName())) * 100) + 10;
-        var receiverVerticalPosition   = ((this.actors.indexOf(parsedElements[i].getReceiverName())) * 100) + 10;
+        var senderVerticalPosition     = ((this.actors.indexOf(parsedElements[i].getSenderName().replace('*', ''))) * 100) + 10;
+        var receiverVerticalPosition   = ((this.actors.indexOf(parsedElements[i].getReceiverName().replace('*', ''))) * 100) + 10;
         var senderHorizontalPosition   = (parsedElements[i].getSenderTime()) * 10 + this.verticalDrawSkew;
         var receiverHorizontalPosition = (parsedElements[i].getReceiverTime()) * 10 + this.verticalDrawSkew; 
         
