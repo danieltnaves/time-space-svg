@@ -7,6 +7,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
 	<script src="js/jquery-linedtextarea.js"></script>
 	<script type="text/javascript" src="time-space-lib/dist/space-time-1.0.0.js"></script>
+	<script type="text/javascript" src="js/saveSvgAsPng.js"></script>
 	<script type="text/javascript">
 		function getOptionsSelectedValues()
 		{
@@ -22,6 +23,46 @@
 
 		$(document).ready(function(){
 			$('#input-data').linedtextarea();
+			
+			$('#save-png').click(function(){
+				saveSvgAsPng(document.getElementById("paper"), "time-space-diagram.png");
+				return false;	
+			});
+			
+			$('#save-svg').click(function(){
+				
+				//get svg element.
+				var svg = document.getElementById("paper");
+				
+				//get svg source.
+				var serializer = new XMLSerializer();
+				var source = serializer.serializeToString(svg);
+				
+				//add name spaces.
+				if(!source.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)){
+				    source = source.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
+				}
+				if(!source.match(/^<svg[^>]+"http\:\/\/www\.w3\.org\/1999\/xlink"/)){
+				    source = source.replace(/^<svg/, '<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
+				}
+				
+				//add xml declaration
+				source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
+				
+				//convert svg source to URI data scheme.
+				var url = "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(source);
+				
+				var a      = document.createElement('a');
+				a.href     = url;
+				a.download = 'time-space-diagram.svg';
+				a.target   = '_blank';
+				document.body.appendChild(a); a.click(); document.body.removeChild(a);
+				
+				return false;
+
+			});
+			
+				
 			$('#draw').click(function(){
 				drawElements();
 				return false;	
@@ -48,7 +89,9 @@ D:70:p11:-:B:80:p12:response
 D:85:p13:x:C:95:p14:lost request
 					</textarea>
 					<br />
-					<input type="submit" class="submit" value="Redraw!" id="draw" />
+					<input type="submit" class="submit" value="Redraw" id="draw" />
+					<input type="button" class="submit" value="Save as PNG" id="save-png" />
+					<input type="button" class="submit" value="Save as SVG" id="save-svg" />
 				</form>
 			</div>
 			<div class="options">
