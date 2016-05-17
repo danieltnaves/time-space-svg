@@ -3,7 +3,9 @@
 	<title>Time Space Diagrams</title>
 	<link href='https://fonts.googleapis.com/css?family=Ubuntu+Condensed' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="css/jquery-linedtextarea.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+	<script src="js/jquery-linedtextarea.js"></script>
 	<script type="text/javascript" src="time-space-lib/dist/space-time-1.0.0.js"></script>
 	<script type="text/javascript">
 		function getOptionsSelectedValues()
@@ -19,6 +21,7 @@
 		}
 
 		$(document).ready(function(){
+			$('#input-data').linedtextarea();
 			$('#draw').click(function(){
 				drawElements();
 				return false;	
@@ -32,16 +35,16 @@
 		<div class="inner">
 			<h1>Time Space Diagrams</h1>
 			<p>Edit the message log and click "Redraw". Messages have format:</p>
-			<p><pre>&lt;source&gt;:&lt;send time&gt;:[label]:&lt;destination&gt;:&lt;recv time&gt;:[label]:[contents]</pre></p>
+			<p><pre>&lt;source&gt;:&lt;send time&gt;:[label]:&lt;x|-&gt;:destination&gt;:&lt;recv time&gt;:[label]:[contents]</pre></p>
 			<div class="wrapper-form">
 				<form action="" id="input-form">
 					<textarea id="input-data">
-B:10:p1:>:C:20:p2:request
-B:15:p3:>:C:23:p4:request
+B:10:p1:-:C:20:p2:request
+B:15:p3:-:C:23:p4:request
 C:25:p5:x:B:30:p6:lost request
-C:40:p7:>:D:60:p8:response
-D:65:p9:>:E:68:p10:request
-D:70:p11:>:B:80:p12:response
+C:40:p7:-:D:60:p8:response
+D:65:p9:-:E:68:p10:request
+D:70:p11:-:B:80:p12:response
 D:85:p13:x:C:95:p14:lost request
 					</textarea>
 					<br />

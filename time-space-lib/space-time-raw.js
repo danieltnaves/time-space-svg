@@ -46,11 +46,11 @@
     * @return {SpaceTimeElement} SpaceTimeElement.
     */
     this.itentifyNodeElement = function(text) {
-      //identify messageType (> = SUCCESS or x = ERROR)
+      //identify messageType (- = SUCCESS or x = ERROR)
       var message = $.trim(text);
       message = message.split(':');
       messageType = message[3];
-      if (messageType == '>') {
+      if (messageType == '-') {
         messageType = 'SUCCESS';
       } else {
         messageType = 'ERROR';

@@ -26,6 +26,7 @@
     this.options            = options.split(',');
     this.verticalDrawSkew   = 20;
     this.errorMessages      = '';
+    this.lineNumbers        = 1;
 
     /**
     * Return parse error messages.
@@ -145,7 +146,7 @@
         
          if ($.inArray('contents', this.options) > -1) {
             var label = paper
-            .text(0, 0, parsedElements[0].getMessage())
+            .text(0, 0, this.lineNumbers + ' - ' + parsedElements[0].getMessage())
             .attr({
                 'text-anchor' : 'middle',
                 'textpath' : this.animationsPaths[0],
@@ -156,6 +157,7 @@
                 fontSize: "11px"
             });
             label.textPath.attr({ startOffset: '50%' });
+            this.lineNumbers++;
           }
 
         this.animationsPaths.shift();
