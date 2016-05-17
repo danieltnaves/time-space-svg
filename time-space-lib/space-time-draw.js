@@ -184,7 +184,7 @@
 
         line2.attr({
             stroke: '#000',
-            strokeWidth: 2,
+            strokeWidth: 3,
             fill: 'none',
             // Draw Path
             "stroke-dasharray": lengthLine2,
