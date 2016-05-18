@@ -8,81 +8,7 @@
 	<script src="js/jquery-linedtextarea.js"></script>
 	<script type="text/javascript" src="time-space-lib/dist/space-time-1.0.0.js"></script>
 	<script type="text/javascript" src="js/saveSvgAsPng.js"></script>
-	<script type="text/javascript">
-		function getOptionsSelectedValues()
-		{
-			var arr = $("input[name=opts]:checked").map(function () {return this.value;}).get().join(",");
-			return arr;
-		}
-
-		function drawElements() {
-			var lib = new SpaceTime($('#input-data').val());
-			var status = lib.drawInput('#paper', getOptionsSelectedValues());
-			console.log(status);
-		}
-
-		$(document).ready(function(){
-			$('#input-data').linedtextarea();
-			
-			$('#save-png').click(function(){
-				saveSvgAsPng(document.getElementById("paper"), "time-space-diagram.png");
-				return false;	
-			});
-			
-			$('#save-svg').click(function(){
-				//get svg element.
-				var svg = document.getElementById("paper");
-				//get svg source.
-				var serializer = new XMLSerializer();
-				var source = serializer.serializeToString(svg);
-				//add name spaces.
-				if(!source.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)){
-				    source = source.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
-				}
-				if(!source.match(/^<svg[^>]+"http\:\/\/www\.w3\.org\/1999\/xlink"/)){
-				    source = source.replace(/^<svg/, '<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
-				}
-				//add xml declaration
-				source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
-				//convert svg source to URI data scheme.
-				var url = "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(source);
-				var a      = document.createElement('a');
-				a.href     = url;
-				a.download = 'time-space-diagram.svg';
-				a.target   = '_blank';
-				document.body.appendChild(a); a.click(); document.body.removeChild(a);
-				return false;
-			});
-			
-				
-			$('#draw').click(function(){
-				drawElements();
-				return false;	
-			});
-			drawElements();
-			
-			var fileInput = document.getElementById('fileInput');
-			var fileDisplayArea = document.getElementById('input-data');
-
-			fileInput.addEventListener('change', function(e) {
-				var file = fileInput.files[0];
-				var textType = /text.*/;
-	
-				if (file.type.match(textType)) {
-					var reader = new FileReader();
-	
-					reader.onload = function(e) {
-						fileDisplayArea.innerText = reader.result;
-					}
-	
-					reader.readAsText(file);	
-				} else {
-					fileDisplayArea.innerText = "File not supported!"
-				}
-			});
-		
-		});
-	</script>
+	<script type="text/javascript" src="js/scripts.js"></script>
 </head>
 <body>
 	<div class="header">
@@ -90,8 +16,18 @@
 			<h1>Time Space Diagrams</h1>
 			<p>Edit the message log and click "Redraw". Messages have format:</p>
 			<p><pre>&lt;source&gt;:&lt;send time&gt;:[label]:&lt;x|-&gt;:destination&gt;:&lt;recv time&gt;:[label]:[contents]</pre></p>
+			<div class="options">
+				<form id="opts-form">
+					<strong>Show: </strong>
+					<span><input type="checkbox" value="label" name="opts" checked />Label</span>
+					<span><input type="checkbox" value="time" name="opts" />Time</span>
+					<span><input type="checkbox" value="contents" name="opts" checked />Contents</span>
+					<span><input type="checkbox" value="animated" name="opts" checked />Animated</span>
+				</form>
+			</div>
 			<div class="wrapper-form">
 				<form action="" id="input-form">
+					<input type="file" class="" id="fileInput" />
 					<textarea id="input-data">
 B:10:p1:-:C:20:p2:request
 B:15:p3:-:C:23:p4:request
@@ -105,17 +41,9 @@ D:85:p13:x:C:95:p14:lost request
 					<input type="submit" class="submit" value="Redraw" id="draw" />
 					<input type="button" class="submit" value="Save as PNG" id="save-png" />
 					<input type="button" class="submit" value="Save as SVG" id="save-svg" />
-					<input type="file" class="" id="fileInput">
 				</form>
 			</div>
-			<div class="options">
-				<form id="opts-form">
-					<strong>Show: </strong>
-					<span><input type="checkbox" value="label" name="opts" checked />Label</span>
-					<span><input type="checkbox" value="time" name="opts" />Time</span>
-					<span><input type="checkbox" value="contents" name="opts" checked />Contents</span>
-				</form>
-			</div>
+			
 		</div>
 	</div>
 	<div class="content">

@@ -107,7 +107,11 @@
         var marginBottom = 10 + marginCounter + this.verticalDrawSkew;
         if ($.inArray(this.actors[i], this.transparencyActors) == -1) {
           this.lanes[i] = paper.line(0, marginBottom, 0, marginBottom).attr({strokeWidth:this.strokeWidth, stroke:this.strokeColor, strokeLinecap:"round", markerEnd: marker});
-          this.lanes[i].animate({ x1: 20, x2:lineSize}, 1000, mina.easein); 
+          var animateValue = 0;
+          if ($.inArray('animated', this.options) > -1) {
+            animateValue = 1000;
+          } 
+          this.lanes[i].animate({ x1: 20, x2:lineSize}, animateValue, mina.easein); 
         }
         elementNames[i] = paper.text(5,marginCounter + 15 + this.verticalDrawSkew,this.actors[i]).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontWeight: "bold"});
         marginCounter += 100;  
@@ -187,10 +191,15 @@
 
         var triangleGroup = paper.g(Triangle); // Group polyline
 
+        var animateValue = 0;
+        if ($.inArray('animated', this.options) > -1) {
+          animateValue = 1000;
+        } 
+          
         Snap.animate(0, lengthLine2 - 1, function(value) {
            movePoint = line2.getPointAtLength(value);
            triangleGroup.transform('t' + parseInt(movePoint.x) + ',' + parseInt(movePoint.y) + 'r' + (movePoint.alpha - 90));
-        }, 500, mina.easeinout);
+        }, animateValue, mina.easeinout);
 
         if (status == 'ERROR') {
           lengthLine2 = '3,3';
@@ -205,7 +214,7 @@
             // Draw Path
             "stroke-dasharray": lengthLine2,
             "stroke-dashoffset": lengthLine2
-        }).animate({"stroke-dashoffset": 0}, 500, mina.easeinout, this.animatePaths.bind( this ));
+        }).animate({"stroke-dashoffset": 0}, animateValue, mina.easeinout, this.animatePaths.bind( this ));
       }
 
     }
