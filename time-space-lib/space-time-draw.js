@@ -145,7 +145,18 @@
           paper.text(receiverHorizontalPosition - 7,receiverVerticalPosition + 20 + this.verticalDrawSkew,parsedElements[i].getReceiverTime()).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
         }
 
-        var pathCords = 'M ' + senderHorizontalPosition + ' ' + (senderVerticalPosition + this.verticalDrawSkew) + ' ' + 'L ' + receiverHorizontalPosition + ' ' + (receiverVerticalPosition + this.verticalDrawSkew);
+        //verify if elements is in the same line to draw quadratic bézier curve
+        if (senderVerticalPosition == receiverVerticalPosition) {
+          /*
+          M120,300 (start point)
+          Q310,200 (curve) 500,300 (endpoint)
+          */
+          var pathCords = 'M ' + senderHorizontalPosition + ', ' + (senderVerticalPosition + this.verticalDrawSkew) + 'Q ' + ((senderHorizontalPosition + receiverHorizontalPosition)/2) + ', ' + ((receiverVerticalPosition + this.verticalDrawSkew)/2) + ' ' + receiverHorizontalPosition + ', ' + (receiverVerticalPosition + this.verticalDrawSkew);
+          console.log(pathCords);
+        } else {
+          var pathCords = 'M ' + senderHorizontalPosition + ' ' + (senderVerticalPosition + this.verticalDrawSkew) + ' ' + 'L ' + receiverHorizontalPosition + ' ' + (receiverVerticalPosition + this.verticalDrawSkew);
+        }
+
         //M x y -> represents start point
         //L x y -> represents "Line to"
         this.animationsPaths.push(pathCords);
@@ -195,7 +206,7 @@
         if ($.inArray('animated', this.options) > -1) {
           animateValue = 1000;
         } 
-          
+
         Snap.animate(0, lengthLine2 - 1, function(value) {
            movePoint = line2.getPointAtLength(value);
            triangleGroup.transform('t' + parseInt(movePoint.x) + ',' + parseInt(movePoint.y) + 'r' + (movePoint.alpha - 90));
