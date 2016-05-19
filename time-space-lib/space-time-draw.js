@@ -151,8 +151,9 @@
           M120,300 (start point)
           Q310,200 (curve) 500,300 (endpoint)
           */
-          var pathCords = 'M ' + senderHorizontalPosition + ', ' + (senderVerticalPosition + this.verticalDrawSkew) + 'Q ' + ((senderHorizontalPosition + receiverHorizontalPosition)/2) + ', ' + ((receiverVerticalPosition + this.verticalDrawSkew)/2) + ' ' + receiverHorizontalPosition + ', ' + (receiverVerticalPosition + this.verticalDrawSkew);
-          console.log(pathCords);
+          //"M 400 300 a 100 50 45 1 1 250 50"/>
+          var pathCords = arcLinks(senderHorizontalPosition, senderVerticalPosition + this.verticalDrawSkew, receiverHorizontalPosition, receiverVerticalPosition + this.verticalDrawSkew, 4, 20);
+          
         } else {
           var pathCords = 'M ' + senderHorizontalPosition + ' ' + (senderVerticalPosition + this.verticalDrawSkew) + ' ' + 'L ' + receiverHorizontalPosition + ' ' + (receiverVerticalPosition + this.verticalDrawSkew);
         }
@@ -163,6 +164,31 @@
         this.interactionStatus.push(parsedElements[i].getMessageType());
       }
       this.animatePaths();
+    }
+
+    /**
+    * Draws quadratic Bézier Curve between two points
+    * @return {string} Quadratic Bézier Curve path
+    */
+    function arcLinks(x1,y1,x2,y2,n,k) {
+      var cx = (x1+x2)/2;
+      var cy = (y1+y2)/2;
+      var dx = (x2-x1)/2;
+      var dy = (y2-y1)/2;
+      var i;
+      var cords;
+      for (i=0; i<n; i++) {
+        if (i==(n-1)/2) {
+          //dwg.line(x1,y1,x2,y2).stroke({width:1}).fill('none');
+        }
+        else {
+          dd = Math.sqrt(dx*dx+dy*dy);
+          ex = cx + dy/dd * k * (i-(n-1)/2);
+          ey = cy - dx/dd * k * (i-(n-1)/2);
+          cords = "M"+x1+" "+y1+"Q"+ex+" "+ey+" "+x2+" "+y2;
+        }
+      }
+      return cords;
     }
     
     /**
