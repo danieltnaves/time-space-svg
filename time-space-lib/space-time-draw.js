@@ -89,8 +89,15 @@
     * Draws horizontal lines based on number of actors assigned 'this.actors' variable. 
     */ 
     this.drawHorizontalLines = function() { 
+      //find max elements
+      var maxReceiverTime = 0;
+      for (var i = 0; i < this.parsedElements.length; i++) {
+        if (this.parsedElements[i].getReceiverTime() > maxReceiverTime) {
+          maxReceiverTime = this.parsedElements[i].getReceiverTime();
+        }
+      }
       //line size based in last element
-      var lineSize = (this.parsedElements[this.parsedElements.length - 1].getReceiverTime() * 10) + 40;
+      var lineSize = (maxReceiverTime * 10) + 40;
       //clear paper from previous submission
       paper.clear();
       //add svg paper max width
