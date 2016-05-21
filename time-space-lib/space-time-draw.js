@@ -130,56 +130,59 @@
         var senderHorizontalPosition   = (parsedElements[i].getSenderTime()) * 10 + this.verticalDrawSkew;
         var receiverHorizontalPosition = (parsedElements[i].getReceiverTime()) * 10 + this.verticalDrawSkew; 
 
-        
-        var color = this.strokeColor;
+        //verify if is a process without messages        
+        if (parsedElements[i].getSenderTime() > 0 && parsedElements[i].getReceiverTime() > 0) {
+          var color = this.strokeColor;
 
-        if (parsedElements[i].getColor() != '') {
-          color = parsedElements[i].getColor();
-        }
+          if (parsedElements[i].getColor() != '') {
+            color = parsedElements[i].getColor();
+          }
+          var title;
+          //circle(x,y,r), x -> x position, y -> y position, r -> radius
+          var title = Snap.parse('<title>Name: ' + parsedElements[i].getSenderLabel() + ' - Time: ' + parsedElements[i].getSenderTime() +'</title>');
+          var senderDot = paper.circle(senderHorizontalPosition, senderVerticalPosition + this.verticalDrawSkew, 4).attr({strokeWidth:2,stroke: color,strokeLinecap:"round", fill: color});
+          senderDot.append(title);
 
-        
-        var title;
-        //circle(x,y,r), x -> x position, y -> y position, r -> radius
-        var title = Snap.parse('<title>Name: ' + parsedElements[i].getSenderLabel() + ' - Time: ' + parsedElements[i].getSenderTime() +'</title>');
-        var senderDot = paper.circle(senderHorizontalPosition, senderVerticalPosition + this.verticalDrawSkew, 4).attr({strokeWidth:2,stroke: color,strokeLinecap:"round", fill: color});
-        senderDot.append(title);
+          if ($.inArray('label', this.options) > -1) {
+            paper.text(senderHorizontalPosition - 7,senderVerticalPosition - 10 + this.verticalDrawSkew,parsedElements[i].getSenderLabel()).attr({fill: color, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
+          }
 
-        if ($.inArray('label', this.options) > -1) {
-          paper.text(senderHorizontalPosition - 7,senderVerticalPosition - 10 + this.verticalDrawSkew,parsedElements[i].getSenderLabel()).attr({fill: color, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
-        }
+          if ($.inArray('time', this.options) > -1) {
+            paper.text(senderHorizontalPosition - 7,senderVerticalPosition + 20 + this.verticalDrawSkew,parsedElements[i].getSenderTime()).attr({fill: color, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
+          }
 
-        if ($.inArray('time', this.options) > -1) {
-          paper.text(senderHorizontalPosition - 7,senderVerticalPosition + 20 + this.verticalDrawSkew,parsedElements[i].getSenderTime()).attr({fill: color, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
-        }
+          title = Snap.parse('<title>Name: ' + parsedElements[i].getReceiverLabel() + ' - Time: ' + parsedElements[i].getReceiverTime() +'</title>');
+          var receiverDot = paper.circle(receiverHorizontalPosition, receiverVerticalPosition + this.verticalDrawSkew, 4).attr({strokeWidth:2,stroke:color,strokeLinecap:"round", fill: color});
+          receiverDot.append(title);
+                  
+          if ($.inArray('label', this.options) > -1) {
+            paper.text(receiverHorizontalPosition - 7,receiverVerticalPosition - 10 + this.verticalDrawSkew,parsedElements[i].getReceiverLabel()).attr({fill: color, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
+          }
+          if ($.inArray('time', this.options) > -1) {
+            paper.text(receiverHorizontalPosition - 7,receiverVerticalPosition + 20 + this.verticalDrawSkew,parsedElements[i].getReceiverTime()).attr({fill: color, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
+          }
+         
 
-        title = Snap.parse('<title>Name: ' + parsedElements[i].getReceiverLabel() + ' - Time: ' + parsedElements[i].getReceiverTime() +'</title>');
-        var receiverDot = paper.circle(receiverHorizontalPosition, receiverVerticalPosition + this.verticalDrawSkew, 4).attr({strokeWidth:2,stroke:color,strokeLinecap:"round", fill: color});
-        receiverDot.append(title);
-                
-        if ($.inArray('label', this.options) > -1) {
-          paper.text(receiverHorizontalPosition - 7,receiverVerticalPosition - 10 + this.verticalDrawSkew,parsedElements[i].getReceiverLabel()).attr({fill: color, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
-        }
-        if ($.inArray('time', this.options) > -1) {
-          paper.text(receiverHorizontalPosition - 7,receiverVerticalPosition + 20 + this.verticalDrawSkew,parsedElements[i].getReceiverTime()).attr({fill: color, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
-        }
-       
+          //verify if elements is in the same line to draw quadratic bézier curve
+          if (senderVerticalPosition == receiverVerticalPosition) {
+            /*
+            M120,300 (start point)
+            Q310,200 (curve) 500,300 (endpoint)
+            */
+            //"M 400 300 a 100 50 45 1 1 250 50"/>
+            var pathCords = arcLinks(senderHorizontalPosition, senderVerticalPosition + this.verticalDrawSkew, receiverHorizontalPosition, receiverVerticalPosition + this.verticalDrawSkew, 4, 20);
+          } else {
+            var pathCords = 'M ' + senderHorizontalPosition + ' ' + (senderVerticalPosition + this.verticalDrawSkew) + ' ' + 'L ' + receiverHorizontalPosition + ' ' + (receiverVerticalPosition + this.verticalDrawSkew);
+          }
 
-        //verify if elements is in the same line to draw quadratic bézier curve
-        if (senderVerticalPosition == receiverVerticalPosition) {
-          /*
-          M120,300 (start point)
-          Q310,200 (curve) 500,300 (endpoint)
-          */
-          //"M 400 300 a 100 50 45 1 1 250 50"/>
-          var pathCords = arcLinks(senderHorizontalPosition, senderVerticalPosition + this.verticalDrawSkew, receiverHorizontalPosition, receiverVerticalPosition + this.verticalDrawSkew, 4, 20);
+          //M x y -> represents start point
+          //L x y -> represents "Line to"
+          this.animationsPaths.push(pathCords);
+          this.interactionStatus.push(parsedElements[i].getMessageType());
         } else {
-          var pathCords = 'M ' + senderHorizontalPosition + ' ' + (senderVerticalPosition + this.verticalDrawSkew) + ' ' + 'L ' + receiverHorizontalPosition + ' ' + (receiverVerticalPosition + this.verticalDrawSkew);
+          this.animationsPaths.push('M 0 0 L -9999 -9999');
+          this.interactionStatus.push('SUCESS');
         }
-
-        //M x y -> represents start point
-        //L x y -> represents "Line to"
-        this.animationsPaths.push(pathCords);
-        this.interactionStatus.push(parsedElements[i].getMessageType());
       }
       this.animatePaths();
     }
@@ -215,9 +218,14 @@
     */
     this.animatePaths = function() {
         if (this.animationsPaths.length == 0) return;
+
+              
+
         var line2 = paper.path(this.animationsPaths[0]);
         var lengthLine2 = line2.getTotalLength() - 8;
         var status = this.interactionStatus[0];
+
+        
 
         var color = this.strokeColor;
 
@@ -247,9 +255,12 @@
 
         var senderTime = parsedElements[0].getReceiverTime();
 
+
+        
         this.animationsPaths.shift();
         this.interactionStatus.shift();
         this.parsedElements.shift();
+        
 
         
 
