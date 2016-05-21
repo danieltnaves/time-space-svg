@@ -137,44 +137,32 @@
           color = parsedElements[i].getColor();
         }
 
-        if (parsedElements[i].getSenderTime() > 0) {
-          //circle(x,y,r), x -> x position, y -> y position, r -> radius
-          var senderDot = paper.circle(senderHorizontalPosition, senderVerticalPosition + this.verticalDrawSkew, 4).attr({strokeWidth:2,stroke: color,strokeLinecap:"round", fill: color});
-          if ($.inArray('label', this.options) > -1) {
-            paper.text(senderHorizontalPosition - 7,senderVerticalPosition - 10 + this.verticalDrawSkew,parsedElements[i].getSenderLabel()).attr({fill: color, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
-          }
-
-          if ($.inArray('time', this.options) > -1) {
-            paper.text(senderHorizontalPosition - 7,senderVerticalPosition + 20 + this.verticalDrawSkew,parsedElements[i].getSenderTime()).attr({fill: color, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
-          }
+        
         var title;
-
         //circle(x,y,r), x -> x position, y -> y position, r -> radius
         var title = Snap.parse('<title>Name: ' + parsedElements[i].getSenderLabel() + ' - Time: ' + parsedElements[i].getSenderTime() +'</title>');
-        var senderDot = paper.circle(senderHorizontalPosition, senderVerticalPosition + this.verticalDrawSkew, 4).attr({strokeWidth:2,stroke:this.strokeColor,strokeLinecap:"round", fill: this.strokeColor});
+        var senderDot = paper.circle(senderHorizontalPosition, senderVerticalPosition + this.verticalDrawSkew, 4).attr({strokeWidth:2,stroke: color,strokeLinecap:"round", fill: color});
         senderDot.append(title);
+
         if ($.inArray('label', this.options) > -1) {
-          paper.text(senderHorizontalPosition - 7,senderVerticalPosition - 10 + this.verticalDrawSkew,parsedElements[i].getSenderLabel()).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
-        }
-        if ($.inArray('time', this.options) > -1) {
-          paper.text(senderHorizontalPosition - 7,senderVerticalPosition + 20 + this.verticalDrawSkew,parsedElements[i].getSenderTime()).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
-        }
-        title = Snap.parse('<title>Name: ' + parsedElements[i].getReceiverLabel() + ' - Time: ' + parsedElements[i].getReceiverTime() +'</title>');
-        var receiverDot = paper.circle(receiverHorizontalPosition, receiverVerticalPosition + this.verticalDrawSkew, 4).attr({strokeWidth:2,stroke:this.strokeColor,strokeLinecap:"round", fill: this.strokeColor});
-        receiverDot.append(title);
-        if ($.inArray('label', this.options) > -1) {
-          paper.text(receiverHorizontalPosition - 7,receiverVerticalPosition - 10 + this.verticalDrawSkew,parsedElements[i].getReceiverLabel()).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
+          paper.text(senderHorizontalPosition - 7,senderVerticalPosition - 10 + this.verticalDrawSkew,parsedElements[i].getSenderLabel()).attr({fill: color, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
         }
 
-        if (parsedElements[i].getReceiverTime() > 0) {
-          var receiverDot = paper.circle(receiverHorizontalPosition, receiverVerticalPosition + this.verticalDrawSkew, 4).attr({strokeWidth:2,stroke:color,strokeLinecap:"round", fill: color});
-          if ($.inArray('label', this.options) > -1) {
-            paper.text(receiverHorizontalPosition - 7,receiverVerticalPosition - 10 + this.verticalDrawSkew,parsedElements[i].getReceiverLabel()).attr({fill: color, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
-          }
-          if ($.inArray('time', this.options) > -1) {
-            paper.text(receiverHorizontalPosition - 7,receiverVerticalPosition + 20 + this.verticalDrawSkew,parsedElements[i].getReceiverTime()).attr({fill: color, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
-          }
+        if ($.inArray('time', this.options) > -1) {
+          paper.text(senderHorizontalPosition - 7,senderVerticalPosition + 20 + this.verticalDrawSkew,parsedElements[i].getSenderTime()).attr({fill: color, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
         }
+
+        title = Snap.parse('<title>Name: ' + parsedElements[i].getReceiverLabel() + ' - Time: ' + parsedElements[i].getReceiverTime() +'</title>');
+        var receiverDot = paper.circle(receiverHorizontalPosition, receiverVerticalPosition + this.verticalDrawSkew, 4).attr({strokeWidth:2,stroke:color,strokeLinecap:"round", fill: color});
+        receiverDot.append(title);
+                
+        if ($.inArray('label', this.options) > -1) {
+          paper.text(receiverHorizontalPosition - 7,receiverVerticalPosition - 10 + this.verticalDrawSkew,parsedElements[i].getReceiverLabel()).attr({fill: color, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
+        }
+        if ($.inArray('time', this.options) > -1) {
+          paper.text(receiverHorizontalPosition - 7,receiverVerticalPosition + 20 + this.verticalDrawSkew,parsedElements[i].getReceiverTime()).attr({fill: color, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
+        }
+       
 
         //verify if elements is in the same line to draw quadratic bézier curve
         if (senderVerticalPosition == receiverVerticalPosition) {
@@ -184,7 +172,6 @@
           */
           //"M 400 300 a 100 50 45 1 1 250 50"/>
           var pathCords = arcLinks(senderHorizontalPosition, senderVerticalPosition + this.verticalDrawSkew, receiverHorizontalPosition, receiverVerticalPosition + this.verticalDrawSkew, 4, 20);
-          
         } else {
           var pathCords = 'M ' + senderHorizontalPosition + ' ' + (senderVerticalPosition + this.verticalDrawSkew) + ' ' + 'L ' + receiverHorizontalPosition + ' ' + (receiverVerticalPosition + this.verticalDrawSkew);
         }
@@ -298,7 +285,6 @@
             "stroke-dasharray": lengthLine2,
             "stroke-dashoffset": lengthLine2
         }).animate({"stroke-dashoffset": 0}, animateValue, mina.easeinout, this.animatePaths.bind( this ));
-      }
+    }
 
-    } 
-}
+} 
