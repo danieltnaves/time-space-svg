@@ -55,7 +55,7 @@
       } else {
         messageType = 'ERROR';
       }
-      return new SpaceTimeElement(message[0], message[1], message[2], messageType, message[4], message[5], message[6], message[7]);
+      return new SpaceTimeElement(message[0], message[1], message[2], messageType, message[4], message[5], message[6], message[7], message[8]);
     }
 
   }

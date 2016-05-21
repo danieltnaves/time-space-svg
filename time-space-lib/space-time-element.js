@@ -11,8 +11,9 @@
   * @param {string} receiverTime - Message receiver time.
   * @param {string} messageType - Indicates if message failed or not.
   * @param {string} message - Message content.
+  * @param {string} color - Message line color.
   */
-  function SpaceTimeElement(sender, senderTime, senderLabel, messageType, receiver, receiverTime, receiverLabel, message) {
+  function SpaceTimeElement(sender, senderTime, senderLabel, messageType, receiver, receiverTime, receiverLabel, message, color) {
 
     this.sender         = sender;
     this.senderLabel    = senderLabel;
@@ -24,6 +25,8 @@
 
     this.messageType    = messageType;
     this.message        = message;
+
+    this.color          = color;
 
     /**
     * Returns the element name that sends a request.
@@ -87,6 +90,14 @@
     */
     this.getMessage = function() {
       return this.message;
+    }
+
+    /**
+    * Returns color.
+    * @return {string} Color.
+    */
+    this.getColor = function() {
+      return this.color;
     }
 
 

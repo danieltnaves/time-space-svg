@@ -129,20 +129,32 @@
         var senderHorizontalPosition   = (parsedElements[i].getSenderTime()) * 10 + this.verticalDrawSkew;
         var receiverHorizontalPosition = (parsedElements[i].getReceiverTime()) * 10 + this.verticalDrawSkew; 
         
-        //circle(x,y,r), x -> x position, y -> y position, r -> radius
-        var senderDot = paper.circle(senderHorizontalPosition, senderVerticalPosition + this.verticalDrawSkew, 4).attr({strokeWidth:2,stroke:this.strokeColor,strokeLinecap:"round", fill: this.strokeColor});
-        if ($.inArray('label', this.options) > -1) {
-          paper.text(senderHorizontalPosition - 7,senderVerticalPosition - 10 + this.verticalDrawSkew,parsedElements[i].getSenderLabel()).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
+        var color = this.strokeColor;
+
+        if (parsedElements[i].getColor() != '') {
+          color = parsedElements[i].getColor();
         }
-        if ($.inArray('time', this.options) > -1) {
-          paper.text(senderHorizontalPosition - 7,senderVerticalPosition + 20 + this.verticalDrawSkew,parsedElements[i].getSenderTime()).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
+
+        if (parsedElements[i].getSenderTime() > 0) {
+          //circle(x,y,r), x -> x position, y -> y position, r -> radius
+          var senderDot = paper.circle(senderHorizontalPosition, senderVerticalPosition + this.verticalDrawSkew, 4).attr({strokeWidth:2,stroke: color,strokeLinecap:"round", fill: color});
+          if ($.inArray('label', this.options) > -1) {
+            paper.text(senderHorizontalPosition - 7,senderVerticalPosition - 10 + this.verticalDrawSkew,parsedElements[i].getSenderLabel()).attr({fill: color, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
+          }
+
+          if ($.inArray('time', this.options) > -1) {
+            paper.text(senderHorizontalPosition - 7,senderVerticalPosition + 20 + this.verticalDrawSkew,parsedElements[i].getSenderTime()).attr({fill: color, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
+          }
         }
-        var receiverDot = paper.circle(receiverHorizontalPosition, receiverVerticalPosition + this.verticalDrawSkew, 4).attr({strokeWidth:2,stroke:this.strokeColor,strokeLinecap:"round", fill: this.strokeColor});
-        if ($.inArray('label', this.options) > -1) {
-          paper.text(receiverHorizontalPosition - 7,receiverVerticalPosition - 10 + this.verticalDrawSkew,parsedElements[i].getReceiverLabel()).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
-        }
-        if ($.inArray('time', this.options) > -1) {
-          paper.text(receiverHorizontalPosition - 7,receiverVerticalPosition + 20 + this.verticalDrawSkew,parsedElements[i].getReceiverTime()).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
+
+        if (parsedElements[i].getReceiverTime() > 0) {
+          var receiverDot = paper.circle(receiverHorizontalPosition, receiverVerticalPosition + this.verticalDrawSkew, 4).attr({strokeWidth:2,stroke:color,strokeLinecap:"round", fill: color});
+          if ($.inArray('label', this.options) > -1) {
+            paper.text(receiverHorizontalPosition - 7,receiverVerticalPosition - 10 + this.verticalDrawSkew,parsedElements[i].getReceiverLabel()).attr({fill: color, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
+          }
+          if ($.inArray('time', this.options) > -1) {
+            paper.text(receiverHorizontalPosition - 7,receiverVerticalPosition + 20 + this.verticalDrawSkew,parsedElements[i].getReceiverTime()).attr({fill: color, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
+          }
         }
 
         //verify if elements is in the same line to draw quadratic bézier curve
@@ -200,32 +212,42 @@
         var line2 = paper.path(this.animationsPaths[0]);
         var lengthLine2 = line2.getTotalLength() - 8;
         var status = this.interactionStatus[0];
-        
-         if ($.inArray('contents', this.options) > -1) {
+        var color = this.strokeColor;
+
+        if (parsedElements[0].getColor() != '') {
+          color = parsedElements[0].getColor();
+        }
+
+        if ($.inArray('contents', this.options) > -1) {
             var label = paper
             .text(0, 0, this.lineNumbers + ' - ' + parsedElements[0].getMessage())
             .attr({
                 'text-anchor' : 'middle',
                 'textpath' : this.animationsPaths[0],
                 'dy': -5,
-                fill: this.strokeColor,  
+                fill: color,  
                 fontFamily: "Arial", 
                 fontStyle: "italic", 
                 fontSize: "11px"
             });
             label.textPath.attr({ startOffset: '50%' });
             this.lineNumbers++;
-          }
+        }
+
+        var senderTime = parsedElements[0].getReceiverTime();
 
         this.animationsPaths.shift();
         this.interactionStatus.shift();
         this.parsedElements.shift();
 
+        
+
         var Triangle = paper.polyline("-4.5,5.5 0.5,-4.5 5.5,5.5");
         Triangle.attr({
-          fill: "#000"
+          fill: color
         });  
 
+      
         var triangleGroup = paper.g(Triangle); // Group polyline
 
         var animateValue = 0;
@@ -238,14 +260,13 @@
            triangleGroup.transform('t' + parseInt(movePoint.x) + ',' + parseInt(movePoint.y) + 'r' + (movePoint.alpha - 90));
         }, animateValue, mina.easeinout);
 
+
         if (status == 'ERROR') {
           lengthLine2 = '3,3';
         }
 
-
-
         line2.attr({
-            stroke: '#000',
+            stroke: color,
             strokeWidth: 3,
             fill: 'none',
             // Draw Path
