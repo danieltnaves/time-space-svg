@@ -91,9 +91,10 @@
     this.drawHorizontalLines = function() { 
       //find max elements
       var maxReceiverTime = 0;
-      for (var i = 0; i < this.parsedElements.length; i++) {
-        if (this.parsedElements[i].getReceiverTime() > maxReceiverTime) {
-          maxReceiverTime = this.parsedElements[i].getReceiverTime();
+      for (var j = 0; j < this.parsedElements.length; j++) {
+        var receiverTime = parseFloat(this.parsedElements[j].getReceiverTime());
+        if (receiverTime > maxReceiverTime) {
+          maxReceiverTime = receiverTime;
         }
       }
       //line size based in last element
@@ -130,7 +131,6 @@
     */
     this.drawPoints = function() {
       var animationsPaths = new Array();
-
       for (var i = 0; i < parsedElements.length; i++) {
         var senderVerticalPosition     = ((this.actors.indexOf(parsedElements[i].getSenderName().replace('*', ''))) * 100) + 10;
         var receiverVerticalPosition   = ((this.actors.indexOf(parsedElements[i].getReceiverName().replace('*', ''))) * 100) + 10;
@@ -138,7 +138,7 @@
         var receiverHorizontalPosition = (parsedElements[i].getReceiverTime()) * 10 + this.verticalDrawSkew; 
 
         //verify if is a process without messages        
-        if (parsedElements[i].getSenderTime() > 0 && parsedElements[i].getReceiverTime() > 0) {
+        if (parseFloat(parsedElements[i].getSenderTime()) > 0 && parseFloat(parsedElements[i].getReceiverTime()) > 0) {
           var color = this.strokeColor;
 
           if (parsedElements[i].getColor() != '') {
@@ -225,15 +225,10 @@
     */
     this.animatePaths = function() {
         if (this.animationsPaths.length == 0) return;
-
-              
-
+        console.log('d');
         var line2 = paper.path(this.animationsPaths[0]);
         var lengthLine2 = line2.getTotalLength() - 8;
         var status = this.interactionStatus[0];
-
-        
-
         var color = this.strokeColor;
 
         if (parsedElements[0].getColor() != '') {
@@ -260,22 +255,14 @@
             this.lineNumbers++;
         }
 
-        var senderTime = parsedElements[0].getReceiverTime();
-
-
-        
         this.animationsPaths.shift();
         this.interactionStatus.shift();
         this.parsedElements.shift();
-        
-
-        
 
         var Triangle = paper.polyline("-4.5,5.5 0.5,-4.5 5.5,5.5");
         Triangle.attr({
           fill: color
         });  
-
       
         var triangleGroup = paper.g(Triangle); // Group polyline
 
