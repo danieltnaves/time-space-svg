@@ -123,11 +123,13 @@
     */
     this.drawPoints = function() {
       var animationsPaths = new Array();
+
       for (var i = 0; i < parsedElements.length; i++) {
         var senderVerticalPosition     = ((this.actors.indexOf(parsedElements[i].getSenderName().replace('*', ''))) * 100) + 10;
         var receiverVerticalPosition   = ((this.actors.indexOf(parsedElements[i].getReceiverName().replace('*', ''))) * 100) + 10;
         var senderHorizontalPosition   = (parsedElements[i].getSenderTime()) * 10 + this.verticalDrawSkew;
         var receiverHorizontalPosition = (parsedElements[i].getReceiverTime()) * 10 + this.verticalDrawSkew; 
+
         
         var color = this.strokeColor;
 
@@ -145,6 +147,23 @@
           if ($.inArray('time', this.options) > -1) {
             paper.text(senderHorizontalPosition - 7,senderVerticalPosition + 20 + this.verticalDrawSkew,parsedElements[i].getSenderTime()).attr({fill: color, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
           }
+        var title;
+
+        //circle(x,y,r), x -> x position, y -> y position, r -> radius
+        var title = Snap.parse('<title>Name: ' + parsedElements[i].getSenderLabel() + ' - Time: ' + parsedElements[i].getSenderTime() +'</title>');
+        var senderDot = paper.circle(senderHorizontalPosition, senderVerticalPosition + this.verticalDrawSkew, 4).attr({strokeWidth:2,stroke:this.strokeColor,strokeLinecap:"round", fill: this.strokeColor});
+        senderDot.append(title);
+        if ($.inArray('label', this.options) > -1) {
+          paper.text(senderHorizontalPosition - 7,senderVerticalPosition - 10 + this.verticalDrawSkew,parsedElements[i].getSenderLabel()).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
+        }
+        if ($.inArray('time', this.options) > -1) {
+          paper.text(senderHorizontalPosition - 7,senderVerticalPosition + 20 + this.verticalDrawSkew,parsedElements[i].getSenderTime()).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
+        }
+        title = Snap.parse('<title>Name: ' + parsedElements[i].getReceiverLabel() + ' - Time: ' + parsedElements[i].getReceiverTime() +'</title>');
+        var receiverDot = paper.circle(receiverHorizontalPosition, receiverVerticalPosition + this.verticalDrawSkew, 4).attr({strokeWidth:2,stroke:this.strokeColor,strokeLinecap:"round", fill: this.strokeColor});
+        receiverDot.append(title);
+        if ($.inArray('label', this.options) > -1) {
+          paper.text(receiverHorizontalPosition - 7,receiverVerticalPosition - 10 + this.verticalDrawSkew,parsedElements[i].getReceiverLabel()).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
         }
 
         if (parsedElements[i].getReceiverTime() > 0) {
@@ -212,11 +231,16 @@
         var line2 = paper.path(this.animationsPaths[0]);
         var lengthLine2 = line2.getTotalLength() - 8;
         var status = this.interactionStatus[0];
+
         var color = this.strokeColor;
 
         if (parsedElements[0].getColor() != '') {
           color = parsedElements[0].getColor();
         }
+
+        
+        var title = Snap.parse('<title>Message content: ' + this.lineNumbers + ' - ' + parsedElements[0].getMessage() + '</title>');
+        line2.append(title);
 
         if ($.inArray('contents', this.options) > -1) {
             var label = paper
@@ -265,6 +289,7 @@
           lengthLine2 = '3,3';
         }
 
+
         line2.attr({
             stroke: color,
             strokeWidth: 3,
@@ -275,5 +300,5 @@
         }).animate({"stroke-dashoffset": 0}, animateValue, mina.easeinout, this.animatePaths.bind( this ));
       }
 
-    }
-  
+    } 
+}
