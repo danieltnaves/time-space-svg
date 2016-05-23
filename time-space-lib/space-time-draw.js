@@ -225,7 +225,6 @@
     */
     this.animatePaths = function() {
         if (this.animationsPaths.length == 0) return;
-        console.log('d');
         var line2 = paper.path(this.animationsPaths[0]);
         var lengthLine2 = line2.getTotalLength() - 8;
         var status = this.interactionStatus[0];
