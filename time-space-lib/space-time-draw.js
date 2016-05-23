@@ -119,7 +119,7 @@
           if ($.inArray('animated', this.options) > -1) {
             animateValue = 1000;
           } 
-          this.lanes[i].animate({ x1: 20, x2:lineSize}, animateValue, mina.easein); 
+          this.lanes[i].animate({ x1: 35, x2:lineSize}, animateValue, mina.easein); 
         }
         elementNames[i] = paper.text(5,marginCounter + 15 + this.verticalDrawSkew,this.actors[i]).attr({fill: this.strokeColor, fontFamily: "Arial", fontStyle: "italic", fontWeight: "bold"});
         marginCounter += 100;  
