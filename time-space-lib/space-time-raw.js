@@ -46,15 +46,27 @@
     * @return {SpaceTimeElement} SpaceTimeElement.
     */
     this.itentifyNodeElement = function(text) {
-      //identify messageType (- = SUCCESS or x = ERROR)
       var message = $.trim(text);
-      message = message.split(':');
-      messageType = message[3];
-      if (messageType == '-') {
-        messageType = 'SUCCESS';
+      if(message.indexOf(':') > -1) {
+        message = message.split(':');
+        messageType = message[3];
+        if (messageType == '-') {
+          messageType = 'FULL-SUCCESS';
+        } else if (messageType == '.') {
+          messageType = 'FULL-ERROR';
+        } else if (messageType == 'x') {
+          messageType = 'HALF-SUCCESS';
+        } else if (messageType == '.x') {
+          messageType = 'HALF-ERROR';
+        } else {
+          messageType = 'FULL-SUCCESS';
+        }
       } else {
-        messageType = 'ERROR';
+        //X:0::-:X:0:::
+        message = [message, 0, '', '', message, 0, '', '', ''];
+        messageType = 'NO-VALIDATION';
       }
+      
       return new SpaceTimeElement(message[0], message[1], message[2], messageType, message[4], message[5], message[6], message[7], message[8]);
     }
 

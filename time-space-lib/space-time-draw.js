@@ -43,13 +43,15 @@
     */
     this.validateElements = function() {
       for (var i = 0; i < parsedElements.length; i++) {
-        if (parsedElements[i].getSenderName() == '' || parsedElements[i].getReceiverName() == '') {
-          this.errorMessages += '\n' + 'Sender and receiver names are required.'
-          return false;
-        }
-        if (parsedElements[i].getSenderTime() == '' || parsedElements[i].getReceiverTime() == '') {
-          this.errorMessages += '\n' + 'Sender time and receiver time names are required.'
-          return false;
+        if (parsedElements[i].getMessageType() != 'NO-VALIDATION') {
+          if ((parsedElements[i].getSenderName() == '' || parsedElements[i].getReceiverName() == '')) {
+            this.errorMessages += '\n' + 'Sender and receiver names are required.'
+            return false;
+          }
+          if ((parsedElements[i].getSenderTime() == '' || parsedElements[i].getReceiverTime() == '') ) {
+            this.errorMessages += '\n' + 'Sender time and receiver time names are required.'
+            return false;
+          }
         }
       }
       return true;
@@ -179,7 +181,7 @@
             //"M 400 300 a 100 50 45 1 1 250 50"/>
             var pathCords = arcLinks(senderHorizontalPosition, senderVerticalPosition + this.verticalDrawSkew, receiverHorizontalPosition, receiverVerticalPosition + this.verticalDrawSkew, 4, 20);
           } else {
-            var pathCords = 'M ' + senderHorizontalPosition + ' ' + (senderVerticalPosition + this.verticalDrawSkew) + ' ' + 'L ' + receiverHorizontalPosition + ' ' + (receiverVerticalPosition + this.verticalDrawSkew);
+            var pathCords = 'M ' + senderHorizontalPosition + ' ' + (senderVerticalPosition + this.verticalDrawSkew) + ' ' + 'L ' + (receiverHorizontalPosition) + ' ' + (receiverVerticalPosition + this.verticalDrawSkew);
           }
 
           //M x y -> represents start point
@@ -225,8 +227,19 @@
     */
     this.animatePaths = function() {
         if (this.animationsPaths.length == 0) return;
+        //full path length
         var line2 = paper.path(this.animationsPaths[0]);
         var lengthLine2 = line2.getTotalLength() - 8;
+
+
+        if (parsedElements[0].getMessageType() == 'HALF-ERROR' || parsedElements[0].getMessageType() == 'HALF-SUCCESS') {
+          //half of a path
+          line2.attr({ visibility: "hidden" });
+          var subPath = paper.path(Snap.path.getSubpath(line2, 0, (line2.getTotalLength() - 8)/2));
+          line2 = subPath;
+        }
+
+
         var status = this.interactionStatus[0];
         var color = this.strokeColor;
 
@@ -276,7 +289,7 @@
         }, animateValue, mina.easeinout);
 
 
-        if (status == 'ERROR') {
+        if (status == 'HALF-ERROR' || status == 'FULL-ERROR') {
           lengthLine2 = '3,3';
         }
 
