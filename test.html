@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script type="text/javascript" src="time-space-lib/bundle.js"></script>
+	<title></title>
+</head>
+<body>
+	<h1>Testing Jison</h1>
+	<div>
+		<label>Input data</label>
+		<textarea id='input-data'></textarea>
+		<button id='submit' onclick="parseInput()">Submit</button>
+	</div>
+
+	<script type="text/javascript">
+		function parseInput() {
+			var inputData = document.getElementById('input-data').value;
+			var diagram = parse(inputData);
+			console.log(diagram);
+		}
+	</script>
+</body>
+</html>

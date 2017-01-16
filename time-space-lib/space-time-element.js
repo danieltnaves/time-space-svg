@@ -100,5 +100,8 @@
       return this.color;
     }
 
-
+    SpaceTimeElement.LINETYPE = {
+      SOLID: 0,
+      DOTTED: 1
+    }
   }
