@@ -1,16 +1,16 @@
 //var parser = require("./parser.js").parser;
 var parser = require('./grammar.jison').parser;
 
-function Diagram() {
-  this.actors  = [];
-  this.entries = [];
-}
+(function() {
+
+  function Diagram() {
+    this.actors  = [];
+    this.entries = [];
+  }
 /*
  * Return an existing actor with this alias, or creates a new one with alias and name.
  */
-Diagram.prototype.getActor = function(name) {
-  alias = alias.trim();
-
+ Diagram.prototype.getActor = function(name) {
   var i;
   var actors = this.actors;
   for (i in actors) {
@@ -98,7 +98,7 @@ Diagram.LINETYPE = {
  * jison doesn't have a good exception, so we make one.
  * This is brittle as it depends on jison internals
  */
-function ParseError(message, hash) {
+ function ParseError(message, hash) {
   _.extend(this, hash);
 
   this.name = 'ParseError';
@@ -107,7 +107,7 @@ function ParseError(message, hash) {
 ParseError.prototype = new Error();
 Diagram.ParseError = ParseError;
 
-exports = Diagram.parse = function(input) {
+parse = function(input) {
   // TODO jison v0.4.17 changed their API slightly, so parser is no longer defined:
 
   // Create the object to track state and deal with errors
@@ -123,3 +123,8 @@ exports = Diagram.parse = function(input) {
   delete diagram.parseError;
   return diagram;
 };
+
+window.diagram = {
+  'parse': parse
+};
+}());

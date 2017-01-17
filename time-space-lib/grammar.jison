@@ -2,6 +2,12 @@
 
 %{
 	// pre-lexer
+	console.log(yy);
+	console.log(yy_);
+	console.log(this);
+	console.log(yytext);
+	console.log(YY_START);
+	console.log($avoiding_name_collisions);
 %}
 
 %%
@@ -11,14 +17,10 @@
 \#[^\r\n]*                                   /* skip comments */
 "-"                                          return 'LINE';
 "--"                                         return 'DOTLINE';
-"*"                                          return 'ERROR_LINE';
-"**"                                         return 'DOT_ERROR_LINE';
-">"                                          return 'ARROW';
+[^\->:,\r\n"]+                               return 'PVALUE';
 :[^\r\n]+                                    return 'MESSAGE';
-[^:\s->]+|->\s*([^->:])                      return 'PVALUE';
-\s([A-Za-z0-9]+)\s\d+                        return 'EVALUE';
-\s([\d]+)\s*                                 return 'TVALUE';
 <<EOF>>                                      return 'EOF';
+.                                            return 'INVALID';
 
 /lex
 
@@ -45,21 +47,13 @@ statement
 	;
 
 entry
-	: actor event time linetype actor event time message 
-	{ $$ = new Entry($2, $4, $6, $7, $9, $11, $13, $14); }
+	: actor linetype actor message 
+	{ $$ = new Entry($1, null, null, $2, $3, null, null, $4); }
 	;
 
 actor
 	: PVALUE 
-	{ console.log($1); $$ = yy.parser.yy.getActor($1); }
-	;
-
-event
-	: EVALUE { $$ = $1; }
-	;
-
-time
-	: TVALUE { $$ = $1; }
+	{ $$ = yy.parser.yy.getActor($1); }
 	;
 
 linetype
