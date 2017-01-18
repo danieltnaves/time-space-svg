@@ -18,6 +18,7 @@
 "-"                                          return 'LINE';
 "--"                                         return 'DOTLINE';
 [^\->:,\r\n"]+                               return 'PVALUE';
+-([^\-:,\r\n"]+)                             return 'PVALUE';
 :[^\r\n]+                                    return 'MESSAGE';
 <<EOF>>                                      return 'EOF';
 .                                            return 'INVALID';
@@ -47,13 +48,13 @@ statement
 	;
 
 entry
-	: actor linetype actor message 
-	{ $$ = new Entry($1, null, null, $2, $3, null, null, $4); }
+	: actor linetype actor msg
+	{ $$ = new Diagram.Entry($1, null, null, $2, $3, null, null, $4); }
 	;
 
 actor
 	: PVALUE 
-	{ $$ = yy.parser.yy.getActor($1); }
+	{ $$ = $1; }
 	;
 
 linetype
@@ -61,7 +62,7 @@ linetype
 	| DOTLINE { $$ = Diagram.LINETYPE.DOTTED; }
 	;
 
-message
+msg
 	: MESSAGE { $$ = $1; }
 	;
 

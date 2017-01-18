@@ -1,12 +1,10 @@
 //var parser = require("./parser.js").parser;
-var parser = require('./grammar.jison').parser;
+//var parser = require('./grammar.jison').parser;
 
-(function() {
-
-  function Diagram() {
-    this.actors  = [];
-    this.entries = [];
-  }
+function Diagram() {
+  this.actors  = [];
+  this.entries = [];
+}
 /*
  * Return an existing actor with this alias, or creates a new one with alias and name.
  */
@@ -99,7 +97,7 @@ Diagram.LINETYPE = {
  * This is brittle as it depends on jison internals
  */
  function ParseError(message, hash) {
-  _.extend(this, hash);
+  //_.extend(this, hash);
 
   this.name = 'ParseError';
   this.message = (message || '');
@@ -107,24 +105,19 @@ Diagram.LINETYPE = {
 ParseError.prototype = new Error();
 Diagram.ParseError = ParseError;
 
-parse = function(input) {
+Diagram.parseInput = function(input) {
   // TODO jison v0.4.17 changed their API slightly, so parser is no longer defined:
 
   // Create the object to track state and deal with errors
-  parser.yy = new Diagram();
-  parser.yy.parseError = function(message, hash) {
+  grammar.yy = new Diagram();
+  grammar.yy.parseError = function(message, hash) {
     throw new ParseError(message, hash);
   };
 
   // Parse
-  var diagram = parser.parse(input);
+  var diagram = grammar.parse(input);
 
   // Then clean up the parseError key that a user won't care about
   delete diagram.parseError;
   return diagram;
 };
-
-window.diagram = {
-  'parse': parse
-};
-}());

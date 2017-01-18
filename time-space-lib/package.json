@@ -24,9 +24,10 @@
     "watchify": "^3.7.0"
   },
   "dependencies": {
-    "jison": "^0.4.17",
-    "jisonify": "^1.0.4",
+    "browserify": "^13.3.0",
+    "jison": "^0.4.15",
     "jquery": "^2.2.2",
+    "preprocessor": "^1.4.0",
     "snapsvg": "sethvincent/Snap.svg#a34b8af69b"
   }
 }
