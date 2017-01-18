@@ -24,6 +24,8 @@
     "watchify": "^3.7.0"
   },
   "dependencies": {
+    "jison": "^0.4.17",
+    "jisonify": "^1.0.4",
     "jquery": "^2.2.2",
     "snapsvg": "sethvincent/Snap.svg#a34b8af69b"
   }
