@@ -13,13 +13,13 @@
 %%
 
 [\r\n]+                                      return 'NL';
-\s+                                          /* skip whitespace */
 \#[^\r\n]*                                   /* skip comments */
-"-"                                          return 'LINE';
-"--"                                         return 'DOTLINE';
-[^\->:,\r\n"]+                               return 'PVALUE';
--([^\-:,\r\n"]+)                             return 'PVALUE';
-:[^\r\n]+                                    return 'MESSAGE';
+"->"                                         return 'LINE';
+"-->"                                        return 'DOTLINE';
+(?!\s)([^\->:,\r\n"]+?)(?=\s)                return 'ACTOR';
+(?=)\s([^\->:,\r\n"]+?)(?=\s)                return 'EVENT';
+(?=)\s([0-9]+)                               return 'TIME';
+:([^\r\n]+)                                  return 'MESSAGE';
 <<EOF>>                                      return 'EOF';
 .                                            return 'INVALID';
 
@@ -48,18 +48,26 @@ statement
 	;
 
 entry
-	: actor linetype actor msg
-	{ $$ = new Diagram.Entry($1, null, null, $2, $3, null, null, $4); }
+	: actor event time linetype actor event time msg
+	{ $$ = new Diagram.Entry($1, $2, $3, $4, $5, $6, $7, $8); }
 	;
 
 actor
-	: PVALUE 
-	{ $$ = $1; }
+	: ACTOR 
+	{ $$ = yy.parser.yy.getActor($1); }
 	;
 
 linetype
 	: LINE    { $$ = Diagram.LINETYPE.SOLID; }
 	| DOTLINE { $$ = Diagram.LINETYPE.DOTTED; }
+	;
+
+event
+	: EVENT   { $$ = $1; }
+	;
+
+time
+	: TIME    { $$ = $1; }
 	;
 
 msg

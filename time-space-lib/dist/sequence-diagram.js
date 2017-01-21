@@ -50,12 +50,12 @@ Diagram.prototype.addEntry = function(entry) {
 Diagram.Entry = function(actorA, eventA, timeA, linetype, actorB, eventB, timeB, message) {
   //this.type       = 'Signal';
   this.actorA     = actorA;
-  this.eventA     = eventA;
-  this.timeA      = timeA;
+  this.eventA     = typeof eventA === 'string' ? eventA.trim() : eventA;
+  this.timeA      = typeof timeA === 'string' ? timeA.trim() : timeA;
   this.linetype   = linetype; //signaltype & 3;
   this.actorB     = actorB;
-  this.eventB     = eventB;
-  this.timeB      = timeB;
+  this.eventB     = typeof eventB === 'string' ? eventB.trim() : eventB;
+  this.timeB      = typeof timeB === 'string' ? timeB.trim() : timeB;
   //this.arrowtype  = (signaltype >> 2) & 3;
   this.message    = message;
 };
@@ -168,12 +168,12 @@ Diagram.LINETYPE = {
   }
 */
 var grammar = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[5,8,13],$V1=[1,9];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[5,8,15],$V1=[1,9],$V2=[1,11],$V3=[1,13];
 var parser = {trace: function trace() { },
 yy: {},
-symbols_: {"error":2,"start":3,"document":4,"EOF":5,"line":6,"statement":7,"NL":8,"entry":9,"actor":10,"linetype":11,"msg":12,"PVALUE":13,"LINE":14,"DOTLINE":15,"MESSAGE":16,"$accept":0,"$end":1},
-terminals_: {2:"error",5:"EOF",8:"NL",13:"PVALUE",14:"LINE",15:"DOTLINE",16:"MESSAGE"},
-productions_: [0,[3,2],[4,0],[4,2],[6,1],[6,1],[7,1],[9,4],[10,1],[11,1],[11,1],[12,1]],
+symbols_: {"error":2,"start":3,"document":4,"EOF":5,"line":6,"statement":7,"NL":8,"entry":9,"actor":10,"event":11,"time":12,"linetype":13,"msg":14,"ACTOR":15,"LINE":16,"DOTLINE":17,"EVENT":18,"TIME":19,"MESSAGE":20,"$accept":0,"$end":1},
+terminals_: {2:"error",5:"EOF",8:"NL",15:"ACTOR",16:"LINE",17:"DOTLINE",18:"EVENT",19:"TIME",20:"MESSAGE"},
+productions_: [0,[3,2],[4,0],[4,2],[6,1],[6,1],[7,1],[9,8],[10,1],[13,1],[13,1],[11,1],[12,1],[14,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -189,10 +189,10 @@ case 6:
  yy.parser.yy.addEntry($$[$0]); 
 break;
 case 7:
- this.$ = new Diagram.Entry($$[$0-3], null, null, $$[$0-2], $$[$0-1], null, null, $$[$0]); 
+ this.$ = new Diagram.Entry($$[$0-7], $$[$0-6], $$[$0-5], $$[$0-4], $$[$0-3], $$[$0-2], $$[$0-1], $$[$0]); 
 break;
-case 8: case 11:
- this.$ = $$[$0]; 
+case 8:
+ this.$ = yy.parser.yy.getActor($$[$0]); 
 break;
 case 9:
  this.$ = Diagram.LINETYPE.SOLID; 
@@ -200,10 +200,13 @@ break;
 case 10:
  this.$ = Diagram.LINETYPE.DOTTED; 
 break;
+case 11: case 12: case 13:
+ this.$ = $$[$0]; 
+break;
 }
 },
-table: [o($V0,[2,2],{3:1,4:2}),{1:[3]},{5:[1,3],6:4,7:5,8:[1,6],9:7,10:8,13:$V1},{1:[2,1]},o($V0,[2,3]),o($V0,[2,4]),o($V0,[2,5]),o($V0,[2,6]),{11:10,14:[1,11],15:[1,12]},o([14,15,16],[2,8]),{10:13,13:$V1},{13:[2,9]},{13:[2,10]},{12:14,16:[1,15]},o($V0,[2,7]),o($V0,[2,11])],
-defaultActions: {3:[2,1],11:[2,9],12:[2,10]},
+table: [o($V0,[2,2],{3:1,4:2}),{1:[3]},{5:[1,3],6:4,7:5,8:[1,6],9:7,10:8,15:$V1},{1:[2,1]},o($V0,[2,3]),o($V0,[2,4]),o($V0,[2,5]),o($V0,[2,6]),{11:10,18:$V2},{18:[2,8]},{12:12,19:$V3},{19:[2,11]},{13:14,16:[1,15],17:[1,16]},o([16,17,20],[2,12]),{10:17,15:$V1},{15:[2,9]},{15:[2,10]},{11:18,18:$V2},{12:19,19:$V3},{14:20,20:[1,21]},o($V0,[2,7]),o($V0,[2,13])],
+defaultActions: {3:[2,1],9:[2,8],11:[2,11],15:[2,9],16:[2,10]},
 parseError: function parseError(str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -692,19 +695,19 @@ var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
 case 0:return 8;
 break;
-case 1:/* skip whitespace */
+case 1:/* skip comments */
 break;
-case 2:/* skip comments */
+case 2:return 16;
 break;
-case 3:return 14;
+case 3:return 17;
 break;
 case 4:return 15;
 break;
-case 5:return 13;
+case 5:return 18;
 break;
-case 6:return 13;
+case 6:return 19;
 break;
-case 7:return 16;
+case 7:return 20;
 break;
 case 8:return 5;
 break;
@@ -712,7 +715,7 @@ case 9:return 'INVALID';
 break;
 }
 },
-rules: [/^(?:[\r\n]+)/,/^(?:\s+)/,/^(?:#[^\r\n]*)/,/^(?:-)/,/^(?:--)/,/^(?:[^\->:,\r\n"]+)/,/^(?:([^\-:,\r\n"]+))/,/^(?:[^\r\n]+)/,/^(?:$)/,/^(?:.)/],
+rules: [/^(?:[\r\n]+)/,/^(?:#[^\r\n]*)/,/^(?:->)/,/^(?:-->)/,/^(?:(?!\s)([^\->:,\r\n"]+?)(?=\s))/,/^(?:(?=)\s([^\->:,\r\n"]+?)(?=\s))/,/^(?:(?=)\s([0-9]+))/,/^(?:([^\r\n]+))/,/^(?:$)/,/^(?:.)/],
 conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9],"inclusive":true}}
 });
 return lexer;

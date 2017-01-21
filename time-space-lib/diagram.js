@@ -46,12 +46,12 @@ Diagram.prototype.addEntry = function(entry) {
 Diagram.Entry = function(actorA, eventA, timeA, linetype, actorB, eventB, timeB, message) {
   //this.type       = 'Signal';
   this.actorA     = actorA;
-  this.eventA     = eventA;
-  this.timeA      = timeA;
+  this.eventA     = typeof eventA === 'string' ? eventA.trim() : eventA;
+  this.timeA      = typeof timeA === 'string' ? timeA.trim() : timeA;
   this.linetype   = linetype; //signaltype & 3;
   this.actorB     = actorB;
-  this.eventB     = eventB;
-  this.timeB      = timeB;
+  this.eventB     = typeof eventB === 'string' ? eventB.trim() : eventB;
+  this.timeB      = typeof timeB === 'string' ? timeB.trim() : timeB;
   //this.arrowtype  = (signaltype >> 2) & 3;
   this.message    = message;
 };
