@@ -2,7 +2,7 @@
 'use strict';
 
 // The following are included by preprocessor */
-// #include "build/diagram-grammar.js"
+// #include "build/space-time.js"
 
 // Taken from underscore.js:
 // Establish the root object, `window` (`self`) in the browser, or `global` on the server.
@@ -10,16 +10,14 @@
 var root = (typeof self == 'object' && self.self == self && self) ||
  (typeof global == 'object' && global.global == global && global);
 
-// Export the Diagram object for **Node.js**, with
-// backwards-compatibility for their old module API. If we're in
-// the browser, add `Diagram` as a global object.
 if (typeof exports !== 'undefined') {
   if (typeof module !== 'undefined' && module.exports) {
-    exports = module.exports = Diagram;
+    exports = module.exports = SpaceTime;
   }
-  exports.Diagram = Diagram;
+  exports.SpaceTime = SpaceTime;
+  module.exports.SpaceTime = SpaceTime;
 } else {
-  root.Diagram = Diagram;
-  window.Diagram = Diagram;
+  root.SpaceTime = SpaceTime;
+  window.SpaceTime = SpaceTime;
 }
 }());

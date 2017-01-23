@@ -1,8 +1,12 @@
-  module.exports = SpaceTimeDraw;
+  //module.exports = SpaceTimeDraw;
   
-  var Snap = require('snapsvg');
-  var $    = require('jquery');
+  //var Snap = require('snapsvg');
+  //var $    = require('jquery');
 
+  /** The following is included by preprocessor */
+  // #include "node_modules/jquery/dist/jquery.js"
+  
+  // #include "node_modules/snapsvg/dist/snap.svg.js"
   /**
   * Class responsible for draw all elements in space time diagram.
   * @constructor
@@ -82,7 +86,7 @@
         if ($.inArray(receiverName, this.actors) == -1) {
           this.actors.push(receiverName);
         }
- 
+
       }
       return this.actors;
     }
@@ -163,14 +167,14 @@
           title = Snap.parse('<title>Name: ' + parsedElements[i].getReceiverLabel() + ' - Time: ' + parsedElements[i].getReceiverTime() +'</title>');
           var receiverDot = paper.circle(receiverHorizontalPosition, receiverVerticalPosition + this.verticalDrawSkew, 4).attr({strokeWidth:2,stroke:color,strokeLinecap:"round", fill: color});
           receiverDot.append(title);
-                  
+
           if ($.inArray('label', this.options) > -1) {
             paper.text(receiverHorizontalPosition - 7,receiverVerticalPosition - 10 + this.verticalDrawSkew,parsedElements[i].getReceiverLabel()).attr({fill: color, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
           }
           if ($.inArray('time', this.options) > -1) {
             paper.text(receiverHorizontalPosition - 7,receiverVerticalPosition + 20 + this.verticalDrawSkew,parsedElements[i].getReceiverTime()).attr({fill: color, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
           }
-         
+
 
           //verify if elements is in the same line to draw quadratic bézier curve
           if (senderVerticalPosition == receiverVerticalPosition) {
@@ -226,7 +230,7 @@
     * M x y -> represents start point and L x y -> represents "Line to".
     */
     this.animatePaths = function() {
-        if (this.animationsPaths.length == 0) return;
+      if (this.animationsPaths.length == 0) return;
         //full path length
         var line2 = paper.path(this.animationsPaths[0]);
         var lengthLine2 = line2.getTotalLength() - 8;
@@ -252,19 +256,19 @@
         line2.append(title);
 
         if ($.inArray('contents', this.options) > -1) {
-            var label = paper
-            .text(0, 0, this.lineNumbers + ' - ' + parsedElements[0].getMessage())
-            .attr({
-                'text-anchor' : 'middle',
-                'textpath' : this.animationsPaths[0],
-                'dy': -5,
-                fill: color,  
-                fontFamily: "Arial", 
-                fontStyle: "italic", 
-                fontSize: "11px"
-            });
-            label.textPath.attr({ startOffset: '50%' });
-            this.lineNumbers++;
+          var label = paper
+          .text(0, 0, this.lineNumbers + ' - ' + parsedElements[0].getMessage())
+          .attr({
+            'text-anchor' : 'middle',
+            'textpath' : this.animationsPaths[0],
+            'dy': -5,
+            fill: color,  
+            fontFamily: "Arial", 
+            fontStyle: "italic", 
+            fontSize: "11px"
+          });
+          label.textPath.attr({ startOffset: '50%' });
+          this.lineNumbers++;
         }
 
         this.animationsPaths.shift();
@@ -275,7 +279,7 @@
         Triangle.attr({
           fill: color
         });  
-      
+
         var triangleGroup = paper.g(Triangle); // Group polyline
 
         var animateValue = 0;
@@ -284,9 +288,9 @@
         } 
 
         Snap.animate(0, lengthLine2 - 1, function(value) {
-           movePoint = line2.getPointAtLength(value);
-           triangleGroup.transform('t' + parseInt(movePoint.x) + ',' + parseInt(movePoint.y) + 'r' + (movePoint.alpha - 90));
-        }, animateValue, mina.easeinout);
+         movePoint = line2.getPointAtLength(value);
+         triangleGroup.transform('t' + parseInt(movePoint.x) + ',' + parseInt(movePoint.y) + 'r' + (movePoint.alpha - 90));
+       }, animateValue, mina.easeinout);
 
 
         if (status == 'HALF-ERROR' || status == 'FULL-ERROR') {
@@ -295,13 +299,13 @@
 
 
         line2.attr({
-            stroke: color,
-            strokeWidth: 3,
-            fill: 'none',
+          stroke: color,
+          strokeWidth: 3,
+          fill: 'none',
             // Draw Path
             "stroke-dasharray": lengthLine2,
             "stroke-dashoffset": lengthLine2
-        }).animate({"stroke-dashoffset": 0}, animateValue, mina.easeinout, this.animatePaths.bind( this ));
-    }
+          }).animate({"stroke-dashoffset": 0}, animateValue, mina.easeinout, this.animatePaths.bind( this ));
+      }
 
-} 
+    } 

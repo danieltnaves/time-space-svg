@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "browserify": "^13.3.0",
+    "eve": "^0.5.1",
     "jison": "^0.4.15",
     "jquery": "^2.2.2",
     "preprocessor": "^1.4.0",

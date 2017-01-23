@@ -44,7 +44,6 @@ Diagram.prototype.addEntry = function(entry) {
 };
 
 Diagram.Entry = function(actorA, eventA, timeA, linetype, actorB, eventB, timeB, message) {
-  //this.type       = 'Signal';
   this.actorA     = actorA;
   this.eventA     = typeof eventA === 'string' ? eventA.trim() : eventA;
   this.timeA      = typeof timeA === 'string' ? timeA.trim() : timeA;
@@ -52,7 +51,6 @@ Diagram.Entry = function(actorA, eventA, timeA, linetype, actorB, eventB, timeB,
   this.actorB     = actorB;
   this.eventB     = typeof eventB === 'string' ? eventB.trim() : eventB;
   this.timeB      = typeof timeB === 'string' ? timeB.trim() : timeB;
-  //this.arrowtype  = (signaltype >> 2) & 3;
   this.message    = message;
 };
 
@@ -105,7 +103,7 @@ Diagram.LINETYPE = {
 ParseError.prototype = new Error();
 Diagram.ParseError = ParseError;
 
-Diagram.parseInput = function(input) {
+Diagram.parse = function(input) {
   // TODO jison v0.4.17 changed their API slightly, so parser is no longer defined:
 
   // Create the object to track state and deal with errors

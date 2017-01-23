@@ -1,16 +1,20 @@
-var $ = require('jquery');
+//var $ = require('jquery');
 
-var SpaceTimeRaw = require('./space-time-raw');
-var SpaceTimeDraw = require('./space-time-draw');
+//var SpaceTimeRaw = require('./space-time-raw');
+//var SpaceTimeDraw = require('../space-time-draw');
 
-module.exports = SpaceTime;
+//module.exports = SpaceTime;
+
+/** The following is included by preprocessor */
+// #include "build/diagram-grammar.js"
+// #include "build/space-time-draw.js"
 
  /**
   * Parses and draws a space time diagrams.
   * @constructor
   * @param {string} text - Raw text with user input.
   */
-function SpaceTime(text) { 
+function SpaceTime(text) {
 
 	this.text           = text;
 	this.parsedElements = new Array(); 
@@ -19,9 +23,10 @@ function SpaceTime(text) {
     * Parses raw input and create array of space time objects.
     */
 	this.parseInput = function()  {
-		var spaceTimeRaw    = new SpaceTimeRaw(this.text);
+		/*var spaceTimeRaw    = new SpaceTimeRaw(this.text);
 		var linesAsArray    = spaceTimeRaw.returnLinesAsArray();
-		this.parsedElements = spaceTimeRaw.returnRawInputAsArray(linesAsArray);
+		this.parsedElements = spaceTimeRaw.returnRawInputAsArray(linesAsArray);*/
+		this.parsedElements = Diagram.parse(this.text).entries;
 	}
 
 	/**
@@ -29,7 +34,7 @@ function SpaceTime(text) {
     * @param {string} elementId - SVG element ID defined in svg tag.
     * @param {string} options - Extra options to show diagram separated by ','.
     */
-	this.drawInput = function(elementId, options)  {
+	/*this.drawInput = function(elementId, options)  {
 		this.parseInput();
 		var spaceTimeDraw = new SpaceTimeDraw(elementId, 2, 'black', this.parsedElements, options);	 
 		if (spaceTimeDraw.validateElements()) {
@@ -39,8 +44,7 @@ function SpaceTime(text) {
 		} else {
 			alert(spaceTimeDraw.getErrorMessages());
 		}
-	}
-
+	}*/
 }
 
 
