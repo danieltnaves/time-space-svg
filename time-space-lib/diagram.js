@@ -43,15 +43,41 @@ Diagram.prototype.addEntry = function(entry) {
   this.entries.push(entry);
 };
 
-Diagram.Entry = function(actorA, eventA, timeA, linetype, actorB, eventB, timeB, message) {
-  this.actorA     = actorA;
-  this.eventA     = typeof eventA === 'string' ? eventA.trim() : eventA;
-  this.timeA      = typeof timeA === 'string' ? timeA.trim() : timeA;
-  this.linetype   = linetype; //signaltype & 3;
-  this.actorB     = actorB;
-  this.eventB     = typeof eventB === 'string' ? eventB.trim() : eventB;
-  this.timeB      = typeof timeB === 'string' ? timeB.trim() : timeB;
-  this.message    = message;
+Diagram.Entry = function(actorA, eventA, timeA, messagetype, actorB, eventB, timeB, message, color) {
+  this.actorA      = actorA;
+  this.eventA      = typeof eventA === 'string' ? eventA.trim() : eventA;
+  this.timeA       = typeof timeA === 'string' ? timeA.trim() : timeA;
+  this.messagetype = messagetype;
+  this.actorB      = actorB;
+  this.eventB      = typeof eventB === 'string' ? eventB.trim() : eventB;
+  this.timeB       = typeof timeB === 'string' ? timeB.trim() : timeB;
+  this.message     = message;
+  this.color       = color;
+
+  this.getMessageType = function() {
+    return this.messagetype;
+  }
+
+  this.getSenderName = function() {
+    return this.actorA;
+  }
+
+  this.getReceiverName = function() {
+    return this.actorB;
+  }
+
+  this.getSenderTime = function() {
+    return this.timeA;
+  }
+
+  this.getReceiverTime = function() {
+    return this.timeB;
+  }
+
+  this.getColor = function() {
+    return this.color;
+  }
+
 };
 
 // Diagram.Entry.prototype.isSelf = function() {
@@ -63,9 +89,15 @@ Diagram.unescape = function(s) {
   return s.trim().replace(/^"(.*)"$/m, '$1').replace(/\\n/gm, '\n');
 };
 
-Diagram.LINETYPE = {
-  SOLID: 0,
-  DOTTED: 1
+Diagram.translate = function(s) {
+  return s.replace(/^(:\s*)/, "").trim();
+}
+
+Diagram.MESSAGETYPE = {
+  FULL_SUCCESS: 'FULL_SUCCESS',
+  HALF_SUCCESS: 'HALF_SUCCESS',
+  FULL_ERROR: 'FULL_ERROR',
+  HALF_ERROR: 'HALF_ERROR'
 };
 
 // Some older browsers don't have getPrototypeOf, thus we polyfill it

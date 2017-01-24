@@ -14,12 +14,15 @@
 
 [\r\n]+                                      return 'NL';
 \#[^\r\n]*                                   /* skip comments */
-"->"                                         return 'LINE';
-"-->"                                        return 'DOTLINE';
+"-->"                                        return 'FULL_SUCCESS';
+"..>"                                        return 'HALF_SUCCESS';
+"--x"                                        return 'FULL_ERROR'
+"..x"                                        return 'HALF_ERROR'
 (?!\s)([^\->:,\r\n"]+?)(?=\s)                return 'ACTOR';
 (?=)\s([^\->:,\r\n"]+?)(?=\s)                return 'EVENT';
 (?=)\s([0-9]+)                               return 'TIME';
-:([^\r\n]+)                                  return 'MESSAGE';
+:([^\r\n]+)(?:\-\-color\s+\#[0-9A-Za-z]+)     return 'MESSAGE';
+\-\-color\s+(\#[0-9a-fA-F]+)                 return 'COLOR';
 <<EOF>>                                      return 'EOF';
 .                                            return 'INVALID';
 
@@ -48,8 +51,8 @@ statement
 	;
 
 entry
-	: actor event time linetype actor event time msg
-	{ $$ = new Diagram.Entry($1, $2, $3, $4, $5, $6, $7, $8); }
+	: actor event time messagetype actor event time msg color
+	{ $$ = new Diagram.Entry($1, $2, $3, $4, $5, $6, $7, $8, $9); }
 	;
 
 actor
@@ -57,9 +60,11 @@ actor
 	{ $$ = yy.parser.yy.getActor($1); }
 	;
 
-linetype
-	: LINE    { $$ = Diagram.LINETYPE.SOLID; }
-	| DOTLINE { $$ = Diagram.LINETYPE.DOTTED; }
+messagetype
+	: FULL_SUCCESS  { $$ = Diagram.MESSAGETYPE.FULL_SUCCESS; }
+	| HALF_SUCCESS  { $$ = Diagram.MESSAGETYPE.HALF_SUCCESS; }
+	| FULL_ERROR    { $$ = Diagram.MESSAGETYPE.FULL_ERROR; }
+	| HALF_ERROR    { $$ = Diagram.MESSAGETYPE.HALF_ERROR; }
 	;
 
 event
@@ -71,8 +76,11 @@ time
 	;
 
 msg
-	: MESSAGE { $$ = $1; }
+	: MESSAGE { $$ = Diagram.translate($1); }
 	;
 
+color
+	: COLOR { $$ = $1; }
+	;
 
 %%

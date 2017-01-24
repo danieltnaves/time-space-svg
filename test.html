@@ -10,12 +10,16 @@
 		<label>Input data</label>
 		<textarea id='input-data'></textarea>
 		<button id='submit' onclick="parseInput()">Submit</button>
+
+	</div>
+	<div>
+		<svg id="paper" width="100%" height="100%"></svg> 
 	</div>
 
 	<script type="text/javascript">
 		function parseInput() {
 			var inputData = document.getElementById('input-data').value;
-			new SpaceTime(inputData).parseInput();
+			new SpaceTime(inputData).drawInput('#paper', 'label,contents,animated');
 		}
 	</script>
 </body>
