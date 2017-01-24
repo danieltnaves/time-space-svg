@@ -2,7 +2,7 @@
 
 NODE_MODULES := node_modules/.bin
 
-all: build/grammar.js build/diagram-grammar.js build/space-time-draw.js build/space-time.js dist/bundle.js
+all: build/grammar.js build/diagram-grammar.js build/space-time.js dist/bundle.js
 
 clean:
 	-rm build/*	
@@ -16,14 +16,10 @@ build/diagram-grammar.js: diagram.js
 	@echo "### BUILDING diagram-grammar.js..."
 	$(NODE_MODULES)/preprocess $< . > $@
 
-build/space-time-draw.js: space-time-draw.js
-	@echo "### BUILDING space-time-draw.js"
-	$(NODE_MODULES)/preprocess $< . > $@
-
 build/space-time.js: space-time.js
 	@echo "### BUILDING space-time.js"
 	$(NODE_MODULES)/preprocess $< . > $@
 
-dist/bundle.js: main.js build/space-time.js
+dist/bundle.js: build/space-time.js
 	@echo "### BUILDING AND DISTRIBUTING bundle.js..."
-	$(NODE_MODULES)/preprocess $< . > $@
+	$(NODE_MODULES)/browserify $<  -o $@

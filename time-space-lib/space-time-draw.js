@@ -1,12 +1,8 @@
-  //module.exports = SpaceTimeDraw;
+  module.exports = SpaceTimeDraw;
   
-  //var Snap = require('snapsvg');
-  //var $    = require('jquery');
+  var Snap = require('snapsvg');
+  var $    = require('jquery');
 
-  /** The following is included by preprocessor */
-  // #include "node_modules/jquery/dist/jquery.js"
-  
-  // #include "node_modules/snapsvg/dist/snap.svg.js"
   /**
   * Class responsible for draw all elements in space time diagram.
   * @constructor

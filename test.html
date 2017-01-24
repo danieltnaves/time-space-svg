@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<script type="text/javascript" src="time-space-lib/dist/sequence-diagram.js"></script>
+	<script type="text/javascript" src="time-space-lib/dist/bundle.js"></script>
 	<title></title>
 </head>
 <body>
@@ -15,8 +15,7 @@
 	<script type="text/javascript">
 		function parseInput() {
 			var inputData = document.getElementById('input-data').value;
-			var d = Diagram.parseInput(inputData);
-			console.log(d);
+			new SpaceTime(inputData).parseInput();
 		}
 	</script>
 </body>
