@@ -236,7 +236,17 @@ case 13: case 14: case 16:
  this.$ = $$[$0]; 
 break;
 case 15:
- this.$ = Diagram.translate($$[$0]); 
+ 	console.log('matches: ' + yy.lexer.matches);
+		var fullMatch = null;
+		if(yy.lexer.matches.length > 1) {
+			fullMatch = yy.lexer.matches.shift();
+		}
+		console.log('after matches: ' + yy.lexer.matches);
+		var groupMatch = yy.lexer.match = yy.lexer.matches[0];
+		console.log('match: ' + yy.lexer.match);		
+		yy.lexer.setInput(fullMatch.slice(groupMatch.length), yy);
+		this.$ = Diagram.translate(groupMatch);
+	
 break;
 }
 },
@@ -722,9 +732,9 @@ performAction: function anonymous(yy,yy_,$avoiding_name_collisions,YY_START) {
 	console.log(yy);
 	console.log(yy_);
 	console.log(this);
-	console.log(yy_.yytext);
-	console.log(YY_START);
-	console.log($avoiding_name_collisions);
+	console.log('yy_.yytext: ' + yy_.yytext);
+	console.log('YY_START: ' + YY_START);
+	console.log('$avoiding_name_collisions: ' + $avoiding_name_collisions);
 
 var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
@@ -756,7 +766,7 @@ case 12:return 'INVALID';
 break;
 }
 },
-rules: [/^(?:[\r\n]+)/,/^(?:#[^\r\n]*)/,/^(?:-->)/,/^(?:\.\.>)/,/^(?:--x\b)/,/^(?:\.\.x\b)/,/^(?:(?!\s)([^\->:,\r\n"]+?)(?=\s))/,/^(?:(?=)\s([^\->:,\r\n"]+?)(?=\s))/,/^(?:(?=)\s([0-9]+))/,/^(?:([^\r\n]+)(?:--color\s+#[0-9A-Za-z]+))/,/^(?:--color\s+(#[0-9a-fA-F]+))/,/^(?:$)/,/^(?:.)/],
+rules: [/^(?:[\r\n]+)/,/^(?:#[^\r\n]*)/,/^(?:-->)/,/^(?:\.\.>)/,/^(?:--x\b)/,/^(?:\.\.x\b)/,/^(?:(?!\s)([^\->:,\r\n"]+?)(?=\s))/,/^(?:(?=)\s([^\->:,\r\n"]+?)(?=\s))/,/^(?:(?=)\s([0-9]+))/,/^(?:([^\r\n]+)(?:--color\s+#[0-9A-Za-z]+))/,/^(?:(?:.*--color\s+)(#[0-9a-fA-F]+))/,/^(?:$)/,/^(?:.)/],
 conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12],"inclusive":true}}
 });
 return lexer;

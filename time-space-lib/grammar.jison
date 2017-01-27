@@ -5,9 +5,9 @@
 	console.log(yy);
 	console.log(yy_);
 	console.log(this);
-	console.log(yytext);
-	console.log(YY_START);
-	console.log($avoiding_name_collisions);
+	console.log('yytext: ' + yytext);
+	console.log('YY_START: ' + YY_START);
+	console.log('$avoiding_name_collisions: ' + $avoiding_name_collisions);
 %}
 
 %%
@@ -21,8 +21,8 @@
 (?!\s)([^\->:,\r\n"]+?)(?=\s)                return 'ACTOR';
 (?=)\s([^\->:,\r\n"]+?)(?=\s)                return 'EVENT';
 (?=)\s([0-9]+)                               return 'TIME';
-:([^\r\n]+)(?:\-\-color\s+\#[0-9A-Za-z]+)     return 'MESSAGE';
-\-\-color\s+(\#[0-9a-fA-F]+)                 return 'COLOR';
+:([^\r\n]+)(?:\-\-color\s+\#[0-9A-Za-z]+)    return 'MESSAGE';
+(?:.*\-\-color\s+)(\#[0-9a-fA-F]+)           return 'COLOR';
 <<EOF>>                                      return 'EOF';
 .                                            return 'INVALID';
 
@@ -76,11 +76,29 @@ time
 	;
 
 msg
-	: MESSAGE { $$ = Diagram.translate($1); }
+	: MESSAGE 
+	%{ 	console.log('matches: ' + yy.lexer.matches);
+		var fullMatch = null;
+		if(yy.lexer.matches.length > 1) {
+			fullMatch = yy.lexer.matches.shift();
+		}
+		console.log('after matches: ' + yy.lexer.matches);
+		var groupMatch = yy.lexer.match = yy.lexer.matches[0];
+		console.log('match: ' + yy.lexer.match);		
+		yy.lexer.setInput(fullMatch.slice(groupMatch.length), yy);
+		$$ = Diagram.translate(groupMatch);
+	%}
 	;
 
 color
-	: COLOR { $$ = $1; }
+	: COLOR 
+	%{ 
+		if(yy.lexer.matches.length > 1) {
+			$$ = yy.lexer.matches[1];
+		} else {
+			$$ = $1;
+		}
+	%}
 	;
 
 %%
