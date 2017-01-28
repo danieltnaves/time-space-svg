@@ -53,16 +53,32 @@ Diagram.prototype.addEntry = function(entry) {
   this.entries.push(entry);
 };
 
-Diagram.Entry = function(actorA, eventA, timeA, messagetype, actorB, eventB, timeB, message, color) {
-  this.actorA      = actorA;
-  this.eventA      = typeof eventA === 'string' ? eventA.trim() : eventA;
-  this.timeA       = typeof timeA === 'string' ? timeA.trim() : timeA;
-  this.messagetype = messagetype;
-  this.actorB      = actorB;
-  this.eventB      = typeof eventB === 'string' ? eventB.trim() : eventB;
-  this.timeB       = typeof timeB === 'string' ? timeB.trim() : timeB;
-  this.message     = message;
-  this.color       = color;
+Diagram.Entry = function(actorA, eventA, timeA, messagetype, actorB, eventB, timeB, message) {
+  this.actorA          = actorA;
+  this.eventA          = typeof eventA === 'string' ? eventA.trim() : eventA;
+  this.timeA           = typeof timeA === 'string' ? timeA.trim() : timeA;
+  this.messagetype     = messagetype;
+  this.actorB          = actorB;
+  this.eventB          = typeof eventB === 'string' ? eventB.trim() : eventB;
+  this.timeB           = typeof timeB === 'string' ? timeB.trim() : timeB;
+  
+  var parameters       = (function() {
+    var match = message.match(/^([^\r\n]+)(\-\-\w+\s+)(\#[A-Za-z0-9]+)/);
+    if(match && match.length > 1) {
+      console.log('color: ' + this.color);
+      return { 
+        message: match[1].trim(), 
+        color: match[3]
+      };
+    } else {
+      return {
+        message: message.trim()
+      }
+    }
+  }());
+
+  this.message = parameters.message;
+  this.color   = parameters.color != null ? parameters.color : '#000000' ;
 
   this.getMessageType = function() {
     return this.messagetype;
@@ -76,6 +92,14 @@ Diagram.Entry = function(actorA, eventA, timeA, messagetype, actorB, eventB, tim
     return this.actorB;
   }
 
+  this.getSenderEvent = function() {
+    return this.eventA;
+  }
+
+  this.getReceiverEvent = function() {
+    return this.eventB;
+  }
+
   this.getSenderTime = function() {
     return this.timeA;
   }
@@ -87,6 +111,12 @@ Diagram.Entry = function(actorA, eventA, timeA, messagetype, actorB, eventB, tim
   this.getColor = function() {
     return this.color;
   }
+
+  this.getMessage = function() {
+    return this.message;
+  }
+
+
 
 };
 
@@ -104,10 +134,10 @@ Diagram.translate = function(s) {
 }
 
 Diagram.MESSAGETYPE = {
-  FULL_SUCCESS: 'FULL_SUCCESS',
-  HALF_SUCCESS: 'HALF_SUCCESS',
-  FULL_ERROR: 'FULL_ERROR',
-  HALF_ERROR: 'HALF_ERROR'
+  FULL_SUCCESS: 'FULL-SUCCESS',
+  HALF_SUCCESS: 'HALF-SUCCESS',
+  FULL_ERROR: 'FULL-ERROR',
+  HALF_ERROR: 'HALF-ERROR'
 };
 
 // Some older browsers don't have getPrototypeOf, thus we polyfill it
@@ -204,12 +234,12 @@ Diagram.MESSAGETYPE = {
   }
 */
 var grammar = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[5,8,16],$V1=[1,9],$V2=[1,11],$V3=[1,13];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[5,8,15],$V1=[1,9],$V2=[1,11],$V3=[1,13];
 var parser = {trace: function trace() { },
 yy: {},
-symbols_: {"error":2,"start":3,"document":4,"EOF":5,"line":6,"statement":7,"NL":8,"entry":9,"actor":10,"event":11,"time":12,"messagetype":13,"msg":14,"color":15,"ACTOR":16,"FULL_SUCCESS":17,"HALF_SUCCESS":18,"FULL_ERROR":19,"HALF_ERROR":20,"EVENT":21,"TIME":22,"MESSAGE":23,"COLOR":24,"$accept":0,"$end":1},
-terminals_: {2:"error",5:"EOF",8:"NL",16:"ACTOR",17:"FULL_SUCCESS",18:"HALF_SUCCESS",19:"FULL_ERROR",20:"HALF_ERROR",21:"EVENT",22:"TIME",23:"MESSAGE",24:"COLOR"},
-productions_: [0,[3,2],[4,0],[4,2],[6,1],[6,1],[7,1],[9,9],[10,1],[13,1],[13,1],[13,1],[13,1],[11,1],[12,1],[14,1],[15,1]],
+symbols_: {"error":2,"start":3,"document":4,"EOF":5,"line":6,"statement":7,"NL":8,"entry":9,"actor":10,"event":11,"time":12,"messagetype":13,"msg":14,"ACTOR":15,"FULL_SUCCESS":16,"HALF_SUCCESS":17,"FULL_ERROR":18,"HALF_ERROR":19,"EVENT":20,"TIME":21,"MESSAGE":22,"$accept":0,"$end":1},
+terminals_: {2:"error",5:"EOF",8:"NL",15:"ACTOR",16:"FULL_SUCCESS",17:"HALF_SUCCESS",18:"FULL_ERROR",19:"HALF_ERROR",20:"EVENT",21:"TIME",22:"MESSAGE"},
+productions_: [0,[3,2],[4,0],[4,2],[6,1],[6,1],[7,1],[9,8],[10,1],[13,1],[13,1],[13,1],[13,1],[11,1],[12,1],[14,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -225,7 +255,7 @@ case 6:
  yy.parser.yy.addEntry($$[$0]); 
 break;
 case 7:
- this.$ = new Diagram.Entry($$[$0-8], $$[$0-7], $$[$0-6], $$[$0-5], $$[$0-4], $$[$0-3], $$[$0-2], $$[$0-1], $$[$0]); 
+ this.$ = new Diagram.Entry($$[$0-7], $$[$0-6], $$[$0-5], $$[$0-4], $$[$0-3], $$[$0-2], $$[$0-1], $$[$0]); 
 break;
 case 8:
  this.$ = yy.parser.yy.getActor($$[$0]); 
@@ -242,26 +272,18 @@ break;
 case 12:
  this.$ = Diagram.MESSAGETYPE.HALF_ERROR; 
 break;
-case 13: case 14: case 16:
+case 13: case 14:
  this.$ = $$[$0]; 
 break;
 case 15:
- 	console.log('matches: ' + yy.lexer.matches);
-		var fullMatch = null;
-		if(yy.lexer.matches.length > 1) {
-			fullMatch = yy.lexer.matches.shift();
-		}
-		console.log('after matches: ' + yy.lexer.matches);
-		var groupMatch = yy.lexer.match = yy.lexer.matches[0];
-		console.log('match: ' + yy.lexer.match);		
-		yy.lexer.setInput(fullMatch.slice(groupMatch.length), yy);
-		this.$ = Diagram.translate(groupMatch);
+		
+		this.$ = Diagram.translate($$[$0]);
 	
 break;
 }
 },
-table: [o($V0,[2,2],{3:1,4:2}),{1:[3]},{5:[1,3],6:4,7:5,8:[1,6],9:7,10:8,16:$V1},{1:[2,1]},o($V0,[2,3]),o($V0,[2,4]),o($V0,[2,5]),o($V0,[2,6]),{11:10,21:$V2},{21:[2,8]},{12:12,22:$V3},{22:[2,13]},{13:14,17:[1,15],18:[1,16],19:[1,17],20:[1,18]},o([17,18,19,20,23],[2,14]),{10:19,16:$V1},{16:[2,9]},{16:[2,10]},{16:[2,11]},{16:[2,12]},{11:20,21:$V2},{12:21,22:$V3},{14:22,23:[1,23]},{15:24,24:[1,25]},{24:[2,15]},o($V0,[2,7]),o($V0,[2,16])],
-defaultActions: {3:[2,1],9:[2,8],11:[2,13],15:[2,9],16:[2,10],17:[2,11],18:[2,12],23:[2,15]},
+table: [o($V0,[2,2],{3:1,4:2}),{1:[3]},{5:[1,3],6:4,7:5,8:[1,6],9:7,10:8,15:$V1},{1:[2,1]},o($V0,[2,3]),o($V0,[2,4]),o($V0,[2,5]),o($V0,[2,6]),{11:10,20:$V2},{20:[2,8]},{12:12,21:$V3},{21:[2,13]},{13:14,16:[1,15],17:[1,16],18:[1,17],19:[1,18]},o([16,17,18,19,22],[2,14]),{10:19,15:$V1},{15:[2,9]},{15:[2,10]},{15:[2,11]},{15:[2,12]},{11:20,20:$V2},{12:21,21:$V3},{14:22,22:[1,23]},o($V0,[2,7]),o($V0,[2,15])],
+defaultActions: {3:[2,1],9:[2,8],11:[2,13],15:[2,9],16:[2,10],17:[2,11],18:[2,12]},
 parseError: function parseError(str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -752,23 +774,23 @@ case 0:return 8;
 break;
 case 1:/* skip comments */
 break;
-case 2:return 17;
+case 2:return 16;
 break;
-case 3:return 18;
+case 3:return 17;
 break;
-case 4:return 19
+case 4:return 18
 break;
-case 5:return 20
+case 5:return 19
 break;
-case 6:return 16;
+case 6:return 15;
 break;
-case 7:return 21;
+case 7:return 20;
 break;
-case 8:return 22;
+case 8:return 21;
 break;
-case 9:return 23;
+case 9:return 22;
 break;
-case 10:return 24;
+case 10:return 22;
 break;
 case 11:return 5;
 break;
@@ -776,7 +798,7 @@ case 12:return 'INVALID';
 break;
 }
 },
-rules: [/^(?:[\r\n]+)/,/^(?:#[^\r\n]*)/,/^(?:-->)/,/^(?:\.\.>)/,/^(?:--x\b)/,/^(?:\.\.x\b)/,/^(?:(?!\s)([^\->:,\r\n"]+?)(?=\s))/,/^(?:(?=)\s([^\->:,\r\n"]+?)(?=\s))/,/^(?:(?=)\s([0-9]+))/,/^(?:([^\r\n]+)(?:--color\s+#[0-9A-Za-z]+))/,/^(?:(?:.*--color\s+)(#[0-9a-fA-F]+))/,/^(?:$)/,/^(?:.)/],
+rules: [/^(?:[\r\n]+)/,/^(?:#[^\r\n]*)/,/^(?:-->)/,/^(?:\.\.>)/,/^(?:^(--x))/,/^(?:^(\.\.x))/,/^(?:(?!\s)([^\->:,\r\n"]+?)(?=\s))/,/^(?:(?=)\s([^\->:\.,\r\n"]+?)(?=\s))/,/^(?:(?=)\s([0-9]+))/,/^(?:([^\r\n]+)(?:--color\s+#[0-9A-Za-z]+))/,/^(?:(:[^\r\n]+))/,/^(?:$)/,/^(?:.)/],
 conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12],"inclusive":true}}
 });
 return lexer;

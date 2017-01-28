@@ -43,16 +43,32 @@ Diagram.prototype.addEntry = function(entry) {
   this.entries.push(entry);
 };
 
-Diagram.Entry = function(actorA, eventA, timeA, messagetype, actorB, eventB, timeB, message, color) {
-  this.actorA      = actorA;
-  this.eventA      = typeof eventA === 'string' ? eventA.trim() : eventA;
-  this.timeA       = typeof timeA === 'string' ? timeA.trim() : timeA;
-  this.messagetype = messagetype;
-  this.actorB      = actorB;
-  this.eventB      = typeof eventB === 'string' ? eventB.trim() : eventB;
-  this.timeB       = typeof timeB === 'string' ? timeB.trim() : timeB;
-  this.message     = message;
-  this.color       = color;
+Diagram.Entry = function(actorA, eventA, timeA, messagetype, actorB, eventB, timeB, message) {
+  this.actorA          = actorA;
+  this.eventA          = typeof eventA === 'string' ? eventA.trim() : eventA;
+  this.timeA           = typeof timeA === 'string' ? timeA.trim() : timeA;
+  this.messagetype     = messagetype;
+  this.actorB          = actorB;
+  this.eventB          = typeof eventB === 'string' ? eventB.trim() : eventB;
+  this.timeB           = typeof timeB === 'string' ? timeB.trim() : timeB;
+  
+  var parameters       = (function() {
+    var match = message.match(/^([^\r\n]+)(\-\-\w+\s+)(\#[A-Za-z0-9]+)/);
+    if(match && match.length > 1) {
+      console.log('color: ' + this.color);
+      return { 
+        message: match[1].trim(), 
+        color: match[3]
+      };
+    } else {
+      return {
+        message: message.trim()
+      }
+    }
+  }());
+
+  this.message = parameters.message;
+  this.color   = parameters.color != null ? parameters.color : '#000000' ;
 
   this.getMessageType = function() {
     return this.messagetype;
@@ -66,6 +82,14 @@ Diagram.Entry = function(actorA, eventA, timeA, messagetype, actorB, eventB, tim
     return this.actorB;
   }
 
+  this.getSenderEvent = function() {
+    return this.eventA;
+  }
+
+  this.getReceiverEvent = function() {
+    return this.eventB;
+  }
+
   this.getSenderTime = function() {
     return this.timeA;
   }
@@ -77,6 +101,12 @@ Diagram.Entry = function(actorA, eventA, timeA, messagetype, actorB, eventB, tim
   this.getColor = function() {
     return this.color;
   }
+
+  this.getMessage = function() {
+    return this.message;
+  }
+
+
 
 };
 
@@ -94,10 +124,10 @@ Diagram.translate = function(s) {
 }
 
 Diagram.MESSAGETYPE = {
-  FULL_SUCCESS: 'FULL_SUCCESS',
-  HALF_SUCCESS: 'HALF_SUCCESS',
-  FULL_ERROR: 'FULL_ERROR',
-  HALF_ERROR: 'HALF_ERROR'
+  FULL_SUCCESS: 'FULL-SUCCESS',
+  HALF_SUCCESS: 'HALF-SUCCESS',
+  FULL_ERROR: 'FULL-ERROR',
+  HALF_ERROR: 'HALF-ERROR'
 };
 
 // Some older browsers don't have getPrototypeOf, thus we polyfill it

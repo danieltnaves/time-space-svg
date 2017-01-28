@@ -148,24 +148,24 @@
           }
           var title;
           //circle(x,y,r), x -> x position, y -> y position, r -> radius
-          var title = Snap.parse('<title>Name: ' + parsedElements[i].getSenderLabel() + ' - Time: ' + parsedElements[i].getSenderTime() +'</title>');
+          var title = Snap.parse('<title>Name: ' + parsedElements[i].getSenderEvent() + ' - Time: ' + parsedElements[i].getSenderTime() +'</title>');
           var senderDot = paper.circle(senderHorizontalPosition, senderVerticalPosition + this.verticalDrawSkew, 4).attr({strokeWidth:2,stroke: color,strokeLinecap:"round", fill: color});
           senderDot.append(title);
 
           if ($.inArray('label', this.options) > -1) {
-            paper.text(senderHorizontalPosition - 7,senderVerticalPosition - 10 + this.verticalDrawSkew,parsedElements[i].getSenderLabel()).attr({fill: color, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
+            paper.text(senderHorizontalPosition - 7,senderVerticalPosition - 10 + this.verticalDrawSkew,parsedElements[i].getSenderEvent()).attr({fill: color, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
           }
 
           if ($.inArray('time', this.options) > -1) {
             paper.text(senderHorizontalPosition - 7,senderVerticalPosition + 20 + this.verticalDrawSkew,parsedElements[i].getSenderTime()).attr({fill: color, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
           }
 
-          title = Snap.parse('<title>Name: ' + parsedElements[i].getReceiverLabel() + ' - Time: ' + parsedElements[i].getReceiverTime() +'</title>');
+          title = Snap.parse('<title>Name: ' + parsedElements[i].getReceiverEvent() + ' - Time: ' + parsedElements[i].getReceiverTime() +'</title>');
           var receiverDot = paper.circle(receiverHorizontalPosition, receiverVerticalPosition + this.verticalDrawSkew, 4).attr({strokeWidth:2,stroke:color,strokeLinecap:"round", fill: color});
           receiverDot.append(title);
 
           if ($.inArray('label', this.options) > -1) {
-            paper.text(receiverHorizontalPosition - 7,receiverVerticalPosition - 10 + this.verticalDrawSkew,parsedElements[i].getReceiverLabel()).attr({fill: color, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
+            paper.text(receiverHorizontalPosition - 7,receiverVerticalPosition - 10 + this.verticalDrawSkew,parsedElements[i].getReceiverEvent()).attr({fill: color, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});
           }
           if ($.inArray('time', this.options) > -1) {
             paper.text(receiverHorizontalPosition - 7,receiverVerticalPosition + 20 + this.verticalDrawSkew,parsedElements[i].getReceiverTime()).attr({fill: color, fontFamily: "Arial", fontStyle: "italic", fontSize: "11px"});

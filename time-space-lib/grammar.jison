@@ -16,13 +16,13 @@
 \#[^\r\n]*                                   /* skip comments */
 "-->"                                        return 'FULL_SUCCESS';
 "..>"                                        return 'HALF_SUCCESS';
-"--x"                                        return 'FULL_ERROR'
-"..x"                                        return 'HALF_ERROR'
+^(\-\-x)                                     return 'FULL_ERROR'
+^(\.\.x)                                     return 'HALF_ERROR'
 (?!\s)([^\->:,\r\n"]+?)(?=\s)                return 'ACTOR';
-(?=)\s([^\->:,\r\n"]+?)(?=\s)                return 'EVENT';
+(?=)\s([^\->:\.,\r\n"]+?)(?=\s)              return 'EVENT';
 (?=)\s([0-9]+)                               return 'TIME';
 :([^\r\n]+)(?:\-\-color\s+\#[0-9A-Za-z]+)    return 'MESSAGE';
-(?:.*\-\-color\s+)(\#[0-9a-fA-F]+)           return 'COLOR';
+(\:[^\r\n]+)                                 return 'MESSAGE';
 <<EOF>>                                      return 'EOF';
 .                                            return 'INVALID';
 
@@ -51,8 +51,8 @@ statement
 	;
 
 entry
-	: actor event time messagetype actor event time msg color
-	{ $$ = new Diagram.Entry($1, $2, $3, $4, $5, $6, $7, $8, $9); }
+	: actor event time messagetype actor event time msg
+	{ $$ = new Diagram.Entry($1, $2, $3, $4, $5, $6, $7, $8); }	
 	;
 
 actor
@@ -77,27 +77,8 @@ time
 
 msg
 	: MESSAGE 
-	%{ 	console.log('matches: ' + yy.lexer.matches);
-		var fullMatch = null;
-		if(yy.lexer.matches.length > 1) {
-			fullMatch = yy.lexer.matches.shift();
-		}
-		console.log('after matches: ' + yy.lexer.matches);
-		var groupMatch = yy.lexer.match = yy.lexer.matches[0];
-		console.log('match: ' + yy.lexer.match);		
-		yy.lexer.setInput(fullMatch.slice(groupMatch.length), yy);
-		$$ = Diagram.translate(groupMatch);
-	%}
-	;
-
-color
-	: COLOR 
-	%{ 
-		if(yy.lexer.matches.length > 1) {
-			$$ = yy.lexer.matches[1];
-		} else {
-			$$ = $1;
-		}
+	%{		
+		$$ = Diagram.translate($1);
 	%}
 	;
 
