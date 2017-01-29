@@ -1,23 +1,23 @@
-C1:3:A:-:1:6:A::
-1:10:prop A:-:1:15:acc A:A:
-1:10:prop A:-:2:18:acc A:A:
-1:10:prop A:-:3:17:acc A:A:
-1:15:ack A:-:1:22:acc A:A:
-2:18:ack A:-:1:24:acc A:A:
-3:17:ack A:-:1:26:acc A:A:
-1:26: A:-:1:33:com A:A:
-1:26: A:-:2:34:com A:A:
-1:26: A:-:3:35:com A:A:
-4:17:acc C:-:5:24:acc C:C:
-5:12:prop C:-:3:28:acc C:C:
-5:12:prop C:-:4:17:acc C:C:
-5:12:prop C:-:5:16:acc C:C:
-5:16:ack C:-:5:24:ack C:C:
-3:28:nack C:-:5:32:ack A,C:A,C:
-C2:3:C:-:5:8:C:C:
-5:34:prop A,C:-:3:42:acc A,C:A,C:
-5:34:prop A,C:-:4:42:acc A,C:A,C:
-5:34:prop A,C:-:5:40:acc A,C:A,C:
-4:44::-:5:49:ack C:C:
-5:42::-:5:46:ack C:C:
-3:44::-:5:50:ack A,C:A,C:
+C1 A 3-->1 A 6:
+1 prop A 10-->1 acc A 15:A
+1 prop A 10-->2 acc A 18:A
+1 prop A 10-->3 acc A 17:A
+1 ack A 15-->1 acc A 22:A
+2 ack A 18-->1 acc A 24:A
+3 ack A 17-->1 acc A 26:A
+1 A 26-->1 com A 33:A
+1 A 26-->2 com A 34:A
+1 A 26-->3 com A 35:A
+4 acc C 17-->5 acc C 24:C
+5 prop C 12-->3 acc C 28:C
+5 prop C 12-->4 acc C 17:C
+5 prop C 12-->5 acc C 16:C
+5 ack C 16-->5 ack C 24:C
+3 nack C 28-->5 ack A,C 32:A,C
+C2 C 3-->5 C 8:C
+5 prop A,C 34-->3 acc A,C 42:A,C
+5 prop A,C 34-->4 acc A,C 42:A,C
+5 prop A,C 34-->5 acc A,C 40:A,C
+4 null 44-->5 ack C 49:C
+5 null 42-->5 ack C 46:C
+3 null 44-->5 ack A,C 50:A,C

@@ -1,7 +1,7 @@
-B:10:p1:-:C:20:p2:request:
-B:15:p3:-:C:23:p4:request:
-C:25:p5:x:B:30:p6:lost request:#881A1B
-C:40:p7:-:D:60:p8:response:
-D:65:p9:-:E:68:p10:request:#008000
-D:70:p11:-:B:80:p12:response:
-D:85:p13:x:C:95:p14:lost request:#FF8D00					
+B p1 10-->C p2 20:request
+B p3 15-->C p4 23:request
+C p5 25..>B p6 30:lost request --color #881A1B
+C p7 40-->D p8 60:response
+D p9 65-->E p10 68:request --color #008000
+D p11 70-->B p12 80:response
+D p13 85..>C p14 95:lost request --color #FF8D00

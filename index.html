@@ -6,7 +6,7 @@
 	<link rel="stylesheet" type="text/css" href="css/jquery-linedtextarea.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
 	<script src="js/jquery-linedtextarea.js"></script>
-	<script type="text/javascript" src="time-space-lib/dist/space-time-1.0.0.js"></script>
+	<script type="text/javascript" src="time-space-lib/dist/bundle.js"></script>
 	<script type="text/javascript" src="js/saveSvgAsPng.js"></script>
 	<script type="text/javascript" src="js/scripts.js"></script>
 </head>
@@ -15,7 +15,7 @@
 		<div class="inner">
 			<h1>Time Space Diagrams</h1>
 			<p>Edit the message log and click "Redraw". Messages have format:</p>
-			<p><pre>&lt;source&gt;:&lt;send time&gt;:[label]:&lt;-|.|x|.x&gt;:destination&gt;:&lt;recv time&gt;:[label]:[contents]:[message color]</pre></p>
+			<p><pre>&lt;process&gt; &lt;event|null&gt; &lt;send time&gt;&lt;-->|..>|--x|..x&gt;&lt;process&gt; &lt;event|null&gt; &lt;recv time&gt; :&lt;message&gt; [--color &lt;message color&gt;]</pre></p>
 			<div class="options">
 				<form id="opts-form">
 					<strong>Show: </strong>
@@ -29,14 +29,13 @@
 				<form action="" id="input-form">
 					<input type="file" class="" id="fileInput" />
 					<textarea id="input-data">
-B:10:p1:-:C:20:p2:request:
-B:15:p3:-:C:23:p4:request:
-C:25:p5:x:B:30:p6:lost request:#881A1B
-C:40:p7:-:D:60:p8:response:
-D:65:p9:-:E:68:p10:request:#008000
-D:70:p11:-:B:80:p12:response:
-D:85:p13:x:C:95:p14:lost request:#FF8D00
-					</textarea>
+B p1 10-->C p2 20:request
+B p3 15-->C p4 23:request
+C p5 25..>B p6 30:lost request --color #881A1B
+C p7 40-->D p8 60:response
+D p9 65-->E p10 68:request --color #008000
+D p11 70-->B p12 80:response
+D p13 85..>C p14 95:lost request --color #FF8D00</textarea>
 					<br />
 					<input type="submit" class="submit" value="Redraw" id="draw" />
 					<input type="button" class="submit" value="Save as PNG" id="save-png" />

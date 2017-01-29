@@ -1,13 +1,8 @@
-//var $ = require('jquery');
-
-//var SpaceTimeRaw = require('./space-time-raw');
 var SpaceTimeDraw = require('../space-time-draw');
-
-//module.exports = SpaceTime;
 
 (function() {
 
-	/** The following is included by preprocessor */
+/** The following is included by preprocessor */
 // #include "build/diagram-grammar.js"
 
  /**
@@ -24,9 +19,6 @@ var SpaceTimeDraw = require('../space-time-draw');
     * Parses raw input and create array of space time objects.
     */
     this.parseInput = function()  {
-		/*var spaceTimeRaw    = new SpaceTimeRaw(this.text);
-		var linesAsArray    = spaceTimeRaw.returnLinesAsArray();
-		this.parsedElements = spaceTimeRaw.returnRawInputAsArray(linesAsArray);*/
 		this.parsedElements = Diagram.parse(this.text).entries;
 	}
 

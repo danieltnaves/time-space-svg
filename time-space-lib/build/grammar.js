@@ -110,7 +110,18 @@ break;
 case 12:
  this.$ = Diagram.MESSAGETYPE.HALF_ERROR; 
 break;
-case 13: case 14:
+case 13:
+ 
+		var event = $$[$0];
+		if(event.trim() === 'null') { 			
+			this.$ = ''; 
+		}
+		else { 
+			this.$ = event;
+		}
+	
+break;
+case 14:
  this.$ = $$[$0]; 
 break;
 case 15:
@@ -599,12 +610,6 @@ stateStackSize:function stateStackSize() {
 options: {},
 performAction: function anonymous(yy,yy_,$avoiding_name_collisions,YY_START) {
 	// pre-lexer
-	console.log(yy);
-	console.log(yy_);
-	console.log(this);
-	console.log('yy_.yytext: ' + yy_.yytext);
-	console.log('YY_START: ' + YY_START);
-	console.log('$avoiding_name_collisions: ' + $avoiding_name_collisions);
 
 var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
@@ -616,28 +621,32 @@ case 2:return 16;
 break;
 case 3:return 17;
 break;
-case 4:return 18
+case 4:return 18;
 break;
-case 5:return 19
+case 5:return 19;
 break;
 case 6:return 15;
 break;
 case 7:return 20;
 break;
-case 8:return 21;
+case 8:return 20;
 break;
-case 9:return 22;
+case 9:return 21;
 break;
 case 10:return 22;
 break;
-case 11:return 5;
+case 11:return 22;
 break;
-case 12:return 'INVALID';
+case 12:return 22;
+break;
+case 13:return 5;
+break;
+case 14:return 'INVALID';
 break;
 }
 },
-rules: [/^(?:[\r\n]+)/,/^(?:#[^\r\n]*)/,/^(?:-->)/,/^(?:\.\.>)/,/^(?:^(--x))/,/^(?:^(\.\.x))/,/^(?:(?!\s)([^\->:,\r\n"]+?)(?=\s))/,/^(?:(?=)\s([^\->:\.,\r\n"]+?)(?=\s))/,/^(?:(?=)\s([0-9]+))/,/^(?:([^\r\n]+)(?:--color\s+#[0-9A-Za-z]+))/,/^(?:(:[^\r\n]+))/,/^(?:$)/,/^(?:.)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12],"inclusive":true}}
+rules: [/^(?:[\r\n]+)/,/^(?:#[^\r\n]*)/,/^(?:-->)/,/^(?:\.\.>)/,/^(?:^(--x))/,/^(?:^(\.\.x))/,/^(?:(?!\s)([^\->:,\r\n"]+?)(?=\s))/,/^(?:(?=\s)([^\->:\.\r\n"]+)(?=\s))/,/^(?:null\b)/,/^(?:(?=)\s([0-9]+))/,/^(?:([^\r\n]+)(?:--color\s+#[0-9A-Za-z]+))/,/^(?:(:[^\r\n]+))/,/^(?:(:\s*))/,/^(?:$)/,/^(?:.)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14],"inclusive":true}}
 });
 return lexer;
 })();

@@ -2,12 +2,6 @@
 
 %{
 	// pre-lexer
-	console.log(yy);
-	console.log(yy_);
-	console.log(this);
-	console.log('yytext: ' + yytext);
-	console.log('YY_START: ' + YY_START);
-	console.log('$avoiding_name_collisions: ' + $avoiding_name_collisions);
 %}
 
 %%
@@ -16,13 +10,15 @@
 \#[^\r\n]*                                   /* skip comments */
 "-->"                                        return 'FULL_SUCCESS';
 "..>"                                        return 'HALF_SUCCESS';
-^(\-\-x)                                     return 'FULL_ERROR'
-^(\.\.x)                                     return 'HALF_ERROR'
+^(\-\-x)                                     return 'FULL_ERROR';
+^(\.\.x)                                     return 'HALF_ERROR';
 (?!\s)([^\->:,\r\n"]+?)(?=\s)                return 'ACTOR';
-(?=)\s([^\->:\.,\r\n"]+?)(?=\s)              return 'EVENT';
+(?=\s)([^\->:\.\r\n"]+)(?=\s)                return 'EVENT';
+"null"                                       return 'EVENT';
 (?=)\s([0-9]+)                               return 'TIME';
 :([^\r\n]+)(?:\-\-color\s+\#[0-9A-Za-z]+)    return 'MESSAGE';
 (\:[^\r\n]+)                                 return 'MESSAGE';
+(\:\s*)                                      return 'MESSAGE';
 <<EOF>>                                      return 'EOF';
 .                                            return 'INVALID';
 
@@ -68,7 +64,16 @@ messagetype
 	;
 
 event
-	: EVENT   { $$ = $1; }
+	: EVENT   
+	%{ 
+		var event = $1;
+		if(event.trim() === 'null') { 			
+			$$ = ''; 
+		}
+		else { 
+			$$ = event;
+		}
+	%}
 	;
 
 time
