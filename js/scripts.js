@@ -6,7 +6,17 @@ function getOptionsSelectedValues()
 
 function drawElements() {
 	var lib = new SpaceTime($('#input-data').val());
-	var status = lib.drawInput('#paper', getOptionsSelectedValues());
+	try {
+		document.getElementById("err").style.display = "none";
+		var status = lib.drawInput('#paper', getOptionsSelectedValues());	
+	} catch (err) {
+		var errMessage = err.message.slice(err.message.indexOf("Expecting"));
+		var errElement = document.getElementById("err"); 
+		if(errMessage) errElement.innerText = "Error: " + errMessage;
+		else errElement.innerText = "Error: Unexpected error ocurred.";
+		errElement.style.display = "block";
+	}
+	
 }
 
 $(document).ready(function(){

@@ -15,7 +15,7 @@
 		<div class="inner">
 			<h1>Time Space Diagrams</h1>
 			<p>Edit the message log and click "Redraw". Messages have format:</p>
-			<p><pre>&lt;process&gt; &lt;event|null&gt; &lt;send time&gt;&lt;-->|..>|--x|..x&gt;&lt;process&gt; &lt;event|null&gt; &lt;recv time&gt; :&lt;message&gt; [--color &lt;message color&gt;]</pre></p>
+			<p><pre>&lt;process&gt; &lt;event|null&gt; &lt;send time&gt;&lt;-->|..>|--x|..x&gt;&lt;process&gt; &lt;event|null&gt; &lt;recv time&gt;:&lt;message&gt; [--color &lt;message color&gt;]</pre></p>
 			<div class="options">
 				<form id="opts-form">
 					<strong>Show: </strong>
@@ -27,7 +27,8 @@
 			</div>
 			<div class="wrapper-form">
 				<form action="" id="input-form">
-					<input type="file" class="" id="fileInput" />
+					<input type="file" class="" id="fileInput">
+					<p id="err" style="display: none; text-align: left; color: red">Teste</p>
 					<textarea id="input-data">
 B p1 10-->C p2 20:request
 B p3 15-->C p4 23:request
