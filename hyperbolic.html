@@ -1,0 +1,138 @@
+<html>
+<head>
+	<script type="application/javascript" src="js/Angle.js"></script>
+	<script type="application/javascript" src="js/Point.js"></script>
+	<script type="application/javascript" src="js/Line.js"></script>
+	<script type="application/javascript" src="js/Circle.js"></script>
+	<script type="application/javascript" src="js/Polygon.js"></script>	
+	<script type="application/javascript" src="js/Canvas.js"></script>
+	<script type="application/javascript" src="js/HyperbolicCanvas.js"></script>
+	<style type="text/css">
+		html, body {
+			height: 100%;
+			margin: 0;
+			background-color: #2C001E;
+		}
+
+		div#hyperbolic-canvas {
+			height: 100%;
+			width: 100%;
+		}
+
+		div#hyperbolic-canvas div.backdrop {
+			background-color: #2C001E;
+		}
+
+		div#hyperbolic-canvas div.backdrop div.underlay {
+			background-color: #D6D3CF;
+		}
+	</style>
+
+</head>
+<body>
+	<div id="hyperbolic-canvas" style="width: 600px; height: 600px;">
+		
+	</div>
+
+	<script type="text/javascript">
+		var drawShip = function (canvas) {
+			var defaultProperties = {
+				lineDash: [],
+				lineJoin: 'round',
+				lineWidth: 1,
+				shadowBlur: 20,
+				shadowColor: 'white',
+				strokeStyle: '#DD4814',
+				fillStyle: '#333333',
+			};
+
+			var heading = HyperbolicCanvas.Angle.random();
+			var wingAngle = Math.TAU / 3;
+			canvas.setContextProperties(defaultProperties);
+/*			var location = HyperbolicCanvas.Point.givenEuclideanPolarCoordinates(
+				.5,
+				HyperbolicCanvas.Angle.opposite(heading)
+				);
+
+			var front = location.hyperbolicDistantPoint(.1, heading);
+			var left = location.hyperbolicDistantPoint(.05, heading + wingAngle);
+			var right = location.hyperbolicDistantPoint(.05, heading - wingAngle);*/
+			var p1 = HyperbolicCanvas.Point.givenCoordinates(0.25, 0.25);
+			var p1X = p1.getX();
+			var p1Y = p1.getY();
+			var upLeft    = HyperbolicCanvas.Point.givenCoordinates(p1X-(p1X/10), p1Y+(p1Y/10));
+			var downLeft  = HyperbolicCanvas.Point.givenCoordinates(p1X-(p1X/10), p1Y-(p1Y/10));
+			var downRight = HyperbolicCanvas.Point.givenCoordinates(p1X+(p1X/10), p1Y-(p1Y/10));
+			
+			var upRight   = HyperbolicCanvas.Point.givenCoordinates(p1X+(p1X/10), p1Y+(p1Y/10));
+
+			var path = canvas.pathForHyperbolic(HyperbolicCanvas.Line.givenTwoPoints(upLeft, upRight));
+			canvas.stroke(path);
+			path = canvas.pathForHyperbolic(HyperbolicCanvas.Line.givenTwoPoints(upLeft, downLeft));
+			canvas.stroke(path);
+			path = canvas.pathForHyperbolic(HyperbolicCanvas.Line.givenTwoPoints(upRight, downRight));
+			canvas.stroke(path);
+			path = canvas.pathForHyperbolic(HyperbolicCanvas.Line.givenTwoPoints(downLeft, downRight));
+			canvas.stroke(path);
+
+			var p2 = HyperbolicCanvas.Point.givenCoordinates(0.5, 0.5);
+			var p2X = p2.getX();
+			var p2Y = p2.getY();
+			upLeft    = HyperbolicCanvas.Point.givenCoordinates(p2X-(p2X/10), p2Y+(p2Y/10));
+			downLeft  = HyperbolicCanvas.Point.givenCoordinates(p2X-(p2X/10), p2Y-(p2Y/10));
+			downRight = HyperbolicCanvas.Point.givenCoordinates(p2X+(p2X/10), p2Y-(p2Y/10));			
+			upRight   = HyperbolicCanvas.Point.givenCoordinates(p2X+(p2X/10), p2Y+(p2Y/10));
+
+			path = canvas.pathForHyperbolic(HyperbolicCanvas.Line.givenTwoPoints(upLeft, upRight));
+			canvas.stroke(path);
+			path = canvas.pathForHyperbolic(HyperbolicCanvas.Line.givenTwoPoints(upLeft, downLeft));
+			canvas.stroke(path);
+			path = canvas.pathForHyperbolic(HyperbolicCanvas.Line.givenTwoPoints(upRight, downRight));
+			canvas.stroke(path);
+			path = canvas.pathForHyperbolic(HyperbolicCanvas.Line.givenTwoPoints(downLeft, downRight));
+			canvas.stroke(path);
+
+			canvas.setContextProperties({
+				lineWidth: 4,
+				shadowColor: 'white',
+				strokeStyle: '#DD4814'
+			});
+			path = canvas.pathForHyperbolic(HyperbolicCanvas.Line.givenTwoPoints(p1, p2));
+			canvas.stroke(path);
+			/*canvas.setContextProperties({
+				lineDash: [5],
+				lineWidth: 1,
+				shadowBlur: 0,
+				strokeStyle: 'white'
+			});
+			var path = canvas.pathForHyperbolic(
+				HyperbolicCanvas.Line.givenTwoPoints(front, location.hyperbolicDistantPoint(30))
+				);
+			canvas.stroke(path);
+			canvas.setContextProperties(defaultProperties);
+
+
+			path = canvas.pathForHyperbolic(HyperbolicCanvas.Polygon.givenVertices([
+				front,
+				left,
+				location,
+				right,
+				]));
+			canvas.stroke(path);*/
+		};
+
+		(function() {			
+			var canvas = HyperbolicCanvas.create('#hyperbolic-canvas', 'main-canvas');
+			/*canvas.setContextProperties({ fillStyle: '#DD4814' });
+			canvas.clear();		
+			var point1 = HyperbolicCanvas.Point.givenCoordinates(0.25, 0.25);
+			var p1 = canvas.at();
+			var point2 = HyperbolicCanvas.Point.givenCoordinates(0.55, 0.55);
+			var line = HyperbolicCanvas.Line.givenTwoPoints(point1, point2);
+			var path = canvas.pathForHyperbolic(line);
+			canvas.stroke(path);*/
+			drawShip(canvas);
+		})();
+	</script>
+</body>
+</html>
