@@ -1,0 +1,235 @@
+<html>
+<head>
+	<script type="text/javascript" src="dist/hypervis.js"></script>
+	<style>
+		#infovis {
+			position:relative;
+			width:600px;
+			height:600px;
+			margin:auto;
+			overflow:hidden;
+		}
+		/*#center-container {
+			height:600px;
+			position:absolute;
+			top:0;
+		}*/
+	</style>
+</head>
+<body>
+	<div>
+		<textarea style="width: 500px; height: 200px" id="inputId">
+[{
+"id": "node0",
+"name": "node0 name",
+"data": {
+"$dim": 16.759175934208628,
+"some other key": "some other value"
+},
+"adjacencies": [{
+"nodeTo": "node1",
+"data": {
+"weight": 3
+}
+}, {
+"nodeTo": "node2",
+"data": {
+"weight": 3
+}
+}, {
+"nodeTo": "node3",
+"data": {
+"weight": 3
+}
+}, {
+"nodeTo": "node4",
+"data": {
+"weight": 1
+}
+}, {
+"nodeTo": "node5",
+"data": {
+"weight": 1
+}
+}]
+}, {
+"id": "node1",
+"name": "node1 name",
+"data": {
+"some other key": "some other value"
+},
+"adjacencies": [{
+"nodeTo": "node0",
+"data": {
+"weight": 3
+}
+}, {
+"nodeTo": "node2",
+"data": {
+"weight": 1
+}
+}, {
+"nodeTo": "node3",
+"data": {
+"weight": 3
+}
+}, {
+"nodeTo": "node4",
+"data": {
+"weight": 1
+}
+}, {
+"nodeTo": "node5",
+"data": {
+"weight": 1
+}
+}]
+}, {
+"id": "node2",
+"name": "node2 name",
+"data": {
+"$type": "triangle",
+"some other key": "some other value"
+},
+"adjacencies": [{
+"nodeTo": "node0",
+"data": {
+"weight": 3
+}
+}, {
+"nodeTo": "node1",
+"data": {
+"weight": 1
+}
+}, {
+"nodeTo": "node3",
+"data": {
+"weight": 3
+}
+}, {
+"nodeTo": "node4",
+"data": {
+"weight": 3
+}
+}, {
+"nodeTo": "node5",
+"data": {
+"weight": 1
+}
+}]
+}, {
+"id": "node3",
+"name": "node3 name",
+"data": {
+"some other key": "some other value"
+},
+"adjacencies": [{
+"nodeTo": "node0",
+"data": {
+"weight": 3
+}
+}, {
+"nodeTo": "node1",
+"data": {
+"weight": 3
+}
+}, {
+"nodeTo": "node2",
+"data": {
+"weight": 3
+}
+}, {
+"nodeTo": "node4",
+"data": {
+"weight": 1
+}
+}, {
+"nodeTo": "node5",
+"data": {
+"weight": 3
+}
+}]
+}, {
+"id": "node4",
+"name": "node4 name",
+"data": {
+"some other key": "some other value"
+},
+"adjacencies": [{
+"nodeTo": "node0",
+"data": {
+"weight": 1
+}
+}, {
+"nodeTo": "node1",
+"data": {
+"weight": 1
+}
+}, {
+"nodeTo": "node2",
+"data": {
+"weight": 3
+}
+}, {
+"nodeTo": "node3",
+"data": {
+"weight": 1
+}
+}, {
+"nodeTo": "node5",
+"data": {
+"weight": 3
+}
+}]
+}, {
+"id": "node5",
+"name": "node5 name",
+"data": {
+"$dim": 32.26403873194912,
+"$type": "star",
+"some other key": "some other value"
+},
+"adjacencies": [{
+"nodeTo": "node0",
+"data": {
+"weight": 1
+}
+}, {
+"nodeTo": "node1",
+"data": {
+"weight": 1
+}
+}, {
+"nodeTo": "node2",
+"data": {
+"weight": 1
+}
+}, {
+"nodeTo": "node3",
+"data": {
+"weight": 3
+}
+}, {
+"nodeTo": "node4",
+"data": {
+"weight": 3
+}
+}]
+}]
+</textarea>	
+<div>
+	<button type="button" id="refreshId">Draw</button>
+</div>
+</div>
+<div id="center-container">
+	<div id="infovis"></div>
+</div>
+<div id="log"></div>
+<script type="text/javascript">
+	(function(){
+		hv = new Hypervis();
+		hv.init('inputId', 'refreshId');
+	})();
+</script>
+</body>
+</html>
