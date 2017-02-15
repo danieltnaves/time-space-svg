@@ -17166,7 +17166,11 @@ $jit.Hypertree.$extend = true;
 (function() {
 
 function Hypervis() {
-    this.init = function(inputId, refreshId) {
+    this.init = function(inputId, refreshId, root) {
+        if(!root) {
+            root = 0; //index root
+        }
+
         var json = JSON.parse(document.getElementById(inputId).value);    
 
         var ht = new $jit.Hypertree({
@@ -17196,8 +17200,8 @@ function Hypervis() {
             //styles to edges.
             onBeforePlotLine: function(adj){
                 //Set random lineWidth for edges.
-                if (!adj.data.$lineWidth) 
-                    adj.data.$lineWidth = Math.random() * 7 + 1;
+                if (!adj.data.$lineWidth)
+                    adj.data.$lineWidth = adj.data.weight;
             },
             
             /*onBeforeCompute: function(node){
@@ -17227,7 +17231,7 @@ function Hypervis() {
         });
 
         if(json) {
-            ht.loadJSON(json, 2);
+            ht.loadJSON(json, root);
             ht.refresh();
             //ht.controller.onBeforeCompute(ht.graph.getNode(ht.root));
         }
@@ -17235,7 +17239,7 @@ function Hypervis() {
         var button = $jit.id(refreshId);
         button.onclick = function() {
             json = JSON.parse(document.getElementById(inputId).value);
-            ht.loadJSON(json, 2);
+            ht.loadJSON(json, root);
             ht.refresh();
         };
     }
