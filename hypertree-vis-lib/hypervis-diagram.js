@@ -31,9 +31,31 @@ HypervisDiagram.Node = function(id, name) {
 	}
 }
 
+/*HypervisDiagram.Jit = function() {
+	this._id;
+	this._name;
+	this.adjacencies = new Array();
+
+	this.setId = function(id) {
+		this._id = id;
+	}
+
+	this.getId = function() {
+		return this._id;
+	}
+
+	this.setName = function(name) {
+		this._name = name;
+	}
+
+	this.getName = function() {
+		return this._name;
+	}
+}
+*/
 HypervisDiagram.Entry = function(nodeA, nameA, nodeB, nameB, weight) {
-	this._nodeA  = new Node(nodeA, nameA);
-	this._nodeB  = new Node(nodeB, nameB);
+	this._nodeA  = new HypervisDiagram.Node(nodeA, nameA);
+	this._nodeB  = new HypervisDiagram.Node(nodeB, nameB);
 	this._weight = weight;
 
 	this.getNodeA = function() {
@@ -51,35 +73,88 @@ HypervisDiagram.Entry = function(nodeA, nameA, nodeB, nameB, weight) {
 
 // parser to json format expected by JIT library: https://philogb.github.io/jit/
 HypervisDiagram.Parser = function() {
-	//TODO: não duplicar as entradas que já foram processadas
-	//TODO: necessário ter algum controle paralelo para verificar isso
+	this._map = {};
+
+	this._reset = function() {
+		this._map = {};
+	}
+
 	this.toJson = function(entries) {
-		//if(!entries) //TODO throw Exception
-		var jitJson = {};
+		_reset();
+		//if(!entries) //TODO throw Exception		
 		var i;
 		for (i in entries) {
 			var entry = entries[i];
-			_createSourceData(jitJson, entry);
-			_addAdjacencies(jitJson, entry);
+			_parseSourceNode(entry);
+			_parseDestNode(entry);
+		}
+		var result = new Array();
+		for(var key in _map) {
+			if(_map.hasOwnProperty(key)) {
+				result.push(_map[key]);
+			}
+		}
+		return JSON.stringify(result);
+	}
+
+	this._parseSourceNode = function(entry) {
+		var key = entry.getNodeA().getId(); 
+		if(!_map[key]) {
+			var obj = {};
+			obj.id   = entry.getNodeA().getId();
+			obj.name = entry.getNodeA().getName();
+			_map[key] = obj;
 		}
 	}
 
-	this._createSourceData = function(json, entry) {
-		json.id   = entry.getNodeA().getId();
-		json.name = entry.getNameA().getName();
-	}
+	this._parseDestNode = function(entry) {
+		var obj = _map[entry.getNodeA().getId()];		
 
-	this._addAdjacencies = function(json, entry) {
-		var adjacencies = new Array();
 		var adjacency = {};
-		adjacency.nodeTo = entry.getNodeB().getId();
-		adjacencies.push(adjacency);
-		json.adjacencies = adjacencies;
+		if(!obj.adjacencies) {
+			obj.adjacencies = new Array();			
+			adjacency.nodeTo = entry.getNodeB().getId();
+			adjacency.data.weight = entry.getWeight();
+			obj.adjacencies.push(adjacency);
+		} else {
+			if(_containsObject(entry.getNodeB().getId(), obj.adjacencies)) {
+				return;
+			} else {
+				adjacency.nodeTo = entry.getNodeB().getId();
+				adjacency.data.weight = entry.getWeight();
+				obj.adjacencies.push(adjacency);
+			}
+		}
+	}
+
+	this._containsObject = function(obj, list) {
+		if(!list) return false;		
+	    var i;
+	    for (i = 0; i < list.length; i++) {
+	        if (list[i].nodeTo === obj) {
+	            return true;
+	        }
+	    }
+ 	   return false;
 	}
 }
 
-/*function ParserError(message) {
-	this.name    = 'ParserError';
-	this.message = (message || '');
+/** The following is included by preprocessor */
+// #include "build/grammar.js"
+
+function ParseError(message, hash) {
+  this.name = 'ParseError';
+  this.message = (message || '');
 }
-ParserError.prototype = new Error();*/
+ParseError.prototype = new Error();
+HypervisDiagram.ParseError = ParseError;
+
+HypervisDiagram.parse = function(input) {
+	grammar.yy = new HypervisDiagram();
+	grammar.yy.parseError = function(message, hash) {
+		throw new ParseError(message, hash);
+	}
+	var diagram = grammar.parse(input);
+	delete diagram.parseError;
+	return diagram;
+}
