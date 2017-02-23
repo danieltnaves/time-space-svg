@@ -17199,32 +17199,13 @@ HypervisDiagram.Node = function(id, name) {
 	}
 }
 
-/*HypervisDiagram.Jit = function() {
-	this._id;
-	this._name;
-	this.adjacencies = new Array();
-
-	this.setId = function(id) {
-		this._id = id;
-	}
-
-	this.getId = function() {
-		return this._id;
-	}
-
-	this.setName = function(name) {
-		this._name = name;
-	}
-
-	this.getName = function() {
-		return this._name;
-	}
-}
-*/
 HypervisDiagram.Entry = function(nodeA, nameA, nodeB, nameB, weight) {
 	this._nodeA  = new HypervisDiagram.Node(nodeA, nameA);
 	this._nodeB  = new HypervisDiagram.Node(nodeB, nameB);
-	this._weight = parseInt(weight.trim());
+	this._weight = (function() {
+		var match = weight.match(/\-w\s+(\d+)/);
+		return {weight : match[1]};
+	}()).weight;
 
 	this.getNodeA = function() {
 		return this._nodeA;
@@ -17248,8 +17229,10 @@ HypervisDiagram.Parser = function() {
 	}
 
 	this.toJson = function(entries) {
-		this._reset();
-		//if(!entries) //TODO throw Exception		
+		if(!entries) {
+			throw new ParseError("entries cannot be null.");
+		}		
+		this._reset();		
 		var i;
 		for (i in entries) {
 			var entry = entries[i];
@@ -17922,7 +17905,7 @@ case 8:return 'INVALID';
 break;
 }
 },
-rules: [/^(?:[\r\n]+)/,/^(?:#[^\r\n]*)/,/^(?:->)/,/^(?:(?!w)\d+)/,/^(?:^\s(.+)(?=->))/,/^(?:^\s(.+)(?=-w|-\\d))/,/^(?:^([^\->\r\n\s]+?)(?=\s))/,/^(?:$)/,/^(?:.)/],
+rules: [/^(?:[\r\n]+)/,/^(?:#[^\r\n]*)/,/^(?:->)/,/^(?:-w\s+\d+)/,/^(?:^\s(.+)(?=->))/,/^(?:^\s(.+)(?=-w|-\\d))/,/^(?:^([^\->\r\n\s]+?)(?=\s))/,/^(?:$)/,/^(?:.)/],
 conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8],"inclusive":true}}
 });
 return lexer;
@@ -17968,6 +17951,7 @@ HypervisDiagram.parse = function(input) {
 	delete diagram.parseError;
 	return diagram;
 };
+
 
 function Hypervis() {
     this.init = function(inputId, refreshId, root) {
@@ -18037,12 +18021,11 @@ function Hypervis() {
         if(json) {
             ht.loadJSON(json, root);
             ht.refresh();
-            //ht.controller.onBeforeCompute(ht.graph.getNode(ht.root));
         }
 
         var button = $jit.id(refreshId);
         button.onclick = function() {
-            json = JSON.parse(document.getElementById(inputId).value);
+            json = new Hypervis()._parseInput(document.getElementById(inputId).value);
             ht.loadJSON(json, root);
             ht.refresh();
         };

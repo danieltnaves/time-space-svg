@@ -1,24 +1,28 @@
 <html>
 <head>
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
+	<link rel="stylesheet" type="text/css" href="../css/jquery-linedtextarea.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+	<script src="../js/jquery-linedtextarea.js"></script>
 	<script type="text/javascript" src="dist/hypervis.js"></script>
 	<style>
-		#infovis {
-			position:relative;
+		#infovis {			
 			width:600px;
 			height:600px;
 			margin:auto;
 			overflow:hidden;
 		}
-		/*#center-container {
-			height:600px;
-			position:absolute;
-			top:0;
-		}*/
 	</style>
 </head>
 <body>
-	<div>
-		<textarea style="width: 500px; height: 200px" id="inputId">
+	<div class="header">
+		<div class="inner">
+			<h1>Hyperbolic Visualization</h1>
+			<p>Edit the message log and click "Redraw". Messages have format:</p>
+			<p><pre>&lt;source node id&gt; &lt;source node name&gt; -> &lt;dest node id&gt; &lt;dest node name&gt; [-w &lt;line weight&gt;]</pre></p>
+			<div class="wrapper-form">
+					<p id="err" style="display: none; text-align: left; color: red">Teste</p>
+					<textarea id="input-data">
 node0 name0->node1 name1 -w 3
 node0 name0->node2 name2 -w 3
 node0 name0->node3 name3 -w 3
@@ -33,20 +37,29 @@ node2 name2->node4 name4 -w 3
 node2 name2->node5 name5 -w 1
 node3 name3->node4 name4 -w 1
 node3 name3->node5 name5 -w 3
-node4 name4->node5 name5 -w 3
-</textarea>	
-<div>
-	<button type="button" id="refreshId">Draw</button>
-</div>
-</div>
-<div id="center-container">
-	<div id="infovis"></div>
-</div>
-<div id="log"></div>
+node4 name4->node5 name5 -w 3</textarea>
+					<br />
+					<button type="button" class="submit" id="draw">Redraw</button>
+			</div>
+			
+		</div>
+	</div>
+	<div class="content">
+		<div class="inner">
+			<div id="infovis"></div>
+		</div>
+	</div>
+	<div class="footer">
+		<div class="inner">
+			
+		</div>
+	</div>
 <script type="text/javascript">
 	(function(){
+		$('#input-data').linedtextarea();
+
 		hv = new Hypervis();
-		hv.init('inputId', 'refreshId');
+		hv.init('input-data', 'draw');
 	})();
 </script>
 </body>

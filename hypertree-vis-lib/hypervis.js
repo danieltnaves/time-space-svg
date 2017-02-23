@@ -6,6 +6,7 @@
 
 // #include "build/diagram-grammar.js"
 
+
 function Hypervis() {
     this.init = function(inputId, refreshId, root) {
         if(!root) {
@@ -74,12 +75,11 @@ function Hypervis() {
         if(json) {
             ht.loadJSON(json, root);
             ht.refresh();
-            //ht.controller.onBeforeCompute(ht.graph.getNode(ht.root));
         }
 
         var button = $jit.id(refreshId);
         button.onclick = function() {
-            json = JSON.parse(document.getElementById(inputId).value);
+            json = new Hypervis()._parseInput(document.getElementById(inputId).value);
             ht.loadJSON(json, root);
             ht.refresh();
         };

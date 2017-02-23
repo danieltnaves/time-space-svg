@@ -9,7 +9,7 @@
 [\r\n]+                                      return 'NL';
 \#[^\r\n]*                                   /* skip comments */
 "->"                                         return 'LINE';
-(?!-w)\d+                                    return 'WEIGHT';
+\-w\s+\d+                                    return 'WEIGHT';
 ^\s(.+)(?=\-\>)                              return 'NAME';
 ^\s(.+)(?=\-w|\-\\d)                         return 'NAME';
 ^([^\->\r\n\s]+?)(?=\s)                      return 'NODE';
