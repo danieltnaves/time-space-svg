@@ -19,203 +19,21 @@
 <body>
 	<div>
 		<textarea style="width: 500px; height: 200px" id="inputId">
-[{
-"id": "node0",
-"name": "node0 name",
-"data": {
-"$dim": 16.759175934208628,
-"some other key": "some other value"
-},
-"adjacencies": [{
-"nodeTo": "node1",
-"data": {
-"weight": 3
-}
-}, {
-"nodeTo": "node2",
-"data": {
-"weight": 3
-}
-}, {
-"nodeTo": "node3",
-"data": {
-"weight": 3
-}
-}, {
-"nodeTo": "node4",
-"data": {
-"weight": 1
-}
-}, {
-"nodeTo": "node5",
-"data": {
-"weight": 1
-}
-}]
-}, {
-"id": "node1",
-"name": "node1 name",
-"data": {
-"some other key": "some other value"
-},
-"adjacencies": [{
-"nodeTo": "node0",
-"data": {
-"weight": 3
-}
-}, {
-"nodeTo": "node2",
-"data": {
-"weight": 1
-}
-}, {
-"nodeTo": "node3",
-"data": {
-"weight": 3
-}
-}, {
-"nodeTo": "node4",
-"data": {
-"weight": 1
-}
-}, {
-"nodeTo": "node5",
-"data": {
-"weight": 1
-}
-}]
-}, {
-"id": "node2",
-"name": "node2 name",
-"data": {
-"$type": "triangle",
-"some other key": "some other value"
-},
-"adjacencies": [{
-"nodeTo": "node0",
-"data": {
-"weight": 3
-}
-}, {
-"nodeTo": "node1",
-"data": {
-"weight": 1
-}
-}, {
-"nodeTo": "node3",
-"data": {
-"weight": 3
-}
-}, {
-"nodeTo": "node4",
-"data": {
-"weight": 3
-}
-}, {
-"nodeTo": "node5",
-"data": {
-"weight": 1
-}
-}]
-}, {
-"id": "node3",
-"name": "node3 name",
-"data": {
-"some other key": "some other value"
-},
-"adjacencies": [{
-"nodeTo": "node0",
-"data": {
-"weight": 3
-}
-}, {
-"nodeTo": "node1",
-"data": {
-"weight": 3
-}
-}, {
-"nodeTo": "node2",
-"data": {
-"weight": 3
-}
-}, {
-"nodeTo": "node4",
-"data": {
-"weight": 1
-}
-}, {
-"nodeTo": "node5",
-"data": {
-"weight": 3
-}
-}]
-}, {
-"id": "node4",
-"name": "node4 name",
-"data": {
-"some other key": "some other value"
-},
-"adjacencies": [{
-"nodeTo": "node0",
-"data": {
-"weight": 1
-}
-}, {
-"nodeTo": "node1",
-"data": {
-"weight": 1
-}
-}, {
-"nodeTo": "node2",
-"data": {
-"weight": 3
-}
-}, {
-"nodeTo": "node3",
-"data": {
-"weight": 1
-}
-}, {
-"nodeTo": "node5",
-"data": {
-"weight": 3
-}
-}]
-}, {
-"id": "node5",
-"name": "node5 name",
-"data": {
-"$dim": 32.26403873194912,
-"$type": "star",
-"some other key": "some other value"
-},
-"adjacencies": [{
-"nodeTo": "node0",
-"data": {
-"weight": 1
-}
-}, {
-"nodeTo": "node1",
-"data": {
-"weight": 1
-}
-}, {
-"nodeTo": "node2",
-"data": {
-"weight": 1
-}
-}, {
-"nodeTo": "node3",
-"data": {
-"weight": 3
-}
-}, {
-"nodeTo": "node4",
-"data": {
-"weight": 3
-}
-}]
-}]
+node0 name0->node1 name1 -w 3
+node0 name0->node2 name2 -w 3
+node0 name0->node3 name3 -w 3
+node0 name0->node4 name4 -w 1
+node0 name0->node5 name5 -w 1
+node1 name1->node2 name2 -w 1
+node1 name1->node3 name3 -w 3
+node1 name1->node4 name4 -w 1
+node1 name1->node5 name5 -w 1
+node2 name2->node3 name3 -w 3
+node2 name2->node4 name4 -w 3
+node2 name2->node5 name5 -w 1
+node3 name3->node4 name4 -w 1
+node3 name3->node5 name5 -w 3
+node4 name4->node5 name5 -w 3
 </textarea>	
 <div>
 	<button type="button" id="refreshId">Draw</button>

@@ -4,13 +4,15 @@
 
 (function() {
 
+// #include "build/diagram-grammar.js"
+
 function Hypervis() {
     this.init = function(inputId, refreshId, root) {
         if(!root) {
             root = 0; //index root
         }
 
-        var json = JSON.parse(document.getElementById(inputId).value);    
+        var json = this._parseInput(document.getElementById(inputId).value);
 
         var ht = new $jit.Hypertree({
             injectInto: 'infovis',
@@ -81,6 +83,12 @@ function Hypervis() {
             ht.loadJSON(json, root);
             ht.refresh();
         };
+    }
+
+    this._parseInput = function(input) {
+        var diagram = HypervisDiagram.parse(input);
+        var hdParser = new HypervisDiagram.Parser();
+        return hdParser.toJson(diagram.entries);
     }
 }
 
