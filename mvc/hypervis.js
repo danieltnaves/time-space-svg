@@ -6,7 +6,7 @@ function Hypervis(inputId, refreshId, root) {
     this.refreshId = refreshId;
     this.root      = (root != null ? root : 0);
 
-    this.displayDiagram = function(diagram) {
+    this.displayDiagram = function(diagram, parser) {
 
         //var json = this._parseInput(document.getElementById(this.inputId).value);
 
@@ -75,9 +75,9 @@ function Hypervis(inputId, refreshId, root) {
         }
 
         var button = $jit.id(refreshId);
-        button.onclick = function(diagram) {
+        button.onclick = function() {
             //json = new Hypervis()._parseInput(document.getElementById(inputId).value);
-            var d = diagram.parse(document.getElementById(inputId).value);
+            var d = parser(document.getElementById(inputId).value);
             json = new Hypervis.Parser().toJson(d.entries);
             ht.loadJSON(json, root);
             ht.refresh();
@@ -120,37 +120,37 @@ Hypervis.Parser = function () {
     }
 
     this._parseSourceNode = function(entry) {
-        var sourceKey = entry.getNodeA().getId();
-        var destKey = entry.getNodeB().getId();
+        var sourceKey = entry.getSenderName();
+        var destKey = entry.getReceiverName();
         var obj = {};
         if(!this._map[sourceKey]) {         
-            obj.id   = entry.getNodeA().getId();
-            obj.name = entry.getNodeA().getName();
+            obj.id   = entry.getSenderName();;
+            obj.name = entry.getSenderName();
             this._map[sourceKey] = obj;
         }
         if(!this._map[destKey]) {
             obj = {};
-            obj.id   = entry.getNodeB().getId();
-            obj.name = entry.getNodeB().getName();
+            obj.id   = entry.getReceiverName();
+            obj.name = entry.getReceiverName();
             this._map[destKey] = obj;
         }
     }
 
     this._parseDestNode = function(entry) {
-        var obj = this._map[entry.getNodeA().getId()];      
+        var obj = this._map[entry.getSenderName()];      
 
         var adjacency = {};
         if(!obj.adjacencies) {
             obj.adjacencies = new Array();          
-            adjacency.nodeTo = entry.getNodeB().getId();
-            adjacency.data = {weight: entry.getWeight()};
+            adjacency.nodeTo = entry.getReceiverName();
+            adjacency.data = {weight: 3};
             obj.adjacencies.push(adjacency);
         } else {
-            if(this._containsObject(entry.getNodeB().getId(), obj.adjacencies)) {
+            if(this._containsObject(entry.getReceiverName(), obj.adjacencies)) {
                 return;
             } else {
-                adjacency.nodeTo = entry.getNodeB().getId();
-                adjacency.data = {weight: entry.getWeight()};
+                adjacency.nodeTo = entry.getReceiverName();
+                adjacency.data = {weight: 3};
                 obj.adjacencies.push(adjacency);
             }
         }

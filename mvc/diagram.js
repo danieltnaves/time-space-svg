@@ -33,7 +33,6 @@ Diagram.Entry = function(actorA, eventA, timeA, messagetype, actorB, eventB, tim
   var parameters       = (function() {
     var match = message.match(/^([^\r\n]+)(\-\-\w+\s+)(\#[A-Za-z0-9]+)/);
     if(match && match.length > 1) {
-      console.log('color: ' + this.color);
       return { 
         message: match[1].trim(), 
         color: match[3]
