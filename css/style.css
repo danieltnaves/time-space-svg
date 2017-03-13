@@ -19,7 +19,10 @@ body { font-family: 'Ubuntu Condensed', sans-serif;  }
 .header .inner .options span { margin-left: 10px; display: block; float: left; }
 .header .inner .options input { cursor: pointer; margin-right: 5px; margin-top: 2px; }
 .header .inner .options .labels { margin-left: 15px; }
-.header .inner pre { margin-top: 10px; margin-bottom: 20px; }
+.header .inner .vis { margin-bottom: 10px; }
+.header .inner .vis strong { margin-right: 15px}
+.header .inner pre { margin-top: 10px; margin-bottom: 20px; margin-right: 15px!important; }
+.header .format { margin-top: 10px; margin-bottom: 10px; }
 
 
 /*CONTENT*/
@@ -27,6 +30,7 @@ body { font-family: 'Ubuntu Condensed', sans-serif;  }
 .content .inner { text-align: center; overflow: scroll; clear: both; }
 .content .inner svg { }
 .content .inner #paper { display: inline-block;  }
+.content .inner #infovis { width:600px; height:600px; margin:auto; overflow:hidden; }
 
 /*FOOTER*/
 .footer {  }

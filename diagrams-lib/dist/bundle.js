@@ -38,21 +38,39 @@ Diagram.Entry = function(actorA, eventA, timeA, messagetype, actorB, eventB, tim
   //'split' the color parameter from the message parameter
   //we do this because Jison's regex engine does not take in account regex group matching
   var parameters       = (function() {
-    var match = message.match(/^([^\r\n]+)(\-\-\w+\s+)(\#[A-Za-z0-9]+)/);
-    if(match && match.length > 1) {
-      return { 
-        message: match[1].trim(), 
-        color: match[3]
-      };
-    } else {
+    var eval = function(str, regex, matches) {
+      matches.result = str.match(regex);
+      return matches.result && matches.result.length > 1;
+    };
+    //matches, e.g., <string> --color #FFFFFF --weigth 5
+    var regexWithColorAndWeight = /^([^\r\n]+)(?:\-\-\w+\s+(\#[A-Za-z\d]+))(?:\s+)(?:\-\-\w+\s+(\d+))?/;
+    var regexWithColor = /^([^\r\n]+)(?:\-\-\w+\s+(\#[A-Za-z\d]+))/;
+    var regexWithWeigth = /^([^\r\n]+)(?:\-\-\w+\s+(\d+))/;
+    var matches = {};
+    if(eval(message, regexWithColorAndWeight, matches)) {
       return {
-        message: message.trim()
+        message: matches.result[1].trim(),
+        color: matches.result[2],
+        weigth: matches.result[3]
+      };
+    } else if(eval(message, regexWithColor, matches)) {
+      return {
+        message: matches.result[1].trim(),
+        color: matches.result[2]
       }
+    } else if(eval(message, regexWithWeigth, matches)) {
+      return {
+        message: matches.result[1].trim(),
+        weigth: matches.result[2]
+      }
+    } else {
+      return { message: message.trim() }
     }
   }());
 
   this.message = parameters.message;
   this.color   = parameters.color != null ? parameters.color : '#000000' ;
+  this.weigth  = parameters.weigth != null ? parameters.weigth : 1;
 
   this.getMessageType = function() {
     return this.messagetype;
@@ -88,6 +106,10 @@ Diagram.Entry = function(actorA, eventA, timeA, messagetype, actorB, eventB, tim
 
   this.getMessage = function() {
     return this.message;
+  }
+
+  this.getWeight = function() {
+    return this.weigth;
   }
 };
 
@@ -747,16 +769,14 @@ case 10:return 22;
 break;
 case 11:return 22;
 break;
-case 12:return 22;
+case 12:return 5;
 break;
-case 13:return 5;
-break;
-case 14:return 'INVALID';
+case 13:return 'INVALID';
 break;
 }
 },
-rules: [/^(?:[\r\n]+)/,/^(?:#[^\r\n]*)/,/^(?:-->)/,/^(?:\.\.>)/,/^(?:^(--x))/,/^(?:^(\.\.x))/,/^(?:(?!\s)([^\->:,\r\n"]+?)(?=\s))/,/^(?:(?=\s)([^\->:\.\r\n"]+)(?=\s))/,/^(?:null\b)/,/^(?:(?=)\s([0-9]+))/,/^(?:([^\r\n]+)(?:--color\s+#[0-9A-Za-z]+))/,/^(?:(:[^\r\n]+))/,/^(?:(:\s*))/,/^(?:$)/,/^(?:.)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14],"inclusive":true}}
+rules: [/^(?:[\r\n]+)/,/^(?:#[^\r\n]*)/,/^(?:-->)/,/^(?:\.\.>)/,/^(?:^(--x))/,/^(?:^(\.\.x))/,/^(?:(?!\s)([^\->:,\r\n"]+?)(?=\s))/,/^(?:(?=\s)([^\->:\.\r\n"]+)(?=\s))/,/^(?:null\b)/,/^(?:(?=)\s([0-9]+))/,/^(?:(:[^\r\n]+))/,/^(?:(:\s*))/,/^(?:$)/,/^(?:.)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13],"inclusive":true}}
 });
 return lexer;
 })();
@@ -18107,14 +18127,14 @@ Hypervis.Parser = function () {
         if(!obj.adjacencies) {
             obj.adjacencies = new Array();          
             adjacency.nodeTo = entry.getReceiverName();
-            adjacency.data = {weight: 3};
+            adjacency.data = {weight: entry.getWeight()};
             obj.adjacencies.push(adjacency);
         } else {
             if(this._containsObject(entry.getReceiverName(), obj.adjacencies)) {
                 return;
             } else {
                 adjacency.nodeTo = entry.getReceiverName();
-                adjacency.data = {weight: 3};
+                adjacency.data = {weight: entry.getWeight()};
                 obj.adjacencies.push(adjacency);
             }
         }

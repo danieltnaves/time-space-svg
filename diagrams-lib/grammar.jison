@@ -16,7 +16,6 @@
 (?=\s)([^\->:\.\r\n"]+)(?=\s)                return 'EVENT';
 "null"                                       return 'EVENT';
 (?=)\s([0-9]+)                               return 'TIME';
-:([^\r\n]+)(?:\-\-color\s+\#[0-9A-Za-z]+)    return 'MESSAGE';
 (\:[^\r\n]+)                                 return 'MESSAGE';
 (\:\s*)                                      return 'MESSAGE';
 <<EOF>>                                      return 'EOF';

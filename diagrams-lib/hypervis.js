@@ -143,14 +143,14 @@ Hypervis.Parser = function () {
         if(!obj.adjacencies) {
             obj.adjacencies = new Array();          
             adjacency.nodeTo = entry.getReceiverName();
-            adjacency.data = {weight: 3};
+            adjacency.data = {weight: entry.getWeight()};
             obj.adjacencies.push(adjacency);
         } else {
             if(this._containsObject(entry.getReceiverName(), obj.adjacencies)) {
                 return;
             } else {
                 adjacency.nodeTo = entry.getReceiverName();
-                adjacency.data = {weight: 3};
+                adjacency.data = {weight: entry.getWeight()};
                 obj.adjacencies.push(adjacency);
             }
         }

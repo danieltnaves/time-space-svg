@@ -1,22 +1,51 @@
+VIZ_TYPE = {
+	TIMESPACE: "timespace",
+	HYPERTREE: "hypertree"
+};
+
 function getOptionsSelectedValues()
 {
 	var arr = $("input[name=opts]:checked").map(function () {return this.value;}).get().join(",");
 	return arr;
 }
 
+function resetElements() {
+	$("#paper").empty();
+	$("#paper").hide();
+	$("#infovis").empty();
+	$("#infovis").hide();
+}
+
 function drawElements() {
-	var lib = new SpaceTime($('#input-data').val());
+
+	var selectedViz = $("input[name=viz]:checked").val();
+
 	try {
-		document.getElementById("err").style.display = "none";
-		var status = lib.drawInput('#paper', getOptionsSelectedValues());	
+		var diagram = model.Diagram.parse(document.getElementById('input-data').value);
+		var vw;
+		if(selectedViz === VIZ_TYPE.TIMESPACE) {		
+			$("#paper").show();
+			document.getElementById("err").style.display = "none";
+			vw = new view.SpaceTimeDraw('#paper', 2, 'black', diagram.entries, getOptionsSelectedValues());		
+		} else if (selectedViz === VIZ_TYPE.HYPERTREE) {
+			$("#infovis").show();
+			vw = new view.Hypervis('input-data', 'draw');
+		} else {
+			var errElement = document.getElementById("err");
+			errElement.innerText = "Visualization not supported";
+			errElement.style.display = "block";
+			return;
+		}
+
+		var ctl = new controller.DiagramController(diagram, vw, model.Diagram.parse);
+		ctl.updateView();
 	} catch (err) {
 		var errMessage = err.message.slice(err.message.indexOf("Expecting"));
 		var errElement = document.getElementById("err"); 
 		if(errMessage) errElement.innerText = "Error: " + errMessage;
 		else errElement.innerText = "Error: Unexpected error ocurred.";
 		errElement.style.display = "block";
-	}
-	
+	}	
 }
 
 $(document).ready(function(){
@@ -36,10 +65,10 @@ $(document).ready(function(){
 		var source = serializer.serializeToString(svg);
 		//add name spaces.
 		if(!source.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)){
-		    source = source.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
+			source = source.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
 		}
 		if(!source.match(/^<svg[^>]+"http\:\/\/www\.w3\.org\/1999\/xlink"/)){
-		    source = source.replace(/^<svg/, '<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
+			source = source.replace(/^<svg/, '<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
 		}
 		//add xml declaration
 		source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
@@ -53,8 +82,18 @@ $(document).ready(function(){
 		return false;
 	});
 	
-		
+	$("input[name=viz]").click(function() {
+		if($("input[name=viz]:checked").val() === VIZ_TYPE.TIMESPACE) {
+			$("#save-svg").show();
+			$("#save-png").show();
+		} else {
+			$("#save-svg").hide();
+			$("#save-png").hide();
+		}
+	});
+
 	$('#draw').click(function(){
+		resetElements();
 		drawElements();
 		return false;	
 	});
