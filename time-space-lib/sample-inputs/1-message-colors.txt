@@ -1,7 +1,0 @@
-B p1 10-->C p2 20:request
-B p3 15-->C p4 23:request
-C p5 25..>B p6 30:lost request --color #881A1B
-C p7 40-->D p8 60:response
-D p9 65-->E p10 68:request --color #008000
-D p11 70-->B p12 80:response
-D p13 85..>C p14 95:lost request --color #FF8D00
